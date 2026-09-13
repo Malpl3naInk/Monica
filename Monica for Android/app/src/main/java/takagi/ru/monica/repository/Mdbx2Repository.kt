@@ -795,7 +795,10 @@ class Mdbx2Repository(
             return 0
         }
 
-        return sessions.withVault(databaseId) { _, vault -> pendingSyncCount(database, status, vault) }
+        return sessions.withVault(databaseId) { current, vault ->
+            val currentStatus = runCatching { MdbxSyncStatus.valueOf(current.lastSyncStatus) }.getOrNull()
+            pendingSyncCount(current, currentStatus, vault)
+        }
     }
 
     override suspend fun setProjectTags(databaseId: Long, projectId: String, tags: List<String>) {

@@ -2003,8 +2003,7 @@ fun VaultV2Pane(
             database.supports(MdbxCapability.REMOTE_SYNC)
         ) {
 			MdbxPathSyncState(
-				pendingCount = mdbxPendingSyncCounts[database.id]
-					?: database.mdbxPathPendingSyncCount(),
+				pendingCount = database.mdbxPathPendingSyncCount(mdbxPendingSyncCounts[database.id]),
 				isSyncing = mdbxOperationState is MdbxViewModel.OperationState.Loading,
 				onSync = {
 					if (database.mdbxPathShouldFlushPendingUpload()) {

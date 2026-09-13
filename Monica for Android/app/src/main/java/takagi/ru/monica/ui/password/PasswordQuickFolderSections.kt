@@ -110,15 +110,19 @@ internal data class QuickStatusKeePassSyncState(
             coordinatorPhase == SyncPhase.CONFLICT
 }
 
-internal fun LocalMdbxDatabase.mdbxPathPendingSyncCount(): Int {
-    val pending = when (runCatching { MdbxSyncStatus.valueOf(lastSyncStatus) }.getOrNull()) {
+internal fun LocalMdbxDatabase.mdbxPathPendingSyncCount(cachedCount: Int? = null): Int {
+    return when (runCatching { MdbxSyncStatus.valueOf(lastSyncStatus) }.getOrNull()) {
+        // Diagnostics may finish after a successful sync. The current persisted
+        // status takes precedence over their older cached count.
+        MdbxSyncStatus.LOCAL_ONLY,
+        MdbxSyncStatus.IN_SYNC -> 0
         MdbxSyncStatus.PENDING_UPLOAD,
         MdbxSyncStatus.REMOTE_CHANGED,
         MdbxSyncStatus.CONFLICT,
-        MdbxSyncStatus.FAILED -> true
-        else -> false
+        MdbxSyncStatus.FAILED -> (cachedCount ?: 1).coerceAtLeast(1)
+        MdbxSyncStatus.SYNCING -> (cachedCount ?: 0).coerceAtLeast(0)
+        null -> 0
     }
-    return if (pending) 1 else 0
 }
 
 @Composable
