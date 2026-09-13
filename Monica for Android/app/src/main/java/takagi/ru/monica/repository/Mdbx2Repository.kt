@@ -1,5 +1,8 @@
 package takagi.ru.monica.repository
 
+import takagi.ru.monica.data.ApiTokenPayload
+import takagi.ru.monica.data.NativeApiToken
+import takagi.ru.monica.data.NativeApiTokenSummary
 import android.content.Context
 import android.net.Uri
 import android.util.Base64
@@ -117,6 +120,122 @@ class Mdbx2Repository(
         databaseId: Long,
         block: suspend (LocalMdbxDatabase, MdbxVault) -> T
     ): T = sessions.withVault(databaseId, block)
+
+    /** Read native objects directly; no Room password projection or type conversion. */
+    suspend fun listNativeApiTokens(databaseId: Long): List<NativeApiTokenSummary> =
+        sessions.withVault(databaseId) { _, vault ->
+            val collections = vault.listAllProjects()
+            val byId = collections.associateBy { it.collectionId }
+            collections.flatMap { collection ->
+                val ancestors = linkedSetOf<String>()
+                var parentId = collection.groupId
+                while (parentId != null && parentId != collection.collectionId && ancestors.add(parentId)) {
+                    parentId = byId[parentId]?.groupId
+                }
+                val categoryTitle = (ancestors.toList().asReversed().mapNotNull { byId[it]?.title } + collection.title).joinToString(" / ")
+                buildList {
+                    var cursor: String? = null
+                    do {
+                        val page = vault.listObjectSummaries(collection.collectionId, ApiTokenPayload.NATIVE_TYPE, 100u, cursor)
+                        page.items.filterNot { it.deleted }.forEach { entry ->
+                            add(NativeApiTokenSummary(databaseId, entry.objectId, collection.collectionId, categoryTitle, entry.title, ancestors.toList()))
+                        }
+                        cursor = page.nextCursor
+                    } while (cursor != null)
+                }
+            }
+        }
+
+    suspend fun readNativeApiToken(summary: NativeApiTokenSummary): NativeApiToken =
+        sessions.withVault(summary.databaseId) { _, vault ->
+            val entry = vault.revealObjectWithLimits(summary.entryId,
+                uniffi.mdbx_ffi.MdbxObjectDisclosureLimits(ApiTokenPayload.MAX_BYTES.toULong())).`object`
+                ?: error("Native token disclosure was not authorized")
+            check(!entry.deleted && entry.objectTypeId == ApiTokenPayload.NATIVE_TYPE && entry.collectionId == summary.collectionId)
+            NativeApiToken(summary.copy(title = entry.title), entry.payloadJson)
+        }
+
+    /** Detail/editor navigation reads one object, not every token in the database. */
+    suspend fun readNativeApiToken(databaseId: Long, entryId: String): NativeApiToken =
+        sessions.withVault(databaseId) { _, vault ->
+            val entry = vault.revealObjectWithLimits(entryId,
+                uniffi.mdbx_ffi.MdbxObjectDisclosureLimits(ApiTokenPayload.MAX_BYTES.toULong())).`object`
+                ?: error("Native token disclosure was not authorized")
+            check(!entry.deleted && entry.objectTypeId == ApiTokenPayload.NATIVE_TYPE)
+            val collections = vault.listAllProjects().associateBy { it.collectionId }
+            val collection = collections[entry.collectionId]
+            val ancestors = linkedSetOf<String>()
+            var parentId = collection?.groupId
+            while (parentId != null && ancestors.add(parentId)) parentId = collections[parentId]?.groupId
+            val path = (ancestors.toList().asReversed().mapNotNull { collections[it]?.title } +
+                listOfNotNull(collection?.title)).joinToString(" / ")
+            NativeApiToken(NativeApiTokenSummary(databaseId, entry.objectId, entry.collectionId,
+                path, entry.title, ancestors.toList()), entry.payloadJson)
+        }
+
+    suspend fun saveNativeApiToken(
+        databaseId: Long,
+        original: NativeApiToken?,
+        title: String,
+        payload: String,
+        collectionId: String? = null
+    ): NativeApiTokenSummary {
+        require(ApiTokenPayload.isValidName(title))
+        require(ApiTokenPayload.isValid(payload)) { "Invalid native token payload" }
+        require(!title.contains(ApiTokenPayload.text(ApiTokenPayload.decode(payload), "token")))
+        require(original == null || original.summary.databaseId == databaseId)
+        require(original == null || ApiTokenPayload.decode(original.payload) != null) {
+            "This native token format is read-only"
+        }
+        val saved = sessions.withMutatingVault(databaseId) { _, vault ->
+            val collections = vault.listAllProjects()
+            val rootId = Mdbx2VaultSessionExecutor.rootProjectId(vault.info().vaultId)
+            val targetId = collectionId?.takeIf { it.isNotBlank() }
+                ?: original?.summary?.collectionId?.takeUnless { collectionId == "" }
+                ?: rootId
+            val collection = collections.firstOrNull { it.collectionId == targetId }
+            check(collection != null || targetId == rootId) { "Native token collection is no longer available" }
+            val entryId = original?.summary?.entryId ?: UUID.randomUUID().toString()
+            val command = if (original == null) {
+                MdbxWriteCommand.CreateEntry(entryId, targetId, ApiTokenPayload.NATIVE_TYPE, title, payload)
+            } else {
+                val current = vault.revealObjectWithLimits(entryId,
+                    uniffi.mdbx_ffi.MdbxObjectDisclosureLimits(ApiTokenPayload.MAX_BYTES.toULong())).`object`
+                    ?: error("Native token disclosure was not authorized")
+                check(!current.deleted && current.objectTypeId == ApiTokenPayload.NATIVE_TYPE && current.collectionId == original.summary.collectionId)
+                check(current.payloadJson == original.payload && current.title == original.summary.title) {
+                    "Native token changed; reload before saving"
+                }
+                MdbxWriteCommand.UpdateEntry(entryId, targetId, ApiTokenPayload.NATIVE_TYPE, title, payload)
+            }
+            val commands = buildList {
+                // CLI-created vaults need not contain Android's conventional root collection.
+                if (collection == null) add(MdbxWriteCommand.CreateProject(rootId, "Monica"))
+                if (original != null && original.summary.collectionId != targetId) {
+                    add(MdbxWriteCommand.MoveEntry(entryId, original.summary.collectionId, targetId))
+                }
+                add(command)
+            }
+            vault.executeWriteOperation(UUID.randomUUID().toString(), "monica-save-api-token", commands)
+            NativeApiTokenSummary(databaseId, entryId, targetId, collection?.title ?: "Monica", title)
+        }
+        markPendingUpload(databaseId)
+        return saved
+    }
+
+    suspend fun deleteNativeApiToken(original: NativeApiToken) {
+        val summary = original.summary
+        sessions.withMutatingVault(summary.databaseId) { _, vault ->
+            val current = vault.revealObjectWithLimits(summary.entryId,
+                uniffi.mdbx_ffi.MdbxObjectDisclosureLimits(ApiTokenPayload.MAX_BYTES.toULong())).`object`
+                ?: error("Native token disclosure was not authorized")
+            check(!current.deleted && current.objectTypeId == ApiTokenPayload.NATIVE_TYPE &&
+                current.collectionId == summary.collectionId && current.payloadJson == original.payload)
+            vault.executeWriteOperation(UUID.randomUUID().toString(), "monica-delete-api-token",
+                listOf(MdbxWriteCommand.DeleteEntry(summary.entryId, summary.collectionId)))
+        }
+        markPendingUpload(summary.databaseId)
+    }
 
     override suspend fun readStoredEntries(databaseId: Long): List<MdbxStoredVaultEntry> =
         sessions.withVault(databaseId) { _, vault ->

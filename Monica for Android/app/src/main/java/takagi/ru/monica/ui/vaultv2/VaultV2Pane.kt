@@ -1,5 +1,11 @@
 package takagi.ru.monica.ui.vaultv2
 
+import takagi.ru.monica.ui.screens.NativeTokenListUi
+import takagi.ru.monica.ui.screens.NativeTokenFilterChip
+import takagi.ru.monica.ui.screens.nativeTokenRows
+import takagi.ru.monica.ui.screens.rememberNativeTokenList
+
+
 import android.icu.text.Transliterator
 import android.util.Log
 import android.widget.Toast
@@ -1537,6 +1543,7 @@ fun VaultV2Pane(
 	onOpenBillingAddress: (Long) -> Unit,
 	onOpenNote: (Long) -> Unit,
 	onOpenPasskey: (Long) -> Unit,
+	onOpenApiTokens: (Long?, String?) -> Unit = { _, _ -> },
 	onOpenMdbxCommitHistory: (Long) -> Unit,
 	onOpenHistory: () -> Unit,
 	onOpenTrashPage: () -> Unit,
@@ -1606,6 +1613,7 @@ fun VaultV2Pane(
 	var isTopActionsMenuExpanded by rememberSaveable { mutableStateOf(false) }
 	var showBitwardenUnlockDialog by rememberSaveable { mutableStateOf(false) }
 	var showClearBitwardenCacheDialog by rememberSaveable { mutableStateOf(false) }
+	var nativeOnly by rememberSaveable { mutableStateOf(false) }
 	var quickFilterFavorite by rememberSaveable { mutableStateOf(state.overviewFavorites) }
 	var quickFilter2fa by rememberSaveable { mutableStateOf(false) }
 	var quickFilterNotes by rememberSaveable { mutableStateOf(false) }
@@ -2949,6 +2957,15 @@ fun VaultV2Pane(
 	} else {
 		baseSectionedItems
 	}
+    val nativeTokens = rememberNativeTokenList(
+        if (showOverview) null else mdbxViewModel,
+        if (state.isArchiveView) CategoryFilter.Archived else categoryMenuFilter, searchQuery,
+        nativeOnly, { nativeOnly = !nativeOnly; selectedKeys.clear() }, onOpenApiTokens,
+        includeTokens = !quickFilterFavorite && !quickFilter2fa && !quickFilterNotes && !quickFilterPasskey &&
+            !quickFilterBoundNote && !quickFilterAttachments && !quickFilterLocalOnly &&
+            !quickFilterUncategorized && !quickFilterManualStackOnly && !quickFilterNeverStack && !quickFilterUnstacked &&
+            state.overviewItemType == null && !state.overviewFavorites
+    )
 	val showQuickFiltersInList = !state.isArchiveView && hasVisibleQuickFilters
 	val showCategoryQuickFiltersInList =
 		!state.isArchiveView && !useHierarchicalLayout && categoryMenuQuickFolderShortcuts.isNotEmpty()
@@ -3669,7 +3686,8 @@ fun VaultV2Pane(
 				modifier = Modifier.offset { IntOffset(0, -contentPullOffset) },
 			)
 			VaultV2List(
-				hasVisibleQuickFilters = showQuickFiltersInList,
+                nativeTokens = nativeTokens,
+				hasVisibleQuickFilters = showQuickFiltersInList || nativeTokens.visible,
 				hasVisibleCategoryQuickFilters = showCategoryQuickFiltersInList,
 				configuredQuickFilterItems = configuredQuickFilterItems,
 				quickFilterChipState = quickFilterBindings.state,
@@ -3677,7 +3695,7 @@ fun VaultV2Pane(
 				categoryQuickFilterShortcuts = categoryMenuQuickFolderShortcuts,
 				currentFilter = categoryMenuFilter,
 				onNavigateFilter = navigateCategoryFilter,
-				folderRows = folderRows,
+				folderRows = if (nativeTokens.onlyTokens) emptyList() else folderRows,
 				selectedFolderKey = selectedFolderKey,
 				showCurrentFolderHeader = useHierarchicalLayout && sectionedItems.isNotEmpty(),
 					onOpenFolder = { filter ->
@@ -3707,9 +3725,9 @@ fun VaultV2Pane(
 					selectedKeys.addAll(folderItems.map(VaultV2Item::key))
 					showFolderActionDialog = row.kind == VaultV2FolderRowKind.FOLDER
 				},
-				sections = sectionedItems,
+				sections = if (nativeTokens.onlyTokens) emptyList() else sectionedItems,
 				showLoadingIndicator = showVaultLoadingIndicator,
-				showEmptyState = showVaultEmptyState,
+				showEmptyState = showVaultEmptyState && !nativeTokens.onlyTokens && nativeTokens.entries.isEmpty() && !nativeTokens.loading && !nativeTokens.failed,
 				emptyStateText = emptyStateText,
 				listState = listState,
 				passwordById = passwordById,
@@ -4474,6 +4492,7 @@ fun VaultV2Pane(
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
 private fun VaultV2List(
+    nativeTokens: NativeTokenListUi? = null,
 	hasVisibleQuickFilters: Boolean,
 	hasVisibleCategoryQuickFilters: Boolean,
 	configuredQuickFilterItems: List<PasswordListQuickFilterItem>,
@@ -4518,6 +4537,7 @@ private fun VaultV2List(
 				) {
 					if (hasVisibleQuickFilters) {
 						VaultV2QuickFilterRow(
+                            nativeTokens = nativeTokens,
 							configuredQuickFilterItems = configuredQuickFilterItems,
 							chipState = quickFilterChipState,
 							chipCallbacks = quickFilterChipCallbacks,
@@ -4538,6 +4558,7 @@ private fun VaultV2List(
 			}
 		}
 
+		nativeTokenRows(nativeTokens)
 		itemsIndexed(
 			items = folderRows,
 			key = { _, row -> row.key },

@@ -1,0 +1,15 @@
+# Native Monica CLI API tokens
+
+Android reads MDBX `api-token` objects directly. They appear in the Password and Vault lists, with an **API Token** quick filter, database/category filtering, and title/category search. The overview does not include a token module. These objects are not converted into Room password rows.
+
+Choose **API Token** in the add-password type menu to create a native token. The editor reuses Monica's entry type menu, storage selector, form fields and save FAB. It lets users select a native MDBX database and category; switching from password creation carries the selected MDBX location forward. Edits can change categories within the original database.
+
+Browsing, details and editing are separate navigation destinations with the same transitions as other entry pages. Details show the provider, API address, token, note and storage location. Native IDs, extensions and complete JSON are under **More information**. Copying, editing and native soft deletion are supported. The editor contract is `monica.gateway.credential.v1`; unknown schemas remain readable but cannot be overwritten by this editor.
+
+The list uses paginated native metadata queries and a ViewModel-owned metadata cache. Concurrent requests share a read; returning to a list, refreshing and transient read failures keep the last successful rows on screen. Save/delete invalidates the affected database, sync revisions trigger refresh, and replacing the database file cannot reuse another file's rows. Access-time changes alone do not reload the list. Password and Vault empty states account for pending or failed token reads.
+
+Secret contents are requested for a single object through `revealObjectWithLimits` only in the detail/editor flow, subject to the engine disclosure policy. Token and extension values are masked until revealed. Clipboard copies use the existing sensitive flag and auto-clear preference. Secret drafts live only in ViewModel memory, are excluded from Android saved-state Bundles, and are cleared on application lock. Backgrounding the page hides revealed values without losing an unsaved draft.
+
+Edits retain the native ID and unknown JSON extension fields. A single native write operation handles a category move and update; stale edits are rejected. Mutations use the existing working-copy publication and pending-upload paths, so encrypted MDBX snapshots and WebDAV vault synchronization include the objects without a new export format. No Bitwarden or KeePass conversion is introduced.
+
+Targeted JVM tests cover payload bounds, extension preservation during invalid input, database/category/search filtering, nested categories and cache refresh/failure behavior. `NativeApiTokenInstrumentedTest` covers a CLI-shaped native record, reopen/edit, stable identity, stale-edit rejection, no password-row projection, and snapshot restore. `NativeApiTokenUiTest` covers list → detail → edit → save → list, choosing another database/category when creating a token, and excluding secret drafts from saved-state Bundles.

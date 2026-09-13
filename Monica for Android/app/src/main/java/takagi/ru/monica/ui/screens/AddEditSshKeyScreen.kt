@@ -118,6 +118,7 @@ fun AddEditSshKeyScreen(
     initialBitwardenVaultId: Long? = null,
     initialBitwardenFolderId: String? = null,
     onNavigateBack: () -> Unit,
+    onNavigateToApiToken: () -> Unit = {},
     onNavigateToPassword: () -> Unit,
     onNavigateToBarcode: () -> Unit = onNavigateToPassword,
     onNavigateToWifi: () -> Unit,
@@ -353,6 +354,7 @@ fun AddEditSshKeyScreen(
                             current = EntryTypeChipOption.SSH_KEY,
                             onSelect = { option ->
                                 when (option) {
+                                    EntryTypeChipOption.API_TOKEN -> onNavigateToApiToken()
                                     EntryTypeChipOption.PASSWORD -> onNavigateToPassword()
                                     EntryTypeChipOption.WIFI -> onNavigateToWifi()
                                     EntryTypeChipOption.SSH_KEY -> Unit

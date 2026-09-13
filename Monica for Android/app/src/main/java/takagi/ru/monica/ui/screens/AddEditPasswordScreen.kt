@@ -268,6 +268,7 @@ fun AddEditPasswordScreen(
     onConsumePendingQrResult: () -> Unit = {},
     onScanAuthenticatorQrCode: (() -> Unit)? = null,
     onSaveCompleted: ((Long?) -> Unit)? = null,
+    onSwitchToApiToken: ((StorageTarget.Mdbx?) -> Unit)? = null,
     onSwitchToWifi: ((Long?) -> Unit)? = null,
     onSwitchToSshKey: ((Long?) -> Unit)? = null,
     onNavigateBack: () -> Unit
@@ -2622,6 +2623,7 @@ fun AddEditPasswordScreen(
                     actions = {
                         if (onSwitchToWifi != null) {
                             EntryTypeChip(
+                                showApiToken = !isEditing && onSwitchToApiToken != null,
                                 current = if (isBarcodeMode) {
                                     EntryTypeChipOption.BARCODE
                                 } else {
@@ -2629,6 +2631,8 @@ fun AddEditPasswordScreen(
                                 },
                                 onSelect = { option ->
                                     when (option) {
+                                        EntryTypeChipOption.API_TOKEN -> onSwitchToApiToken?.invoke(
+                                            selectedStorageTargets.filterIsInstance<StorageTarget.Mdbx>().firstOrNull())
                                         EntryTypeChipOption.WIFI ->
                                             onSwitchToWifi(if (isEditing) passwordId else null)
                                         EntryTypeChipOption.SSH_KEY ->
@@ -6230,4 +6234,3 @@ private fun encodePasswordWebsiteUrls(urls: List<String>): String {
 private fun normalizeWebsiteForSiblingGroupKey(value: String): String {
     return PasswordWebsiteCodec.normalizeForKey(value)
 }
-

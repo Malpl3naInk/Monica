@@ -1,5 +1,8 @@
 package takagi.ru.monica.viewmodel
 
+import takagi.ru.monica.data.ApiTokenPayload
+import takagi.ru.monica.data.NativeApiToken
+import takagi.ru.monica.data.NativeApiTokenSummary
 import android.app.Application
 import android.content.Context
 import android.content.Intent
@@ -188,6 +191,29 @@ class MdbxViewModel(
         secureItemDao = secureItemDao,
         customFieldDao = customFieldDao
     )
+    suspend fun listNativeApiTokens(databaseId: Long) = mdbx2Repository.listNativeApiTokens(databaseId)
+
+    internal val nativeApiTokenList by lazy {
+        NativeApiTokenListStore(viewModelScope, mdbx2Repository::listNativeApiTokens)
+    }
+
+    suspend fun readNativeApiToken(summary: NativeApiTokenSummary) = mdbx2Repository.readNativeApiToken(summary)
+
+    suspend fun readNativeApiToken(databaseId: Long, entryId: String) =
+        mdbx2Repository.readNativeApiToken(databaseId, entryId)
+
+    suspend fun deleteNativeApiToken(original: NativeApiToken) {
+        mdbx2Repository.deleteNativeApiToken(original)
+        nativeApiTokenList.invalidate(original.summary.databaseId)
+    }
+
+    suspend fun nativeApiTokenFolders(databaseId: Long) = mdbx2Repository.listFolders(databaseId)
+
+    suspend fun saveNativeApiToken(
+        databaseId: Long, original: NativeApiToken?, title: String, payload: String, collectionId: String?
+    ): NativeApiTokenSummary = mdbx2Repository.saveNativeApiToken(databaseId, original, title, payload, collectionId)
+        .also { nativeApiTokenList.invalidate(databaseId) }
+
     private val vaultStore: MdbxRepository = MdbxRepositoryRouter(
         databaseDao = databaseDao,
         legacyRepository = legacyVaultStore,

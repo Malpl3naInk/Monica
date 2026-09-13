@@ -1,5 +1,11 @@
 package takagi.ru.monica.ui
 
+import takagi.ru.monica.ui.screens.NativeTokenListUi
+import takagi.ru.monica.ui.screens.NativeTokenFilterChip
+import takagi.ru.monica.ui.screens.nativeTokenRows
+import takagi.ru.monica.ui.screens.rememberNativeTokenList
+
+
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
@@ -306,6 +312,7 @@ internal fun PasswordListInitialLoadingIndicator() {
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun PasswordListContent(
+    onOpenApiTokens: (Long?, String?) -> Unit = { _, _ -> },
     viewModel: PasswordViewModel,
     settingsViewModel: SettingsViewModel,
     securityManager: SecurityManager,
@@ -875,7 +882,15 @@ fun PasswordListContent(
     LaunchedEffect(hasAnySshKeyEntry) {
         if (!hasAnySshKeyEntry) quickFilterSshKey = false
     }
+    var nativeOnly by rememberSaveable { mutableStateOf(false) }
     var quickFilterBarcode by rememberSaveable { mutableStateOf(false) }
+    val nativeTokens = rememberNativeTokenList(mdbxViewModel, currentFilter, searchQuery,
+        nativeOnly, { nativeOnly = !nativeOnly; selectedItemKeys = emptySet(); isSelectionMode = false }, onOpenApiTokens,
+        includeTokens = !quickFilterFavorite && !quickFilter2fa && !quickFilterNotes && !quickFilterPasskey &&
+            !quickFilterBoundNote && !quickFilterAttachments && !quickFilterWifi && !quickFilterSshKey &&
+            !quickFilterBarcode && !quickFilterLocalOnly && !quickFilterUncategorized &&
+            !quickFilterManualStackOnly && !quickFilterNeverStack && !quickFilterUnstacked &&
+            aggregateConfig?.selectedContentTypes.orEmpty().isEmpty())
     val hasAnyBarcodeEntry = remember(passwordEntries) {
         passwordEntries.any { it.isBarcodeEntry() }
     }
@@ -1561,7 +1576,7 @@ fun PasswordListContent(
             effectiveQuickFolderCardShortcuts.isNotEmpty() ||
             showPinnedQuickFolderPathBanner
     }
-    val hasVisibleListItems = passwordPageListItems.isNotEmpty()
+    val hasVisibleListItems = (!nativeTokens.onlyTokens && passwordPageListItems.isNotEmpty()) || nativeTokens.entries.isNotEmpty()
     val usesLazyColumn = remember(
         isPasswordPageListModelReady,
         hasVisibleListItems,
@@ -1824,6 +1839,7 @@ fun PasswordListContent(
     @Composable
     fun RenderPasswordListMainPaneHost() {
         PasswordListMainPaneHost(
+            nativeTokens = nativeTokens,
             canCollapseExpandedGroups = canCollapseExpandedGroups,
             outsideTapInteractionSource = outsideTapInteractionSource,
             onCollapseExpandedGroups = viewModel::clearExpandedGroups,
@@ -1854,8 +1870,8 @@ fun PasswordListContent(
             isPasswordPageListModelReady = isPasswordPageListModelReady,
             hasVisibleListItems = hasVisibleListItems,
             showEmptyState = showEmptyStateWithHeaders,
-            hasScrollableHeaderContent = hasScrollableHeaderContent,
-            hasVisibleQuickFilters = hasVisibleQuickFilters,
+            hasScrollableHeaderContent = hasScrollableHeaderContent || nativeTokens.visible,
+            hasVisibleQuickFilters = hasVisibleQuickFilters || nativeTokens.visible,
             hasVisibleCategoryQuickFilters = hasVisibleCategoryQuickFilters,
             aggregateUiState = aggregateUiState,
             emptyStateMessage = emptyStateMessage,
@@ -2104,6 +2120,7 @@ fun PasswordListContent(
 
 @Composable
 private fun PasswordListMainPaneHost(
+    nativeTokens: NativeTokenListUi? = null,
     canCollapseExpandedGroups: Boolean,
     outsideTapInteractionSource: MutableInteractionSource,
     onCollapseExpandedGroups: () -> Unit,
@@ -2196,6 +2213,7 @@ private fun PasswordListMainPaneHost(
     decryptAuthenticatorKey: ((String) -> String)?
 ) {
     PasswordListMainPane(
+        nativeTokens = nativeTokens,
         canCollapseExpandedGroups = canCollapseExpandedGroups,
         outsideTapInteractionSource = outsideTapInteractionSource,
         onCollapseExpandedGroups = onCollapseExpandedGroups,

@@ -152,6 +152,7 @@ import takagi.ru.monica.viewmodel.PasswordViewModel
 import takagi.ru.monica.viewmodel.SecurityAnalysisViewModel
 import takagi.ru.monica.viewmodel.SettingsViewModel
 import takagi.ru.monica.viewmodel.TotpCategoryFilter
+import takagi.ru.monica.viewmodel.CategoryFilter
 import takagi.ru.monica.viewmodel.TotpViewModel
 import androidx.compose.foundation.isSystemInDarkTheme
 import takagi.ru.monica.data.AppSettings
@@ -196,6 +197,12 @@ private data class PendingAddStorageDefaults(
     val bitwardenFolderId: String? = null,
     val explicit: Boolean = false,
 )
+
+private fun nativeTokenCreateRoute(filter: CategoryFilter): String = when (filter) {
+    is CategoryFilter.MdbxDatabase -> Screen.AddEditApiToken.createRoute(filter.databaseId)
+    is CategoryFilter.MdbxFolderFilter -> Screen.AddEditApiToken.createRoute(filter.databaseId, folderId = filter.folderId)
+    else -> Screen.AddEditApiToken.createRoute()
+}
 
 private data class PendingSendDraft(
     val title: String? = null,
@@ -1116,6 +1123,11 @@ fun MonicaContent(
             ) {
             // V1 经典本地密码库界面
             SimpleMainScreen(
+                onCreateApiToken = { target ->
+                    navController.navigate(target?.let { Screen.AddEditApiToken.createRoute(it.databaseId, folderId = it.folderId) }
+                        ?: nativeTokenCreateRoute(viewModel.categoryFilter.value))
+                },
+                onOpenApiTokens = { id, tokenId -> navController.navigate(Screen.ApiTokens.createRoute(id, tokenId)) },
                 passwordViewModel = viewModel,
                 settingsViewModel = settingsViewModel,
                 totpViewModel = totpViewModel,
@@ -1464,6 +1476,14 @@ fun MonicaContent(
             }
             key(passwordId) {
                 AddEditPasswordScreen(
+                    onSwitchToApiToken = { target ->
+                        val route = target?.let { Screen.AddEditApiToken.createRoute(it.databaseId, folderId = it.folderId) }
+                            ?: nativeTokenCreateRoute(viewModel.categoryFilter.value)
+                        navController.navigate(route) {
+                            popUpTo(Screen.AddEditPassword.route) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    },
                     viewModel = viewModel,
                     totpViewModel = totpViewModel,
                     bankCardViewModel = bankCardViewModel,
@@ -1534,6 +1554,12 @@ fun MonicaContent(
                 ?.savedStateHandle
                 ?.get<String>("qr_result")
             takagi.ru.monica.ui.screens.AddEditWifiScreen(
+                onNavigateToApiToken = {
+                    navController.navigate(nativeTokenCreateRoute(viewModel.categoryFilter.value)) {
+                        popUpTo(Screen.AddEditWifi.route) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                },
                 viewModel = viewModel,
                 localKeePassViewModel = localKeePassViewModel,
                 passwordId = if (passwordIdArg == -1L) null else passwordIdArg,
@@ -1642,6 +1668,12 @@ fun MonicaContent(
                 }
             }
             takagi.ru.monica.ui.screens.AddEditSshKeyScreen(
+                onNavigateToApiToken = {
+                    navController.navigate(nativeTokenCreateRoute(viewModel.categoryFilter.value)) {
+                        popUpTo(Screen.AddEditSshKey.route) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                },
                 viewModel = viewModel,
                 localKeePassViewModel = localKeePassViewModel,
                 passwordId = if (passwordIdArg == -1L) null else passwordIdArg,
@@ -3199,6 +3231,7 @@ fun MonicaContent(
                 }
             }
             MdbxManagerScreen(
+                onOpenApiTokens = { id -> navController.navigate(Screen.ApiTokens.createRoute(id)) },
                 viewModel = mdbxViewModel,
                 initialDatabaseId = initialDatabaseId,
                 initialPage = initialPage,
@@ -3223,6 +3256,81 @@ fun MonicaContent(
                 onNavigateToOneDriveOpen = {
                     navController.navigate(Screen.MdbxOneDriveOpen.route)
                 }
+            )
+        }
+
+        composable(
+            route = Screen.ApiTokens.route,
+            arguments = listOf(navArgument("databaseId") { type = NavType.LongType; defaultValue = -1L }),
+            enterTransition = { easyNotesScreenEnter() }, exitTransition = { easyNotesScreenExit() },
+            popEnterTransition = { easyNotesScreenEnter() }, popExitTransition = { easyNotesScreenExit() },
+        ) { entry ->
+            takagi.ru.monica.ui.screens.NativeApiTokensScreen(
+                viewModel = mdbxViewModel,
+                initialDatabaseId = entry.arguments?.getLong("databaseId")?.takeIf { it > 0 },
+                onNavigateBack = { navController.popBackStack() },
+                onOpen = { id, tokenId -> navController.navigate(Screen.ApiTokenDetail.createRoute(id, tokenId)) },
+                onCreate = { id -> navController.navigate(Screen.AddEditApiToken.createRoute(id)) },
+                onManageDatabases = { navController.navigate(Screen.MdbxManager.createRoute()) },
+            )
+        }
+
+        composable(
+            route = Screen.ApiTokenDetail.route,
+            arguments = listOf(navArgument("databaseId") { type = NavType.LongType }, navArgument("entryId") { type = NavType.StringType }),
+            enterTransition = { easyNotesScreenEnter() }, exitTransition = { easyNotesScreenExit() },
+            popEnterTransition = { easyNotesScreenEnter() }, popExitTransition = { easyNotesScreenExit() },
+        ) { entry ->
+            val databaseId = entry.arguments!!.getLong("databaseId")
+            val entryId = entry.arguments!!.getString("entryId")!!
+            takagi.ru.monica.ui.screens.ApiTokenDetailScreen(mdbxViewModel, databaseId, entryId,
+                onNavigateBack = { navController.popBackStack() },
+                onEdit = { navController.navigate(Screen.AddEditApiToken.createRoute(databaseId, entryId)) })
+        }
+
+        composable(
+            route = Screen.AddEditApiToken.route,
+            arguments = listOf(
+                navArgument("databaseId") { type = NavType.LongType; defaultValue = -1L },
+                navArgument("entryId") { type = NavType.StringType; defaultValue = "" },
+                navArgument("folderId") { type = NavType.StringType; defaultValue = "" },
+            ),
+            enterTransition = { easyNotesScreenEnter() }, exitTransition = { easyNotesScreenExit() },
+            popEnterTransition = { easyNotesScreenEnter() }, popExitTransition = { easyNotesScreenExit() },
+        ) { entry ->
+            val databaseId = entry.arguments?.getLong("databaseId")?.takeIf { it > 0 }
+            val entryId = entry.arguments?.getString("entryId")?.takeIf { it.isNotBlank() }
+            takagi.ru.monica.ui.screens.AddEditApiTokenScreen(mdbxViewModel, databaseId, entryId,
+                initialFolderId = entry.arguments?.getString("folderId")?.takeIf { it.isNotBlank() },
+                onNavigateBack = { navController.popBackStack() },
+                onSaved = { saved ->
+                    if (entryId != null) navController.popBackStack()
+                    else navController.navigate(Screen.ApiTokenDetail.createRoute(saved.databaseId, saved.entryId)) {
+                        popUpTo(Screen.AddEditApiToken.route) { inclusive = true }
+                    }
+                },
+                onSwitchType = { type, selectedDatabaseId, selectedFolderId ->
+                    val route = when (type) {
+                        takagi.ru.monica.ui.components.EntryTypeChipOption.PASSWORD -> Screen.AddEditPassword.createRoute()
+                        takagi.ru.monica.ui.components.EntryTypeChipOption.WIFI -> Screen.AddEditWifi.createRoute()
+                        takagi.ru.monica.ui.components.EntryTypeChipOption.SSH_KEY -> Screen.AddEditSshKey.createRoute()
+                        takagi.ru.monica.ui.components.EntryTypeChipOption.BARCODE -> Screen.AddEditPassword.createRoute(initialType = "barcode")
+                        takagi.ru.monica.ui.components.EntryTypeChipOption.API_TOKEN -> null
+                    }
+                    if (route != null) {
+                        if (type == takagi.ru.monica.ui.components.EntryTypeChipOption.PASSWORD ||
+                            type == takagi.ru.monica.ui.components.EntryTypeChipOption.BARCODE) {
+                            navController.previousBackStackEntry?.savedStateHandle?.setPendingAddStorageDefaults(
+                                PendingAddStorageDefaults(mdbxDatabaseId = selectedDatabaseId,
+                                    mdbxFolderId = selectedFolderId, explicit = selectedDatabaseId != null))
+                        }
+                        navController.navigate(route) {
+                            popUpTo(Screen.AddEditApiToken.route) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    }
+                },
+                onManageDatabases = { navController.navigate(Screen.MdbxManager.createRoute()) },
             )
         }
 

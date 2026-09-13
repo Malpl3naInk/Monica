@@ -1,5 +1,11 @@
 package takagi.ru.monica.ui
 
+import takagi.ru.monica.ui.screens.NativeTokenListUi
+import takagi.ru.monica.ui.screens.NativeTokenFilterChip
+import takagi.ru.monica.ui.screens.nativeTokenRows
+import takagi.ru.monica.ui.screens.rememberNativeTokenList
+
+
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.snap
 import androidx.compose.foundation.clickable
@@ -31,6 +37,7 @@ import takagi.ru.monica.viewmodel.CategoryFilter
 
 @Composable
 internal fun PasswordListMainPane(
+    nativeTokens: NativeTokenListUi? = null,
     canCollapseExpandedGroups: Boolean,
     outsideTapInteractionSource: MutableInteractionSource,
     onCollapseExpandedGroups: () -> Unit,
@@ -171,6 +178,7 @@ internal fun PasswordListMainPane(
                     }
                 } else {
                     PasswordListScrollableContent(
+                        nativeTokens = nativeTokens,
                         listState = listState,
                         modifier = Modifier
                             .fillMaxSize()

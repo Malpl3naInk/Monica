@@ -1,5 +1,11 @@
 package takagi.ru.monica.ui
 
+import takagi.ru.monica.ui.screens.NativeTokenListUi
+import takagi.ru.monica.ui.screens.NativeTokenFilterChip
+import takagi.ru.monica.ui.screens.nativeTokenRows
+import takagi.ru.monica.ui.screens.rememberNativeTokenList
+
+
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,6 +42,7 @@ private const val PASSWORD_LIST_BOTTOM_SPACER_KEY = "password_list_bottom_spacer
 
 @Composable
 internal fun PasswordListScrollableContent(
+    nativeTokens: NativeTokenListUi? = null,
     listState: LazyListState,
     modifier: Modifier,
     isPasswordPageListModelReady: Boolean,
@@ -114,6 +121,7 @@ internal fun PasswordListScrollableContent(
                                     .horizontalScroll(rememberScrollState()),
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
+                                NativeTokenFilterChip(nativeTokens)
                                 if (appSettings.passwordListQuickFiltersEnabled) {
                                     configuredQuickFilterItems.forEach { item ->
                                         if (shouldShowQuickFilterItem(item, aggregateUiState.visibleContentTypes)) {
@@ -204,7 +212,8 @@ internal fun PasswordListScrollableContent(
             }
         }
 
-        if (showEmptyState) {
+        if (showEmptyState && nativeTokens?.onlyTokens != true && nativeTokens?.entries.orEmpty().isEmpty() &&
+            nativeTokens?.loading != true && nativeTokens?.failed != true) {
             item(key = PASSWORD_LIST_EMPTY_STATE_WITH_HEADERS_KEY) {
                 Box(
                     modifier = Modifier
@@ -222,8 +231,10 @@ internal fun PasswordListScrollableContent(
                 }
             }
         } else {
-            renderPasswordRows()
+            if (nativeTokens?.onlyTokens != true) renderPasswordRows()
         }
+
+        nativeTokenRows(nativeTokens)
 
         item(key = PASSWORD_LIST_BOTTOM_SPACER_KEY) {
             Spacer(modifier = Modifier.height(80.dp))
