@@ -4,6 +4,7 @@
 
 ### 简要
 
+- API 令牌支持收藏，可在添加或编辑时设置，并通过密码库收藏筛选查找。
 - 新增完整法语界面，覆盖设置、初始化向导、密码库概览、MDBX、附件和 Bitwarden 等模块，保留按模块组织的语言资源。
 - 新增默认开启、可关闭的密码库概览，支持自定义模块与数据库筛选；概览内独立搜索复用公共顶栏动画和 Rust 检索索引。
 - Monica Plus 的固定金额、自由赞赏二维码及支持作者页共用图片查看器，支持全屏预览、双指缩放和保存原图。
@@ -27,6 +28,7 @@
 
 ### 详细
 
+- API 令牌添加和编辑页在类型选择器右侧增加收藏按钮，沿用其他条目的样式。收藏状态随 MDBX 数据库保存与同步，编辑时回显，移动分类后继续保留。
 - 概览可在页面调整中关闭；常用卡片以卡包卡叠展示，常用项目、收藏夹、类型、文件夹、数据库、归档和回收站按模块排列，支持显隐、排序和折叠。搜索跟随当前数据库范围，在详情返回后保留查询和结果；索引构建及检索在后台完成，大列表使用 Rust，小列表保留轻量回退。
 - Steam 与验证器共用 CameraX 相机预览和 ZXing 识别引擎，保留原有 13 种码制、反色二维码和小码识别；同一画面或图片中的多个码交由页面筛选。解码在后台完成，释放相机帧后在主线程处理结果，扫码会话支持中断恢复与前后台切换。
 - [@tommynok](https://github.com/tommynok) 的 [#131](https://github.com/Monica-Pass/Monica/pull/131) 补充俄语界面翻译并统一术语；预设安全问题现在随应用语言显示，保留原有问题编号和自定义问题。权限卡片、预设字段对话框及分段按钮为较长文字预留空间，减少文字挤压、异常换行和按钮高度不一致。
@@ -52,6 +54,7 @@
 
 ### Summary
 
+- API tokens now support favorites, with a favorite action in the editor and filtering in the vault.
 - Added complete French localization across settings, setup, vault overview, MDBX, attachments, and Bitwarden, retaining modular language resources.
 - Added a customizable vault overview, enabled by default with an option to return to the classic list. Overview search stays on the page and reuses the shared animated toolbar and Rust search index.
 - Fixed-amount and free-donation QR codes in Monica Plus, along with the support page, share full-screen preview, pinch-to-zoom, and saving of the original image.
@@ -75,6 +78,7 @@
 
 ### Details
 
+- Add or remove an API token from favorites using the heart beside the type selector, matching other entry editors. Favorite status is saved and synced with the MDBX vault, restored when editing, and retained when moving between folders.
 - Disable the overview in Page adjustment to restore the classic list. Frequent wallet cards appear as a stack; frequent items, favorites, types, folders, databases, archive, and trash form modules that can be shown, hidden, reordered, and collapsed. Search follows the selected database and retains its query and results after returning from details. Index preparation and queries run in the background, using Rust for larger lists and a lightweight fallback for smaller ones.
 - Steam and the authenticator share CameraX preview and ZXing decoding, retaining all 13 barcode formats, inverted QR codes, and small-code recognition. Multiple candidates from the camera or gallery are filtered by the calling screen. Decoding stays in the background; frames are released before main-thread result delivery, with camera recovery and support for background/resume transitions.
 - [@tommynok](https://github.com/tommynok)'s [#131](https://github.com/Monica-Pass/Monica/pull/131) fills gaps in Russian translations and makes terminology consistent. Preset security questions now follow the app language while retaining existing question IDs and custom questions. Permission cards, preset-field dialogs, and segmented buttons give longer text enough room, reducing cramped labels, awkward wrapping, and mismatched button heights.
