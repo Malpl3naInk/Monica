@@ -885,11 +885,12 @@ fun PasswordListContent(
     var quickFilterBarcode by rememberSaveable { mutableStateOf(false) }
     val nativeTokens = rememberNativeTokenList(mdbxViewModel, currentFilter, searchQuery,
         nativeOnly, { nativeOnly = !nativeOnly; selectedItemKeys = emptySet(); isSelectionMode = false }, onOpenApiTokens,
-        includeTokens = !quickFilterFavorite && !quickFilter2fa && !quickFilterNotes && !quickFilterPasskey &&
+        includeTokens = !quickFilter2fa && !quickFilterNotes && !quickFilterPasskey &&
             !quickFilterBoundNote && !quickFilterAttachments && !quickFilterWifi && !quickFilterSshKey &&
             !quickFilterBarcode && !quickFilterLocalOnly && !quickFilterUncategorized &&
             !quickFilterManualStackOnly && !quickFilterNeverStack && !quickFilterUnstacked &&
-            aggregateConfig?.selectedContentTypes.orEmpty().isEmpty())
+            aggregateConfig?.selectedContentTypes.orEmpty().isEmpty(),
+        favoritesOnly = quickFilterFavorite)
     val hasAnyBarcodeEntry = remember(passwordEntries) {
         passwordEntries.any { it.isBarcodeEntry() }
     }

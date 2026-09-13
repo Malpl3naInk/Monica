@@ -69,7 +69,7 @@ class NativeApiTokenSyncInstrumentedTest {
             val targetId = register(targetFile)
             targetSync.registerDownloadedBootstrap(targetId, path)
             val payload = """{"schema":"monica.gateway.credential.v1","provider":"gitlab","api_base":"https://synthetic.example.test/api/v4/","token":"synthetic-only-token","note":"sync test","future":{"scope":"api"}}"""
-            val created = source.saveNativeApiToken(sourceId, null, "synthetic-token", payload)
+            val created = source.saveNativeApiToken(sourceId, null, "synthetic-token", payload, isFavorite = true)
             assertEquals(MdbxSyncStatus.PENDING_UPLOAD.name, dao.getDatabaseById(sourceId)?.lastSyncStatus)
             assertTrue(source.getPendingSyncCount(sourceId) > 0)
 
@@ -85,6 +85,8 @@ class NativeApiTokenSyncInstrumentedTest {
             assertTrue(targetSync.synchronize(targetId, path, transport).downloadedSegments > 0)
             val received = target.readNativeApiToken(target.listNativeApiTokens(targetId).single())
             assertEquals(created.entryId, received.summary.entryId)
+            assertTrue(received.summary.isFavorite)
+            assertTrue(target.listNativeApiTokens(targetId).single().isFavorite)
             assertEquals(ApiTokenPayload.decode(payload), ApiTokenPayload.decode(received.payload))
             assertEquals(0, sourceSync.synchronize(sourceId, path, transport).uploadedSegments)
             assertEquals(0, source.getPendingSyncCount(sourceId))

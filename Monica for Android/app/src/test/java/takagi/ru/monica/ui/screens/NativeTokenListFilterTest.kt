@@ -27,9 +27,17 @@ class NativeTokenListFilterTest {
 
     @Test fun unrelatedStorageAndArchiveViewsExcludeNativeTokens() {
         listOf(CategoryFilter.Archived, CategoryFilter.Local, CategoryFilter.LocalOnly,
-            CategoryFilter.Starred, CategoryFilter.Custom(1)).forEach {
+            CategoryFilter.LocalStarred, CategoryFilter.Custom(1)).forEach {
             assertTrue(filterNativeApiTokens(entries, it, "").isEmpty())
         }
+    }
+
+    @Test fun favoriteCategoryAndQuickFilterUseMetadataWithinTheSelectedDatabase() {
+        val favorites = entries.mapIndexed { index, token -> token.copy(isFavorite = index != 1) }
+        assertEquals(listOf(favorites[0], favorites[2]), filterNativeApiTokens(favorites, CategoryFilter.Starred, ""))
+        assertEquals(listOf(favorites[0]), filterNativeApiTokens(favorites, CategoryFilter.MdbxDatabase(1), "", favoritesOnly = true))
+        assertTrue(filterNativeApiTokens(favorites, CategoryFilter.MdbxFolderFilter(1, "folder-b"), "", favoritesOnly = true).isEmpty())
+        assertEquals(listOf(favorites[2]), filterNativeApiTokens(favorites, CategoryFilter.Starred, "mirror"))
     }
 
     @Test fun parentCategoryIncludesNativeTokensInDescendants() {

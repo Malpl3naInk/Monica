@@ -73,7 +73,8 @@ data class NativeApiTokenSummary(
     val collectionId: String,
     val collectionTitle: String,
     val title: String,
-    val ancestorCollectionIds: List<String> = emptyList()
+    val ancestorCollectionIds: List<String> = emptyList(),
+    val isFavorite: Boolean = false
 )
 
 // Deliberately no generated toString(): payloads must never appear in diagnostic output.

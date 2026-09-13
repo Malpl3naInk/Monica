@@ -210,8 +210,9 @@ class MdbxViewModel(
     suspend fun nativeApiTokenFolders(databaseId: Long) = mdbx2Repository.listFolders(databaseId)
 
     suspend fun saveNativeApiToken(
-        databaseId: Long, original: NativeApiToken?, title: String, payload: String, collectionId: String?
-    ): NativeApiTokenSummary = mdbx2Repository.saveNativeApiToken(databaseId, original, title, payload, collectionId)
+        databaseId: Long, original: NativeApiToken?, title: String, payload: String, collectionId: String?,
+        isFavorite: Boolean = original?.summary?.isFavorite ?: false
+    ): NativeApiTokenSummary = mdbx2Repository.saveNativeApiToken(databaseId, original, title, payload, collectionId, isFavorite)
         .also { nativeApiTokenList.invalidate(databaseId) }
 
     private val vaultStore: MdbxRepository = MdbxRepositoryRouter(

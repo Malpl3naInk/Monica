@@ -2960,10 +2960,11 @@ fun VaultV2Pane(
         if (showOverview) null else mdbxViewModel,
         if (state.isArchiveView) CategoryFilter.Archived else categoryMenuFilter, searchQuery,
         nativeOnly, { nativeOnly = !nativeOnly; selectedKeys.clear() }, onOpenApiTokens,
-        includeTokens = !quickFilterFavorite && !quickFilter2fa && !quickFilterNotes && !quickFilterPasskey &&
+        includeTokens = !quickFilter2fa && !quickFilterNotes && !quickFilterPasskey &&
             !quickFilterBoundNote && !quickFilterAttachments && !quickFilterLocalOnly &&
             !quickFilterUncategorized && !quickFilterManualStackOnly && !quickFilterNeverStack && !quickFilterUnstacked &&
-            state.overviewItemType == null && !state.overviewFavorites
+            state.overviewItemType == null,
+        favoritesOnly = quickFilterFavorite || state.overviewFavorites
     )
 	val showQuickFiltersInList = !state.isArchiveView && hasVisibleQuickFilters
 	val showCategoryQuickFiltersInList =

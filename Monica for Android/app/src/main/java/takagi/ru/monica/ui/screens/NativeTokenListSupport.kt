@@ -37,23 +37,26 @@ internal class NativeTokenListUi(
 )
 
 internal fun filterNativeApiTokens(
-    entries: List<NativeApiTokenSummary>, filter: CategoryFilter, query: String
+    entries: List<NativeApiTokenSummary>, filter: CategoryFilter, query: String,
+    favoritesOnly: Boolean = false
 ): List<NativeApiTokenSummary> = entries.filter { token ->
     val inSource = when (filter) {
         CategoryFilter.All -> true
+        CategoryFilter.Starred -> token.isFavorite
         is CategoryFilter.MdbxDatabase -> token.databaseId == filter.databaseId
         is CategoryFilter.MdbxFolderFilter -> token.databaseId == filter.databaseId &&
             (token.collectionId == filter.folderId || filter.folderId in token.ancestorCollectionIds)
         else -> false
     }
-    inSource && (query.isBlank() || listOf(token.title, token.collectionTitle).any { it.contains(query.trim(), true) })
+    inSource && (!favoritesOnly || token.isFavorite) &&
+        (query.isBlank() || listOf(token.title, token.collectionTitle).any { it.contains(query.trim(), true) })
 }
 
 @Composable
 internal fun rememberNativeTokenList(
     viewModel: MdbxViewModel?, filter: CategoryFilter, query: String,
     onlyTokens: Boolean, onToggle: () -> Unit, onOpen: (Long?, String?) -> Unit,
-    includeTokens: Boolean = true
+    includeTokens: Boolean = true, favoritesOnly: Boolean = false
 ): NativeTokenListUi {
     val databases = viewModel?.allDatabases?.collectAsStateWithLifecycle()?.value.orEmpty()
     val databasesLoaded = viewModel?.allDatabasesLoaded?.collectAsStateWithLifecycle()?.value ?: true
@@ -61,7 +64,7 @@ internal fun rememberNativeTokenList(
         it.engineTypeEnum == MdbxEngineType.RUST_MDBX2 && when (filter) {
             is CategoryFilter.MdbxDatabase -> it.id == filter.databaseId
             is CategoryFilter.MdbxFolderFilter -> it.id == filter.databaseId
-            CategoryFilter.All -> true
+            CategoryFilter.All, CategoryFilter.Starred -> true
             else -> false
         }
     }.map { it.nativeApiTokenSource() } }
@@ -80,14 +83,15 @@ internal fun rememberNativeTokenList(
     LaunchedEffect(store, sources, active) {
         if (active) store?.request(sources)
     }
-    val entries = remember(snapshot.entries, sources, filter, query, active) {
-        if (active) filterNativeApiTokens(sources.flatMap(snapshot::rowsFor), filter, query)
+    val entries = remember(snapshot.entries, sources, filter, query, active, favoritesOnly) {
+        if (active) filterNativeApiTokens(sources.flatMap(snapshot::rowsFor), filter, query, favoritesOnly)
         else emptyList()
     }
     val loading = active && (!databasesLoaded || sources.any { it in snapshot.loading ||
         (it !in snapshot.entries && it !in snapshot.failed) })
     val failed = active && sources.any { it in snapshot.failed }
-    val sourceVisible = filter == CategoryFilter.All || filter is CategoryFilter.MdbxDatabase || filter is CategoryFilter.MdbxFolderFilter
+    val sourceVisible = filter == CategoryFilter.All || filter == CategoryFilter.Starred ||
+        filter is CategoryFilter.MdbxDatabase || filter is CategoryFilter.MdbxFolderFilter
     return NativeTokenListUi(
         entries = entries,
         visible = sources.isNotEmpty() && sourceVisible,
@@ -121,7 +125,7 @@ internal fun LazyListScope.nativeTokenRows(state: NativeTokenListUi?) {
             PasswordEntry(
                 id = token.entryId.hashCode().toLong(), title = token.title,
                 website = "", username = listOf(typeLabel, token.collectionTitle).filter(String::isNotBlank).joinToString(" · "),
-                password = "", notes = "", appName = ""
+                password = "", notes = "", appName = "", isFavorite = token.isFavorite
             )
         }
         Box(Modifier.testTag("native-token:${token.databaseId}:${token.entryId}")) {

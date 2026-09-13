@@ -127,6 +127,7 @@ class Mdbx2Repository(
             val collections = vault.listAllProjects()
             val byId = collections.associateBy { it.collectionId }
             collections.flatMap { collection ->
+                val favorites by lazy { NativeApiTokenFavorites.entryIds(vault, collection.collectionId) }
                 val ancestors = linkedSetOf<String>()
                 var parentId = collection.groupId
                 while (parentId != null && parentId != collection.collectionId && ancestors.add(parentId)) {
@@ -138,7 +139,8 @@ class Mdbx2Repository(
                     do {
                         val page = vault.listObjectSummaries(collection.collectionId, ApiTokenPayload.NATIVE_TYPE, 100u, cursor)
                         page.items.filterNot { it.deleted }.forEach { entry ->
-                            add(NativeApiTokenSummary(databaseId, entry.objectId, collection.collectionId, categoryTitle, entry.title, ancestors.toList()))
+                            add(NativeApiTokenSummary(databaseId, entry.objectId, collection.collectionId, categoryTitle,
+                                entry.title, ancestors.toList(), isFavorite = entry.objectId in favorites))
                         }
                         cursor = page.nextCursor
                     } while (cursor != null)
@@ -152,7 +154,8 @@ class Mdbx2Repository(
                 uniffi.mdbx_ffi.MdbxObjectDisclosureLimits(ApiTokenPayload.MAX_BYTES.toULong())).`object`
                 ?: error("Native token disclosure was not authorized")
             check(!entry.deleted && entry.objectTypeId == ApiTokenPayload.NATIVE_TYPE && entry.collectionId == summary.collectionId)
-            NativeApiToken(summary.copy(title = entry.title), entry.payloadJson)
+            NativeApiToken(summary.copy(title = entry.title,
+                isFavorite = NativeApiTokenFavorites.assignments(vault, entry.objectId, entry.collectionId).isNotEmpty()), entry.payloadJson)
         }
 
     /** Detail/editor navigation reads one object, not every token in the database. */
@@ -170,7 +173,8 @@ class Mdbx2Repository(
             val path = (ancestors.toList().asReversed().mapNotNull { collections[it]?.title } +
                 listOfNotNull(collection?.title)).joinToString(" / ")
             NativeApiToken(NativeApiTokenSummary(databaseId, entry.objectId, entry.collectionId,
-                path, entry.title, ancestors.toList()), entry.payloadJson)
+                path, entry.title, ancestors.toList(),
+                isFavorite = NativeApiTokenFavorites.assignments(vault, entry.objectId, entry.collectionId).isNotEmpty()), entry.payloadJson)
         }
 
     suspend fun saveNativeApiToken(
@@ -178,7 +182,8 @@ class Mdbx2Repository(
         original: NativeApiToken?,
         title: String,
         payload: String,
-        collectionId: String? = null
+        collectionId: String? = null,
+        isFavorite: Boolean = original?.summary?.isFavorite ?: false
     ): NativeApiTokenSummary {
         require(ApiTokenPayload.isValidName(title))
         require(ApiTokenPayload.isValid(payload)) { "Invalid native token payload" }
@@ -196,6 +201,9 @@ class Mdbx2Repository(
             val collection = collections.firstOrNull { it.collectionId == targetId }
             check(collection != null || targetId == rootId) { "Native token collection is no longer available" }
             val entryId = original?.summary?.entryId ?: UUID.randomUUID().toString()
+            val favoriteAssignments = original?.let {
+                NativeApiTokenFavorites.assignments(vault, entryId, it.summary.collectionId)
+            }.orEmpty()
             val command = if (original == null) {
                 MdbxWriteCommand.CreateEntry(entryId, targetId, ApiTokenPayload.NATIVE_TYPE, title, payload)
             } else {
@@ -203,7 +211,8 @@ class Mdbx2Repository(
                     uniffi.mdbx_ffi.MdbxObjectDisclosureLimits(ApiTokenPayload.MAX_BYTES.toULong())).`object`
                     ?: error("Native token disclosure was not authorized")
                 check(!current.deleted && current.objectTypeId == ApiTokenPayload.NATIVE_TYPE && current.collectionId == original.summary.collectionId)
-                check(current.payloadJson == original.payload && current.title == original.summary.title) {
+                check(current.payloadJson == original.payload && current.title == original.summary.title &&
+                    favoriteAssignments.isNotEmpty() == original.summary.isFavorite) {
                     "Native token changed; reload before saving"
                 }
                 MdbxWriteCommand.UpdateEntry(entryId, targetId, ApiTokenPayload.NATIVE_TYPE, title, payload)
@@ -211,13 +220,21 @@ class Mdbx2Repository(
             val commands = buildList {
                 // CLI-created vaults need not contain Android's conventional root collection.
                 if (collection == null) add(MdbxWriteCommand.CreateProject(rootId, "Monica"))
-                if (original != null && original.summary.collectionId != targetId) {
+                val moving = original != null && original.summary.collectionId != targetId
+                // Labels belong to one collection; remove old assignments before moving.
+                if (!isFavorite || moving) favoriteAssignments.forEach {
+                    add(MdbxWriteCommand.RemoveObjectLabelAssignment(it.assignmentId))
+                }
+                if (original != null && moving) {
                     add(MdbxWriteCommand.MoveEntry(entryId, original.summary.collectionId, targetId))
                 }
                 add(command)
+                if (isFavorite && (favoriteAssignments.isEmpty() || moving)) {
+                    addAll(NativeApiTokenFavorites.addCommands(vault, entryId, targetId, collection != null))
+                }
             }
             vault.executeWriteOperation(UUID.randomUUID().toString(), "monica-save-api-token", commands)
-            NativeApiTokenSummary(databaseId, entryId, targetId, collection?.title ?: "Monica", title)
+            NativeApiTokenSummary(databaseId, entryId, targetId, collection?.title ?: "Monica", title, isFavorite = isFavorite)
         }
         markPendingUpload(databaseId)
         return saved

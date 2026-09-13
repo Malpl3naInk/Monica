@@ -105,9 +105,24 @@ fun AddEditApiTokenScreen(
             navigationIcon = { IconButton(onClick = { leave() }) {
                 Icon(MonicaIcons.Navigation.back, stringResource(R.string.back))
             } },
-            actions = { EntryTypeChip(current = EntryTypeChipOption.API_TOKEN,
-                enabled = !editing && !state.saving,
-                onSelect = { if (it != EntryTypeChipOption.API_TOKEN) leave(it) }) },
+            actions = {
+                EntryTypeChip(current = EntryTypeChipOption.API_TOKEN,
+                    enabled = !editing && !state.saving,
+                    onSelect = { if (it != EntryTypeChipOption.API_TOKEN) leave(it) })
+                Spacer(Modifier.width(4.dp))
+                IconToggleButton(
+                    checked = state.isFavorite,
+                    onCheckedChange = model::setFavorite,
+                    enabled = supported && !state.loading && !state.saving && (!editing || state.original != null),
+                    modifier = Modifier.testTag("api_token_favorite"),
+                ) {
+                    Icon(
+                        if (state.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                        contentDescription = stringResource(if (state.isFavorite) R.string.remove_from_favorites else R.string.add_to_favorites),
+                        tint = if (state.isFavorite) MaterialTheme.colorScheme.primary else LocalContentColor.current,
+                    )
+                }
+            },
             colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent,
                 scrolledContainerColor = Color.Transparent),
         ) },

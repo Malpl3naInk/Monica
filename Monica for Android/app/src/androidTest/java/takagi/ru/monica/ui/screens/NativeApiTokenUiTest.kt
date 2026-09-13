@@ -60,7 +60,7 @@ class NativeApiTokenUiTest {
             val databaseId = fixture.createDatabase("CLI integration demo")
             val folder = fixture.repository.createFolder(databaseId, "Development", null)
             val payload = """{"schema":"monica.gateway.credential.v1","provider":"gitlab","api_base":"https://gitlab.example.test/api/v4/","note":"Original CLI context","token":"synthetic-ui-token-123456","extension":{"purpose":"demo"}}"""
-            val summary = fixture.repository.saveNativeApiToken(databaseId, null, "gitlab-work", payload, folder.folderId)
+            val summary = fixture.repository.saveNativeApiToken(databaseId, null, "gitlab-work", payload, folder.folderId, isFavorite = true)
             val returnCounts = mutableListOf<Int>()
             var recordingReturn = false
             compose.setContent { if (visible.value) MonicaTheme(darkTheme = true) {
@@ -90,6 +90,10 @@ class NativeApiTokenUiTest {
             screenshot("native-api-token-detail.png")
             compose.onNodeWithTag("api_token_edit").performClick()
             awaitTag("api_token_note")
+            compose.onNodeWithTag("api_token_favorite").assertIsDisplayed().assertIsOn().performClick().assertIsOff()
+            compose.onNodeWithContentDescription(context.getString(R.string.back)).performClick()
+            compose.onNodeWithText(context.getString(R.string.api_token_discard_message)).assertIsDisplayed()
+            compose.onNodeWithText(context.getString(R.string.cancel)).performClick()
             compose.onNodeWithTag("api_token_note").performScrollTo().performClick()
                 .performTextReplacement("Edited through Android")
             compose.onNodeWithTag("api_token_save").assertIsEnabled().assertIsDisplayed().performClick()
@@ -97,6 +101,7 @@ class NativeApiTokenUiTest {
             val updated = fixture.repository.readNativeApiToken(databaseId, summary.entryId)
             assertEquals(summary.entryId, updated.summary.entryId)
             assertEquals(folder.folderId, updated.summary.collectionId)
+            assertFalse(updated.summary.isFavorite)
             val fields = ApiTokenPayload.decode(updated.payload)
             assertEquals("Edited through Android", ApiTokenPayload.text(fields, "note"))
             assertNotNull(fields?.get("extension"))
@@ -133,6 +138,7 @@ class NativeApiTokenUiTest {
             } }
             awaitText("CLI Personal", substring = true)
             compose.onNodeWithTag("api_token_save").assertIsNotEnabled()
+            compose.onNodeWithTag("api_token_favorite").assertIsDisplayed().assertIsOff().performClick().assertIsOn()
             compose.onNodeWithText("CLI Personal", substring = true).performClick()
             awaitText("CLI Work")
             compose.onNodeWithText("CLI Work").performClick()
@@ -146,6 +152,7 @@ class NativeApiTokenUiTest {
             compose.onNodeWithTag("api_token_api_base").assertTextContains("https://api.github.com/")
             compose.onNodeWithTag("api_token_secret").performScrollTo().performClick().performTextReplacement(secret)
             compose.onNodeWithTag("api_token_save").assertIsEnabled().assertIsDisplayed()
+            compose.onNodeWithTag("api_token_favorite").assertIsOn()
             compose.runOnIdle {
                 assertFalse("Secret draft must not enter an Android saved-state Bundle",
                     registry.performSave().toString().contains(secret))
@@ -156,8 +163,11 @@ class NativeApiTokenUiTest {
             val created = saved.get()!!
             assertEquals(secondId, created.databaseId)
             assertEquals(folder.folderId, created.collectionId)
+            assertTrue(created.isFavorite)
             assertTrue(fixture.repository.listNativeApiTokens(firstId).isEmpty())
             val stored = fixture.repository.readNativeApiToken(secondId, created.entryId)
+            assertTrue(stored.summary.isFavorite)
+            assertTrue(fixture.repository.listNativeApiTokens(secondId).single().isFavorite)
             assertEquals("github", ApiTokenPayload.text(ApiTokenPayload.decode(stored.payload), "provider"))
             assertEquals(secret, ApiTokenPayload.text(ApiTokenPayload.decode(stored.payload), "token"))
         } finally {

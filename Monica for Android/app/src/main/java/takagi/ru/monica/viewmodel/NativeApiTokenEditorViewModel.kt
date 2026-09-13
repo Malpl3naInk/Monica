@@ -20,6 +20,7 @@ internal data class NativeApiTokenEditorState(
     val original: NativeApiToken? = null,
     val title: String = "",
     val payload: String = ApiTokenPayload.empty().toString(),
+    val isFavorite: Boolean = false,
     val loading: Boolean = false,
     val saving: Boolean = false,
     val failed: Boolean = false,
@@ -66,7 +67,8 @@ internal class NativeApiTokenEditorViewModel(
             try {
                 val original = databases.readNativeApiToken(db, id)
                 mutableState.value = NativeApiTokenEditorState(databaseId = db, folderId = original.summary.collectionId,
-                    original = original, title = original.summary.title, payload = original.payload)
+                    original = original, title = original.summary.title, payload = original.payload,
+                    isFavorite = original.summary.isFavorite)
             } catch (cancelled: CancellationException) { throw cancelled
             } catch (_: Exception) { mutableState.update { it.copy(failed = true) }
             } finally { mutableState.update { it.copy(loading = false) } }
@@ -81,6 +83,12 @@ internal class NativeApiTokenEditorViewModel(
 
     fun changeTitle(title: String) {
         if (!state.value.saving) mutableState.update { it.copy(title = title, changed = true, failed = false) }
+    }
+
+    fun setFavorite(isFavorite: Boolean) {
+        if (state.value.saving || state.value.loading ||
+            (entryId != null && state.value.original?.payload?.let(ApiTokenPayload::decode) == null)) return
+        mutableState.update { it.copy(isFavorite = isFavorite, changed = true, failed = false) }
     }
 
     fun changeField(field: String, value: String) {
@@ -112,7 +120,8 @@ internal class NativeApiTokenEditorViewModel(
             try {
                 val saved = databases.saveNativeApiToken(snapshot.databaseId!!, snapshot.original,
                     snapshot.title.trim(), snapshot.payload,
-                    if (snapshot.original != null) snapshot.folderId.orEmpty() else snapshot.folderId)
+                    if (snapshot.original != null) snapshot.folderId.orEmpty() else snapshot.folderId,
+                    isFavorite = snapshot.isFavorite)
                 mutableState.update { it.copy(saved = saved, changed = false) }
             } catch (cancelled: CancellationException) { throw cancelled
             } catch (_: Exception) { mutableState.update { it.copy(failed = true) }
