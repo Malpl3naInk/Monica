@@ -6,6 +6,8 @@ on:
     paths:
       - '.github/workflows/MDBX3-Android-Runtime-Smoke.yml'
       - 'Monica for Android/app/src/androidTest/**'
+      - 'Monica for Android/app/src/main/java/takagi/ru/monica/ui/totp/**'
+      - 'Monica for Android/app/src/main/java/takagi/ru/monica/ui/components/TotpCodeCard.kt'
       - 'Monica for Android/mdbx-engine/**'
       - 'Monica for Android/rust-jni/**'
       - 'Monica for Android/rust-crypto/**'
@@ -203,6 +205,8 @@ jobs:
           printf 'Using instrumentation: %s\n' "$instrumentation"
 
           test_classes=(
+            takagi.ru.monica.VerifySmokeTest
+            takagi.ru.monica.ui.TotpListInteractionTest
             takagi.ru.monica.repository.Mdbx2CreationInstrumentedTest
             takagi.ru.monica.repository.Mdbx2FeatureParityInstrumentedTest
             takagi.ru.monica.repository.Mdbx2HardeningInstrumentedTest
@@ -247,7 +251,7 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-      - name: Run deterministic MDBX3 and Rust KDF instrumentation suite
+      - name: Run native and TOTP runtime regression tests
         uses: ReactiveCircus/android-emulator-runner@v2
         with:
           api-level: 35
