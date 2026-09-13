@@ -115,6 +115,7 @@ enum class MdbxManagerInitialPage {
 @Composable
 fun MdbxManagerScreen(
     viewModel: MdbxViewModel,
+    onOpenApiTokens: (Long?) -> Unit = {},
     initialDatabaseId: Long? = null,
     initialPage: MdbxManagerInitialPage = MdbxManagerInitialPage.HOME,
     onNavigateBack: () -> Unit,
@@ -351,6 +352,9 @@ fun MdbxManagerScreen(
                     }
                 },
                 actions = {
+                    TextButton(onClick = { onOpenApiTokens((page as? MdbxManagerPage.Detail)?.databaseId) }) {
+                        Text(stringResource(R.string.entry_type_api_token))
+                    }
                     if (snapshotPage != null) {
                         IconButton(onClick = { snapshotCompareMode = !snapshotCompareMode }) {
                             Icon(

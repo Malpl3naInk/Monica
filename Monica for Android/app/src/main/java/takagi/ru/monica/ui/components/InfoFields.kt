@@ -113,7 +113,8 @@ fun PasswordField(
     visible: Boolean, // External control state
     onToggleVisibility: () -> Unit,
     context: Context,
-    onCreateSend: ((title: String, text: String) -> Unit)? = null
+    onCreateSend: ((title: String, text: String) -> Unit)? = null,
+    maskedValue: String = "•".repeat(value.length),
 ) {
     val actionMenuState = rememberPasswordFieldActionMenuState()
 
@@ -140,7 +141,7 @@ fun PasswordField(
                     state = actionMenuState,
                     label = label,
                     value = value,
-                    displayValue = if (visible) value else "•".repeat(value.length),
+                    displayValue = if (visible) value else maskedValue,
                     context = context,
                     includeVisibilityToggle = true,
                     isVisible = visible,
@@ -148,7 +149,7 @@ fun PasswordField(
                     onCreateSend = onCreateSend
                 )
                 Text(
-                    text = if (visible) value else "•".repeat(value.length),
+                    text = if (visible) value else maskedValue,
                     style = if (visible) MaterialTheme.typography.bodyLarge else MaterialTheme.typography.bodyLarge.copy(
                         fontFamily = FontFamily.Monospace,
                         letterSpacing = 3.sp

@@ -108,6 +108,7 @@ class MonicaAutofillServiceNg : AutofillService() {
     private val screenOffReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent?.action == Intent.ACTION_SCREEN_OFF) {
+                matcher.clear()
                 AutofillSessionGrants.clear()
                 AutofillUnlockRequests.clear()
                 AutofillLogger.i("AUTH", "Temporary autofill grant cleared on screen off")
@@ -138,11 +139,20 @@ class MonicaAutofillServiceNg : AutofillService() {
             runCatching { autofillPreferences.ensureBitwardenV2EngineMode() }
                 .onFailure { AutofillLogger.w("AF", "Failed to enforce V2 engine mode: ${it.message}") }
         }
+        scope.launch(Dispatchers.Default) {
+            takagi.ru.monica.security.SessionManager.isUnlocked.collect { unlocked ->
+                if (!unlocked) {
+                    matcher.clear()
+                    recentFillSuggestions = null
+                }
+            }
+        }
 
         AutofillLogger.i("AF", "MonicaAutofillServiceNg created")
     }
 
     override fun onDestroy() {
+        matcher.clear()
         AutofillSessionGrants.clear()
         if (screenOffReceiverRegistered) {
             runCatching { unregisterReceiver(screenOffReceiver) }
@@ -1445,6 +1455,7 @@ class MonicaAutofillServiceNg : AutofillService() {
     }
 
     override fun onDisconnected() {
+        matcher.clear()
         AutofillSessionGrants.clear()
         passwordMemoryByPackage.clear()
         super.onDisconnected()

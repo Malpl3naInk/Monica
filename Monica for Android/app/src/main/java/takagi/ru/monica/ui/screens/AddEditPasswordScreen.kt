@@ -268,6 +268,7 @@ fun AddEditPasswordScreen(
     onConsumePendingQrResult: () -> Unit = {},
     onScanAuthenticatorQrCode: (() -> Unit)? = null,
     onSaveCompleted: ((Long?) -> Unit)? = null,
+    onSwitchToApiToken: ((StorageTarget.Mdbx?) -> Unit)? = null,
     onSwitchToWifi: ((Long?) -> Unit)? = null,
     onSwitchToSshKey: ((Long?) -> Unit)? = null,
     onNavigateBack: () -> Unit
@@ -2622,6 +2623,7 @@ fun AddEditPasswordScreen(
                     actions = {
                         if (onSwitchToWifi != null) {
                             EntryTypeChip(
+                                showApiToken = !isEditing && onSwitchToApiToken != null,
                                 current = if (isBarcodeMode) {
                                     EntryTypeChipOption.BARCODE
                                 } else {
@@ -2629,6 +2631,8 @@ fun AddEditPasswordScreen(
                                 },
                                 onSelect = { option ->
                                     when (option) {
+                                        EntryTypeChipOption.API_TOKEN -> onSwitchToApiToken?.invoke(
+                                            selectedStorageTargets.filterIsInstance<StorageTarget.Mdbx>().firstOrNull())
                                         EntryTypeChipOption.WIFI ->
                                             onSwitchToWifi(if (isEditing) passwordId else null)
                                         EntryTypeChipOption.SSH_KEY ->
@@ -5453,27 +5457,7 @@ private fun InfoCard(
     title: String,
     content: @Composable () -> Unit
 ) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
-            )
-            content()
-        }
-    }
+    takagi.ru.monica.ui.components.PasswordEditorSection(title, content)
 }
 
 /**
@@ -6230,4 +6214,3 @@ private fun encodePasswordWebsiteUrls(urls: List<String>): String {
 private fun normalizeWebsiteForSiblingGroupKey(value: String): String {
     return PasswordWebsiteCodec.normalizeForKey(value)
 }
-

@@ -113,6 +113,7 @@ fun AddEditWifiScreen(
     onConsumePendingQrResult: () -> Unit = {},
     onScanQrCode: (() -> Unit)? = null,
     onNavigateBack: () -> Unit,
+    onNavigateToApiToken: () -> Unit = {},
     onNavigateToPassword: () -> Unit,
     onNavigateToBarcode: () -> Unit = onNavigateToPassword,
     onNavigateToSshKey: (() -> Unit)? = null,
@@ -329,6 +330,7 @@ fun AddEditWifiScreen(
                             current = EntryTypeChipOption.WIFI,
                             onSelect = { option ->
                                 when (option) {
+                                    EntryTypeChipOption.API_TOKEN -> onNavigateToApiToken()
                                     EntryTypeChipOption.PASSWORD -> onNavigateToPassword()
                                     EntryTypeChipOption.SSH_KEY -> onNavigateToSshKey?.invoke()
                                     EntryTypeChipOption.WIFI -> Unit

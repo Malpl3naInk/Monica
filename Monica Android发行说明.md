@@ -4,6 +4,13 @@
 
 ### 简要
 
+- 修复 Bitwarden 回收站无法清空的问题，删除失败时显示具体原因。
+
+- 改善 API 令牌详情页的打开速度，减少加载等待。
+
+- API 令牌融入密码库列表，支持滑动、多选和堆叠；服务商、自定义字段和备注均可编辑。
+
+- API 令牌支持收藏，可在添加或编辑时设置，并通过密码库收藏筛选查找。
 - 新增完整法语界面，覆盖设置、初始化向导、密码库概览、MDBX、附件和 Bitwarden 等模块，保留按模块组织的语言资源。
 - 新增默认开启、可关闭的密码库概览，支持自定义模块与数据库筛选；概览内独立搜索复用公共顶栏动画和 Rust 检索索引。
 - Monica Plus 的固定金额、自由赞赏二维码及支持作者页共用图片查看器，支持全屏预览、双指缩放和保存原图。
@@ -27,6 +34,13 @@
 
 ### 详细
 
+- 修正 Bitwarden 和 Vaultwarden 的软删除、永久删除接口：普通删除保留可恢复的远端回收站条目，清空时才永久删除。删除失败的条目会保留，单项、批量和清空操作均显示失败原因，并补充删除诊断日志。
+
+- 优化 API 令牌从列表进入详情页的数据读取，避免首次进入时重复刷新；编辑返回后仍会更新为最新内容。
+
+- API 令牌共用密码卡片、滑动操作、多选菜单、堆叠组件与编辑分组，支持自定义服务商、API 地址、受保护的自定义字段和多行备注。原生 MDBX 数据库之间可复制或移动令牌，保留备注、字段与收藏状态；已有 CLI 凭据内容和未知扩展继续保留，列表仅读取展示信息。
+
+- API 令牌添加和编辑页在类型选择器右侧增加收藏按钮，沿用其他条目的样式。收藏状态随 MDBX 数据库保存与同步，编辑时回显，移动分类后继续保留。
 - 概览可在页面调整中关闭；常用卡片以卡包卡叠展示，常用项目、收藏夹、类型、文件夹、数据库、归档和回收站按模块排列，支持显隐、排序和折叠。搜索跟随当前数据库范围，在详情返回后保留查询和结果；索引构建及检索在后台完成，大列表使用 Rust，小列表保留轻量回退。
 - Steam 与验证器共用 CameraX 相机预览和 ZXing 识别引擎，保留原有 13 种码制、反色二维码和小码识别；同一画面或图片中的多个码交由页面筛选。解码在后台完成，释放相机帧后在主线程处理结果，扫码会话支持中断恢复与前后台切换。
 - [@tommynok](https://github.com/tommynok) 的 [#131](https://github.com/Monica-Pass/Monica/pull/131) 补充俄语界面翻译并统一术语；预设安全问题现在随应用语言显示，保留原有问题编号和自定义问题。权限卡片、预设字段对话框及分段按钮为较长文字预留空间，减少文字挤压、异常换行和按钮高度不一致。
@@ -52,6 +66,13 @@
 
 ### Summary
 
+- Fix emptying the Bitwarden recycle bin and show the reason when deletion fails.
+
+- API token details open faster with less time spent loading.
+
+- API tokens join the password list with swipe actions, multi-selection and stacks, plus editable providers, custom fields and notes.
+
+- API tokens now support favorites, with a favorite action in the editor and filtering in the vault.
 - Added complete French localization across settings, setup, vault overview, MDBX, attachments, and Bitwarden, retaining modular language resources.
 - Added a customizable vault overview, enabled by default with an option to return to the classic list. Overview search stays on the page and reuses the shared animated toolbar and Rust search index.
 - Fixed-amount and free-donation QR codes in Monica Plus, along with the support page, share full-screen preview, pinch-to-zoom, and saving of the original image.
@@ -75,6 +96,13 @@
 
 ### Details
 
+- Correct the Bitwarden and Vaultwarden soft-delete and permanent-delete endpoints. Ordinary deletion retains a restorable remote trash item; emptying the bin permanently deletes it. Failed items remain available to retry, individual and batch deletion show the failure reason, and deletion diagnostics are recorded.
+
+- Improved data loading when opening API token details from a list and removed the duplicate refresh on first entry. Returning from the editor still refreshes the latest content.
+
+- API tokens share password cards, swipe actions, selection menus, stack components and editor sections. Providers and API addresses are editable, with protected custom fields and multiline notes. Copying or moving tokens between native MDBX databases retains fields, notes and favorites; existing CLI payloads and unknown extensions are preserved, and lists load display metadata only.
+
+- Add or remove an API token from favorites using the heart beside the type selector, matching other entry editors. Favorite status is saved and synced with the MDBX vault, restored when editing, and retained when moving between folders.
 - Disable the overview in Page adjustment to restore the classic list. Frequent wallet cards appear as a stack; frequent items, favorites, types, folders, databases, archive, and trash form modules that can be shown, hidden, reordered, and collapsed. Search follows the selected database and retains its query and results after returning from details. Index preparation and queries run in the background, using Rust for larger lists and a lightweight fallback for smaller ones.
 - Steam and the authenticator share CameraX preview and ZXing decoding, retaining all 13 barcode formats, inverted QR codes, and small-code recognition. Multiple candidates from the camera or gallery are filtered by the calling screen. Decoding stays in the background; frames are released before main-thread result delivery, with camera recovery and support for background/resume transitions.
 - [@tommynok](https://github.com/tommynok)'s [#131](https://github.com/Monica-Pass/Monica/pull/131) fills gaps in Russian translations and makes terminology consistent. Preset security questions now follow the app language while retaining existing question IDs and custom questions. Permission cards, preset-field dialogs, and segmented buttons give longer text enough room, reducing cramped labels, awkward wrapping, and mismatched button heights.

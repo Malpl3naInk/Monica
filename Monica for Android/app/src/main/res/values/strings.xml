@@ -3222,6 +3222,9 @@
     <string name="timeline_save_old_as_new">Save old data as new entry</string>
     <string name="timeline_empty_trash_title">Empty recycle bin</string>
     <string name="timeline_empty_trash_message">Permanently delete %1$d items in recycle bin? This cannot be undone.</string>
+    <string name="timeline_trash_delete_unknown_error">An unexpected error occurred. Please try again.</string>
+    <string name="bitwarden_trash_vault_missing">The Bitwarden vault could not be found.</string>
+    <string name="bitwarden_trash_delete_http_error">Bitwarden rejected the deletion (HTTP %1$d).</string>
     <string name="timeline_empty_action">Empty</string>
     <string name="timeline_exit_selection">Exit selection</string>
     <string name="timeline_deleted_items_count">%1$d deleted items</string>

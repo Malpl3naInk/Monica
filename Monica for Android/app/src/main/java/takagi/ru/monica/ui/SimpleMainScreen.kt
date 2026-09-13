@@ -736,6 +736,8 @@ fun SimpleMainScreen(
     onNavigateToNoteDetail: (Long) -> Unit = {},
     onNavigateToPasswordDetail: (Long) -> Unit = {},
     onNavigateToPasskeyDetail: (Long) -> Unit,
+    onCreateApiToken: (takagi.ru.monica.data.model.StorageTarget.Mdbx?) -> Unit = {},
+    onOpenApiTokens: (Long?, String?) -> Unit = { _, _ -> },
     onNavigateToMdbxCommitHistory: (Long) -> Unit = {},
     onNavigateToBankCardDetail: (Long) -> Unit, // Add this
     onNavigateToDocumentDetail: (Long) -> Unit, // Keep this
@@ -1980,6 +1982,7 @@ fun SimpleMainScreen(
             onClearWideDetail = clearVaultV2WideDetail,
             listContent = {
                 VaultV2Pane(
+                    onOpenApiTokens = onOpenApiTokens,
                     passwordViewModel = passwordViewModel,
                     totpViewModel = totpViewModel,
                     bankCardViewModel = bankCardViewModel,
@@ -2180,6 +2183,8 @@ fun SimpleMainScreen(
             floatingActionButton = {}, // FAB 移至外层 Overlay
             content = { paddingValues ->
                 CompactDraggableTabContent(
+                    onCreateApiToken = onCreateApiToken,
+                    onOpenApiTokens = onOpenApiTokens,
                     paddingValues = paddingValues,
                     currentTab = currentTab,
                     showStandaloneSettingsEntry = shouldHideBottomNavigation,
@@ -2403,6 +2408,8 @@ fun SimpleMainScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
+                    // Child IME padding must exclude the navigation space already applied here.
+                    .consumeWindowInsets(paddingValues)
             ) {
             AuthenticatorPasskeyAnimatedContent(currentTab = currentTab) { displayedTab ->
             when (displayedTab) {
@@ -2411,6 +2418,8 @@ fun SimpleMainScreen(
                 }
                 BottomNavItem.Passwords -> {
                     PasswordTabPane(
+                        onCreateApiToken = onCreateApiToken,
+                        onOpenApiTokens = onOpenApiTokens,
                         isCompactWidth = isCompactWidth,
                         wideListPaneWidth = wideListPaneWidth,
                         passwordViewModel = passwordViewModel,
@@ -2802,6 +2811,8 @@ fun SimpleMainScreen(
                     }
                     BottomNavItem.Passwords -> {
                         PasswordTabPane(
+                        onCreateApiToken = onCreateApiToken,
+                        onOpenApiTokens = onOpenApiTokens,
                             isCompactWidth = isCompactWidth,
                             wideListPaneWidth = wideListPaneWidth,
                             passwordViewModel = passwordViewModel,
