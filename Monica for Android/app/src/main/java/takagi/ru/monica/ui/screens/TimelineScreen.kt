@@ -2492,16 +2492,17 @@ private fun TrashContent(
         exitSelectionMode()
     }
     
+    fun showDeleteFailure(result: Result<Unit>) {
+        val failure = result.exceptionOrNull() ?: return
+        val reason = failure.localizedMessage?.takeIf { it.isNotBlank() }
+            ?: context.getString(R.string.timeline_trash_delete_unknown_error)
+        Toast.makeText(context, context.getString(R.string.delete_failed, reason), Toast.LENGTH_LONG).show()
+    }
+
     fun deleteSelectedItems() {
         val itemsToDelete = visibleItems.filter { isItemSelected(it) }
-        viewModel.permanentlyDeleteItems(itemsToDelete) { success ->
-            if (!success) {
-                Toast.makeText(
-                    context,
-                    context.getString(R.string.delete_failed, context.getString(R.string.timeline_permanent_delete_title)),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+        viewModel.permanentlyDeleteItems(itemsToDelete) { result ->
+            showDeleteFailure(result)
         }
         exitSelectionMode()
     }
@@ -2639,14 +2640,8 @@ private fun TrashContent(
             confirmButton = {
                 TextButton(
                     onClick = {
-                        viewModel.permanentlyDeleteItems(scopedItems) { success ->
-                            if (!success) {
-                                Toast.makeText(
-                                    context,
-                                    context.getString(R.string.delete_failed, context.getString(R.string.timeline_empty_trash_title)),
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
+                        viewModel.permanentlyDeleteItems(scopedItems) { result ->
+                            showDeleteFailure(result)
                         }
                         showEmptyTrashDialog = false
                     },
@@ -2672,7 +2667,10 @@ private fun TrashContent(
                 viewModel.restoreItem(item) { _ -> selectedItem = null }
             },
             onPermanentDelete = {
-                viewModel.permanentlyDeleteItem(item) { _ -> selectedItem = null }
+                viewModel.permanentlyDeleteItem(item) { result ->
+                    showDeleteFailure(result)
+                    selectedItem = null
+                }
             }
         )
     }

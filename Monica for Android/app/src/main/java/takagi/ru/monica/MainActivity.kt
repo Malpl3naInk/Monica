@@ -392,7 +392,13 @@ class MainActivity : BaseMonicaActivity() {
 
     override fun onStart() {
         super.onStart()
+        takagi.ru.monica.repository.Mdbx2NativeReadSessions.updateForeground(true)
         takagi.ru.monica.autofill_ng.protection.AutofillProtection.restoreIfEnabled(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        takagi.ru.monica.repository.Mdbx2NativeReadSessions.updateForeground(false)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

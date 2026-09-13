@@ -4,6 +4,10 @@
 
 ### 简要
 
+- 修复 Bitwarden 回收站无法清空的问题，删除失败时显示具体原因。
+
+- 改善 API 令牌详情页的打开速度，减少加载等待。
+
 - API 令牌融入密码库列表，支持滑动、多选和堆叠；服务商、自定义字段和备注均可编辑。
 
 - API 令牌支持收藏，可在添加或编辑时设置，并通过密码库收藏筛选查找。
@@ -29,6 +33,10 @@
 - 修复卡面裁剪预览底部漏图的问题。
 
 ### 详细
+
+- 修正 Bitwarden 和 Vaultwarden 的软删除、永久删除接口：普通删除保留可恢复的远端回收站条目，清空时才永久删除。删除失败的条目会保留，单项、批量和清空操作均显示失败原因，并补充删除诊断日志。
+
+- 优化 API 令牌从列表进入详情页的数据读取，避免首次进入时重复刷新；编辑返回后仍会更新为最新内容。
 
 - API 令牌共用密码卡片、滑动操作、多选菜单、堆叠组件与编辑分组，支持自定义服务商、API 地址、受保护的自定义字段和多行备注。原生 MDBX 数据库之间可复制或移动令牌，保留备注、字段与收藏状态；已有 CLI 凭据内容和未知扩展继续保留，列表仅读取展示信息。
 
@@ -58,6 +66,10 @@
 
 ### Summary
 
+- Fix emptying the Bitwarden recycle bin and show the reason when deletion fails.
+
+- API token details open faster with less time spent loading.
+
 - API tokens join the password list with swipe actions, multi-selection and stacks, plus editable providers, custom fields and notes.
 
 - API tokens now support favorites, with a favorite action in the editor and filtering in the vault.
@@ -83,6 +95,10 @@
 - Fixed image overflow below the card-face crop preview.
 
 ### Details
+
+- Correct the Bitwarden and Vaultwarden soft-delete and permanent-delete endpoints. Ordinary deletion retains a restorable remote trash item; emptying the bin permanently deletes it. Failed items remain available to retry, individual and batch deletion show the failure reason, and deletion diagnostics are recorded.
+
+- Improved data loading when opening API token details from a list and removed the duplicate refresh on first entry. Returning from the editor still refreshes the latest content.
 
 - API tokens share password cards, swipe actions, selection menus, stack components and editor sections. Providers and API addresses are editable, with protected custom fields and multiline notes. Copying or moving tokens between native MDBX databases retains fields, notes and favorites; existing CLI payloads and unknown extensions are preserved, and lists load display metadata only.
 

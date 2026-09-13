@@ -124,7 +124,7 @@ class Mdbx2Repository(
 
     /** Read native objects directly; no Room password projection or type conversion. */
     suspend fun listNativeApiTokens(databaseId: Long): List<NativeApiTokenSummary> =
-        sessions.withVault(databaseId) { _, vault ->
+        sessions.withNativeReadVault(databaseId) { _, vault ->
             val collections = vault.listAllProjects()
             val rootCollectionId = Mdbx2VaultSessionExecutor.rootProjectId(vault.info().vaultId)
             val byId = collections.associateBy { it.collectionId }
@@ -153,7 +153,7 @@ class Mdbx2Repository(
         }
 
     suspend fun readNativeApiToken(summary: NativeApiTokenSummary): NativeApiToken =
-        sessions.withVault(summary.databaseId) { _, vault ->
+        sessions.withNativeReadVault(summary.databaseId) { _, vault ->
             val entry = vault.revealObjectWithLimits(summary.entryId,
                 uniffi.mdbx_ffi.MdbxObjectDisclosureLimits(ApiTokenPayload.MAX_BYTES.toULong())).`object`
                 ?: error("Native token disclosure was not authorized")
@@ -165,7 +165,7 @@ class Mdbx2Repository(
 
     /** Detail/editor navigation reads one object, not every token in the database. */
     suspend fun readNativeApiToken(databaseId: Long, entryId: String): NativeApiToken =
-        sessions.withVault(databaseId) { _, vault ->
+        sessions.withNativeReadVault(databaseId) { _, vault ->
             val entry = vault.revealObjectWithLimits(entryId,
                 uniffi.mdbx_ffi.MdbxObjectDisclosureLimits(ApiTokenPayload.MAX_BYTES.toULong())).`object`
                 ?: error("Native token disclosure was not authorized")

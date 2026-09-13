@@ -56,8 +56,11 @@ fun ApiTokenDetailScreen(
     val owner = LocalLifecycleOwner.current
     DisposableEffect(owner, model) {
         val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME) model.refresh()
-            if (event == Lifecycle.Event.ON_STOP) fieldVisibilityEpoch++
+            if (event == Lifecycle.Event.ON_RESUME) model.onResume()
+            if (event == Lifecycle.Event.ON_STOP) {
+                model.onStop()
+                fieldVisibilityEpoch++
+            }
         }
         owner.lifecycle.addObserver(observer)
         onDispose { owner.lifecycle.removeObserver(observer) }

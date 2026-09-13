@@ -28,6 +28,7 @@ internal class NativeApiTokenDetailViewModel(
     private val mutableState = MutableStateFlow(NativeApiTokenDetailState())
     val state = mutableState.asStateFlow()
     private var loadJob: Job? = null
+    private var refreshOnResume = false
 
     init {
         refresh()
@@ -36,6 +37,17 @@ internal class NativeApiTokenDetailViewModel(
                 if (!unlocked) { loadJob?.cancel(); mutableState.value = NativeApiTokenDetailState() }
             }
         }
+    }
+
+    fun onResume() {
+        // init already starts the first read, before the navigation transition finishes.
+        if (refreshOnResume) refresh()
+        refreshOnResume = true
+    }
+
+    fun onStop() {
+        // The editor can be opened before this destination's first resume.
+        refreshOnResume = true
     }
 
     fun refresh() {
