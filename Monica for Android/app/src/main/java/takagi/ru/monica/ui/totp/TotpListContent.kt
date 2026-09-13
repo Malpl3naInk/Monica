@@ -237,8 +237,8 @@ fun TotpListContent(
     val context = androidx.compose.ui.platform.LocalContext.current
     val scope = rememberCoroutineScope()
     val lifecycleOwner = LocalLifecycleOwner.current
-    // 非键控状态统一收进 TotpListUiState：本方法曾因寄存器数过高触发 ART 校验失败
-    // （java.lang.VerifyError），压缩 remember 槽位数是压寄存器的关键。
+    // 集中未带 key 的状态，减小 Compose 生成的方法。
+    // 旧的超大方法曾在部分设备的 Debug 构建中触发 ART VerifyError。
     val ui = remember {
         TotpListUiState(
             context = context,
@@ -1036,9 +1036,7 @@ fun TotpListContent(
         }
     }
 
-    // 删除确认/QR码对话框整体下沉到 TotpDeleteConfirmDialogs：
-    // 本函数寄存器数曾达 278，超过 ART 校验器 255 上限，在部分设备上触发
-    // java.lang.VerifyError 闪退，因此必须把对话框组拆出本方法。
+    // 保持对话框组独立，避免将生成代码重新集中到同一个大方法中。
     TotpDeleteConfirmDialogs(
         itemToShowQrState = ui.itemToShowQr,
         pendingBoundSingleDeleteState = ui.pendingBoundSingleDelete,
@@ -1082,9 +1080,8 @@ fun TotpListContent(
 /**
  * TotpListContent 的非键控状态集合。
  *
- * 单独成类的原因：TotpListContent 的 remember 槽位过多会把方法寄存器数推过
- * ART 校验器可稳定处理的范围（真机上出现 java.lang.VerifyError 闪退），
- * 把这些状态打包进单个 remember 能显著压缩槽位数。
+ * 单独保存这些状态以减少主 Composable 的生成代码，规避旧构建的 VerifyError。
+ * 255 并非 ART 的方法寄存器硬上限；是否修复须通过设备上的类加载和界面测试验证。
  */
 private class TotpListUiState(
     context: android.content.Context,
@@ -1123,8 +1120,7 @@ private class TotpListUiState(
 /**
  * 验证器网格/列表面板。
  *
- * 从 TotpListContent 拆出：该函数寄存器数超过 ART 校验器 255 上限时会触发
- * java.lang.VerifyError，把两个布局分支下沉到独立 Composable 以降低寄存器占用。
+ * 将两个布局分支单独编译，减小 TotpListContent 的生成方法。
  */
 @Composable
 private fun TotpItemsPane(
@@ -1396,8 +1392,7 @@ private fun TotpItemsPane(
 /**
  * 删除确认与 QR 码对话框组。
  *
- * 从 TotpListContent 拆出：该函数寄存器数超过 ART 校验器 255 上限时会触发
- * java.lang.VerifyError，把对话框组下沉到独立 Composable 以降低寄存器占用。
+ * 将对话框单独编译，减小 TotpListContent 的生成方法。
  */
 @Composable
 private fun TotpDeleteConfirmDialogs(
