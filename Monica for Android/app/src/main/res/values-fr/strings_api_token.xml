@@ -33,5 +33,6 @@
     <string name="api_token_name">Nom du jeton</string>
     <string name="api_token_provider">Fournisseur</string>
     <string name="api_token_delete_confirmation">Supprimer ce jeton de la base ?</string>
-    <string name="api_token_validation">Vérifiez l’adresse HTTPS, le jeton (16–4096 caractères sans espace) et la note (1024 octets max.).</string>
+    <string name="api_token_validation">Indiquez le fournisseur et le jeton. L’adresse API est facultative et doit être une URL HTTP ou HTTPS.</string>
+    <string name="api_token_fields_limit">128 champs maximum. Notes et champs limités à 64 Ko au total.</string>
 </resources>

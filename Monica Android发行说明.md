@@ -4,6 +4,8 @@
 
 ### 简要
 
+- API 令牌融入密码库列表，支持滑动、多选和堆叠；服务商、自定义字段和备注均可编辑。
+
 - API 令牌支持收藏，可在添加或编辑时设置，并通过密码库收藏筛选查找。
 - 新增完整法语界面，覆盖设置、初始化向导、密码库概览、MDBX、附件和 Bitwarden 等模块，保留按模块组织的语言资源。
 - 新增默认开启、可关闭的密码库概览，支持自定义模块与数据库筛选；概览内独立搜索复用公共顶栏动画和 Rust 检索索引。
@@ -27,6 +29,8 @@
 - 修复卡面裁剪预览底部漏图的问题。
 
 ### 详细
+
+- API 令牌共用密码卡片、滑动操作、多选菜单、堆叠组件与编辑分组，支持自定义服务商、API 地址、受保护的自定义字段和多行备注。原生 MDBX 数据库之间可复制或移动令牌，保留备注、字段与收藏状态；已有 CLI 凭据内容和未知扩展继续保留，列表仅读取展示信息。
 
 - API 令牌添加和编辑页在类型选择器右侧增加收藏按钮，沿用其他条目的样式。收藏状态随 MDBX 数据库保存与同步，编辑时回显，移动分类后继续保留。
 - 概览可在页面调整中关闭；常用卡片以卡包卡叠展示，常用项目、收藏夹、类型、文件夹、数据库、归档和回收站按模块排列，支持显隐、排序和折叠。搜索跟随当前数据库范围，在详情返回后保留查询和结果；索引构建及检索在后台完成，大列表使用 Rust，小列表保留轻量回退。
@@ -54,6 +58,8 @@
 
 ### Summary
 
+- API tokens join the password list with swipe actions, multi-selection and stacks, plus editable providers, custom fields and notes.
+
 - API tokens now support favorites, with a favorite action in the editor and filtering in the vault.
 - Added complete French localization across settings, setup, vault overview, MDBX, attachments, and Bitwarden, retaining modular language resources.
 - Added a customizable vault overview, enabled by default with an option to return to the classic list. Overview search stays on the page and reuses the shared animated toolbar and Rust search index.
@@ -77,6 +83,8 @@
 - Fixed image overflow below the card-face crop preview.
 
 ### Details
+
+- API tokens share password cards, swipe actions, selection menus, stack components and editor sections. Providers and API addresses are editable, with protected custom fields and multiline notes. Copying or moving tokens between native MDBX databases retains fields, notes and favorites; existing CLI payloads and unknown extensions are preserved, and lists load display metadata only.
 
 - Add or remove an API token from favorites using the heart beside the type selector, matching other entry editors. Favorite status is saved and synced with the MDBX vault, restored when editing, and retained when moving between folders.
 - Disable the overview in Page adjustment to restore the classic list. Frequent wallet cards appear as a stack; frequent items, favorites, types, folders, databases, archive, and trash form modules that can be shown, hidden, reordered, and collapsed. Search follows the selected database and retains its query and results after returning from details. Index preparation and queries run in the background, using Rust for larger lists and a lightweight fallback for smaller ones.

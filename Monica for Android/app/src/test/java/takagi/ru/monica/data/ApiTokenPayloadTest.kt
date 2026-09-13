@@ -71,4 +71,29 @@ class ApiTokenPayloadTest {
             assertFalse(ApiTokenPayload.isValid(ApiTokenPayload.update(fixture, "note", it)))
         }
     }
+
+    @Test fun customProvidersAndNamesUseTheGeneralSchemaWithoutChangingTheSecretOrExtensions() {
+        var payload = ApiTokenPayload.update(fixture, "provider", "My custom service")
+        payload = ApiTokenPayload.update(payload, "api_base", "https://api.example.test/custom/v2/resources")
+        assertTrue(ApiTokenPayload.isValidForStorage(payload))
+        assertTrue(ApiTokenPayload.isValidStorageName("工作 API 令牌"))
+        val stored = ApiTokenPayload.forStorage(payload, "工作 API 令牌")
+        assertEquals(ApiTokenPayload.APP_SCHEMA, ApiTokenPayload.text(ApiTokenPayload.decode(stored), "schema"))
+        assertEquals(ApiTokenPayload.decode(fixture)?.get("token"), ApiTokenPayload.decode(stored)?.get("token"))
+        assertEquals(ApiTokenPayload.decode(fixture)?.get("extension"), ApiTokenPayload.decode(stored)?.get("extension"))
+        assertTrue(ApiTokenPayload.isValidForStorage(ApiTokenPayload.update(payload, "api_base", "")))
+        assertEquals(fixture, ApiTokenPayload.forStorage(fixture, "gitlab-work"))
+        assertFalse(ApiTokenPayload.isValidForStorage(ApiTokenPayload.update(payload, "api_base", "https://user:secret@example.test/")))
+    }
+
+    @Test fun displayIdentityIsStableAndIsolatedFromRoomPasswords() {
+        val first = NativeApiTokenSummary(1, "uuid", "folder", "Work", "same title", updatedAt = 1234L)
+        assertTrue(first.displayId < 0)
+        assertEquals(first.displayId, first.copy(title = "renamed", isFavorite = true).displayId)
+        assertNotEquals(first.displayId, first.copy(databaseId = 2).displayId)
+        val display = first.asPasswordCard("API token")
+        assertEquals(display, first.asPasswordCard("API token"))
+        assertEquals("", display.password)
+        assertEquals("API_TOKEN", display.loginType)
+    }
 }

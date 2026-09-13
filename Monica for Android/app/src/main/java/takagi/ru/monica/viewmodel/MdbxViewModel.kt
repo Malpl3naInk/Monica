@@ -207,12 +207,31 @@ class MdbxViewModel(
         nativeApiTokenList.invalidate(original.summary.databaseId)
     }
 
+    suspend fun deleteNativeApiToken(summary: NativeApiTokenSummary) {
+        deleteNativeApiToken(readNativeApiToken(summary.databaseId, summary.entryId))
+    }
+
+    suspend fun setNativeApiTokenFavorite(summary: NativeApiTokenSummary, favorite: Boolean) {
+        val current = readNativeApiToken(summary.databaseId, summary.entryId)
+        saveNativeApiToken(summary.databaseId, current, current.summary.title, current.payload,
+            current.summary.collectionId, isFavorite = favorite)
+    }
+
     suspend fun nativeApiTokenFolders(databaseId: Long) = mdbx2Repository.listFolders(databaseId)
+
+    suspend fun transferNativeApiToken(summary: NativeApiTokenSummary, targetDatabaseId: Long,
+        targetFolderId: String?, copy: Boolean): NativeApiTokenSummary = try {
+        mdbx2Repository.transferNativeApiToken(summary, targetDatabaseId, targetFolderId, copy)
+    } finally {
+        nativeApiTokenList.invalidate(summary.databaseId)
+        nativeApiTokenList.invalidate(targetDatabaseId)
+    }
 
     suspend fun saveNativeApiToken(
         databaseId: Long, original: NativeApiToken?, title: String, payload: String, collectionId: String?,
-        isFavorite: Boolean = original?.summary?.isFavorite ?: false
-    ): NativeApiTokenSummary = mdbx2Repository.saveNativeApiToken(databaseId, original, title, payload, collectionId, isFavorite)
+        isFavorite: Boolean = original?.summary?.isFavorite ?: false,
+        metadata: String = original?.extras?.payload ?: takagi.ru.monica.data.ApiTokenMetadata.empty()
+    ): NativeApiTokenSummary = mdbx2Repository.saveNativeApiToken(databaseId, original, title, payload, collectionId, isFavorite, metadata)
         .also { nativeApiTokenList.invalidate(databaseId) }
 
     private val vaultStore: MdbxRepository = MdbxRepositoryRouter(

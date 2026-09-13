@@ -2,7 +2,6 @@ package takagi.ru.monica.ui
 
 import takagi.ru.monica.ui.screens.NativeTokenListUi
 import takagi.ru.monica.ui.screens.NativeTokenFilterChip
-import takagi.ru.monica.ui.screens.nativeTokenRows
 import takagi.ru.monica.ui.screens.rememberNativeTokenList
 
 
@@ -888,9 +887,12 @@ fun PasswordListContent(
         includeTokens = !quickFilter2fa && !quickFilterNotes && !quickFilterPasskey &&
             !quickFilterBoundNote && !quickFilterAttachments && !quickFilterWifi && !quickFilterSshKey &&
             !quickFilterBarcode && !quickFilterLocalOnly && !quickFilterUncategorized &&
-            !quickFilterManualStackOnly && !quickFilterNeverStack && !quickFilterUnstacked &&
             aggregateConfig?.selectedContentTypes.orEmpty().isEmpty(),
         favoritesOnly = quickFilterFavorite)
+    val nativeTypeLabel = stringResource(R.string.entry_type_api_token)
+    val nativePasswordCards = remember(nativeTokens.entries, nativeTypeLabel) {
+        nativeTokens.entries.map { it.asPasswordCard(nativeTypeLabel) }
+    }
     val hasAnyBarcodeEntry = remember(passwordEntries) {
         passwordEntries.any { it.isBarcodeEntry() }
     }
@@ -1081,7 +1083,9 @@ fun PasswordListContent(
     val effectiveManualStackGroupByEntryId =
         if (shouldLoadManualStackMetadata) manualStackGroupByEntryId else emptyMap()
     val effectiveNoStackEntryIds =
-        if (shouldLoadManualStackMetadata) noStackEntryIds else emptySet()
+        (if (shouldLoadManualStackMetadata) noStackEntryIds else emptySet()) +
+            aggregateStackEntries.filter { it.stackOrder < 0 }
+                .mapNotNull { it.itemKey.removePrefix("password:").toLongOrNull() }
     val groupingConfig = remember(
         isLocalOnlyView,
         effectiveStackCardMode,
@@ -1103,6 +1107,8 @@ fun PasswordListContent(
     }
     
     val preStackFilteredPasswordEntries = remember(
+        nativePasswordCards,
+        nativeTokens.onlyTokens,
         passwordEntries,
         deletedItemIds,
         quickFoldersEnabledForCurrentFilter,
@@ -1126,7 +1132,7 @@ fun PasswordListContent(
         aggregateUiState.contentTypeFilterTypes
     ) {
         filterPreStackPasswordEntries(
-            passwordEntries = passwordEntries,
+            passwordEntries = if (nativeTokens.onlyTokens) emptyList() else passwordEntries,
             deletedItemIds = deletedItemIds,
             quickFoldersEnabledForCurrentFilter = quickFoldersEnabledForCurrentFilter,
             currentFilter = currentFilter,
@@ -1147,10 +1153,11 @@ fun PasswordListContent(
             effectiveNoStackEntryIds = effectiveNoStackEntryIds,
             hasActiveContentTypeFilter = aggregateUiState.hasActiveContentTypeFilter,
             contentTypeFilterTypes = aggregateUiState.contentTypeFilterTypes
-        )
+        ) + nativePasswordCards.filterNot { quickFilterNeverStack && it.id !in effectiveNoStackEntryIds }
     }
 
     val preStackFilteredAggregateItems = remember(
+        nativeTokens.onlyTokens,
         aggregateUiState.visibleItems,
         configuredQuickFilterItems,
         quickFilterFavorite,
@@ -1166,7 +1173,7 @@ fun PasswordListContent(
         effectiveStackCardMode
     ) {
         filterPasswordAggregateItemsByQuickFilters(
-            items = aggregateUiState.visibleItems,
+            items = if (nativeTokens.onlyTokens) emptyList() else aggregateUiState.visibleItems,
             currentFilter = currentFilter,
             configuredQuickFilterItems = configuredQuickFilterItems,
             quickFilterFavorite = quickFilterFavorite,
@@ -1494,7 +1501,8 @@ fun PasswordListContent(
         aggregateUiState.displayedContentTypes,
         groupedPasswordsForRender,
         effectiveVisibleAggregateItems,
-        effectiveGroupMode
+        effectiveGroupMode,
+        manualAggregateStackBuildResult.groups
     ) {
         buildPasswordPageListItems(
             selectedContentTypes = aggregateUiState.displayedContentTypes,
@@ -1576,7 +1584,7 @@ fun PasswordListContent(
             effectiveQuickFolderCardShortcuts.isNotEmpty() ||
             showPinnedQuickFolderPathBanner
     }
-    val hasVisibleListItems = (!nativeTokens.onlyTokens && passwordPageListItems.isNotEmpty()) || nativeTokens.entries.isNotEmpty()
+    val hasVisibleListItems = passwordPageListItems.isNotEmpty()
     val usesLazyColumn = remember(
         isPasswordPageListModelReady,
         hasVisibleListItems,
@@ -1595,6 +1603,7 @@ fun PasswordListContent(
         }
     }
     val shouldShowEmptyState = remember(
+        nativeTokens.loading,
         isPasswordPageListModelReady,
         usesLazyColumn,
         hasVisibleListItems,
@@ -1605,7 +1614,7 @@ fun PasswordListContent(
             usesLazyColumn &&
             !hasVisibleListItems &&
             searchQuery.isEmpty() &&
-            !shouldGateInitialPasswordFirstFrame
+            !shouldGateInitialPasswordFirstFrame && !nativeTokens.loading
     }
     var showEmptyStateWithHeaders by remember {
         mutableStateOf(false)
@@ -1668,6 +1677,8 @@ fun PasswordListContent(
     }
 
     val selectionHandlers = rememberPasswordListSelectionHandlers(
+        nativeEntries = nativeTokens.entries,
+        nativeViewModel = mdbxViewModel,
         context = context,
         coroutineScope = coroutineScope,
         viewModel = viewModel,
@@ -1703,8 +1714,29 @@ fun PasswordListContent(
         onSelectionModeChange = onSelectionModeChange
     )
 
+    val selectedNativeTokens = selectedPasswords.mapNotNull(nativeTokens.byDisplayId::get)
+    // Keep the transfer scope alive while moved native rows leave the current list.
+    if (mdbxViewModel != null) {
+        takagi.ru.monica.ui.screens.NativeTokenBatchMoveSheet(
+            visible = showMoveToCategoryDialog && selectedNativeTokens.isNotEmpty(), viewModel = mdbxViewModel, entries = selectedNativeTokens,
+            onDismiss = { showMoveToCategoryDialog = false },
+            onCompleted = { selectedItemKeys = emptySet(); isSelectionMode = false },
+            onTransferOther = { target, action ->
+                val result = executeMixedPasswordBatchMove(
+                    context = context, action = action, target = target,
+                    selectedEntries = passwordEntries.filter { it.id in selectedPasswords },
+                    aggregateSelection = aggregateUiState.resolveBatchAggregateSelection(selectedSupplementaryItems),
+                    categories = categories, keepassDatabases = keepassDatabases,
+                    localKeePassViewModel = localKeePassViewModel, securityManager = securityManager,
+                    viewModel = viewModel, aggregateViewModels = aggregateUiState.toPasswordBatchMoveViewModels(),
+                    bitwardenRepository = bitwardenRepository)
+                result.successCount to result.failedCount
+            },
+        )
+    }
+
     PasswordBatchMoveSheet(
-        visible = showMoveToCategoryDialog,
+        visible = showMoveToCategoryDialog && selectedNativeTokens.isEmpty(),
         initialSource = currentFilter.toUnifiedMoveInitialSource(),
         categories = categories,
         keepassDatabases = keepassDatabases,
@@ -1929,7 +1961,7 @@ fun PasswordListContent(
             onShowBatchDeleteDialogChange = { showBatchDeleteDialog = it },
             viewModel = viewModel,
             haptic = haptic,
-            onPasswordClick = onPasswordClick,
+            onPasswordClick = { entry -> if (!nativeTokens.openDisplayEntry(entry)) onPasswordClick(entry) },
             passwordPageListItemKeySet = passwordPageListItemKeySet,
             coroutineScope = coroutineScope,
             context = context,
@@ -2009,6 +2041,9 @@ fun PasswordListContent(
                 validItemKeys.size != passwordIds.size
             ) {
                 0
+            } else if (passwordIds.any { it in nativeTokens.byDisplayId } ||
+                aggregateStackEntries.any { it.itemKey in validItemKeys }) {
+                applySharedPasswordStackMode(dialogMode, validItemKeys.toList(), aggregateStackRepository, viewModel)
             } else {
                 val mode = when (dialogMode) {
                     ManualStackDialogMode.STACK -> PasswordViewModel.ManualStackMode.STACK
@@ -2030,7 +2065,8 @@ fun PasswordListContent(
             val selectedSupplementaryItemsSnapshot = selectedSupplementaryItems.toList()
             val selectedItemKeysSnapshot = selectedItemKeys.toList()
             val selectedPasswordEntries = passwordEntries.filter { it.id in selectedPasswordIdsSnapshot }
-            val totalToProcess = selectedPasswordEntries.size + selectedSupplementaryItemsSnapshot.size
+            val selectedNativeEntries = selectedPasswordIdsSnapshot.mapNotNull(nativeTokens.byDisplayId::get)
+            val totalToProcess = selectedPasswordEntries.size + selectedSupplementaryItemsSnapshot.size + selectedNativeEntries.size
             var processedCount = 0
             onProgress(processedCount, totalToProcess.coerceAtLeast(1))
             if (selectedItemKeysSnapshot.isNotEmpty()) {
@@ -2040,6 +2076,16 @@ fun PasswordListContent(
             }
             val deletedPasswordCount = viewModel.deletePasswordEntriesBatch(selectedPasswordEntries) { processed, _ ->
                 processedCount = processed.coerceIn(0, selectedPasswordEntries.size)
+                onProgress(processedCount, totalToProcess.coerceAtLeast(1))
+            }
+            var deletedNativeCount = 0
+            selectedNativeEntries.forEach { token ->
+                try {
+                    mdbxViewModel?.deleteNativeApiToken(token)
+                    deletedNativeCount++
+                } catch (cancelled: kotlinx.coroutines.CancellationException) { throw cancelled
+                } catch (_: Exception) { Toast.makeText(context, R.string.api_token_load_error, Toast.LENGTH_LONG).show() }
+                processedCount++
                 onProgress(processedCount, totalToProcess.coerceAtLeast(1))
             }
 
@@ -2083,7 +2129,7 @@ fun PasswordListContent(
                 onProgress(processedCount, totalToProcess.coerceAtLeast(1))
             }
 
-            deletedPasswordCount + selectedSupplementaryItemsSnapshot.size
+            deletedPasswordCount + deletedNativeCount + selectedSupplementaryItemsSnapshot.size
         },
         onBatchDeleteStarted = {
             isSelectionMode = false
@@ -2330,7 +2376,8 @@ private fun PasswordListMainPaneHost(
                 passwordEntries = passwordEntries,
                 aggregateConfig = aggregateConfig,
                 aggregateUiState = aggregateUiState,
-                decryptAuthenticatorKey = decryptAuthenticatorKey
+                decryptAuthenticatorKey = decryptAuthenticatorKey,
+                nativeTokens = nativeTokens
             )
         }
     )

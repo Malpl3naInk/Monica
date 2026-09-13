@@ -15,6 +15,8 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import takagi.ru.monica.data.ApiTokenPayload
+import takagi.ru.monica.data.ApiTokenMetadata
+import takagi.ru.monica.data.CustomFieldDraft
 import takagi.ru.monica.data.LocalMdbxDatabase
 import takagi.ru.monica.data.MdbxEngineType
 import takagi.ru.monica.data.MdbxSourceType
@@ -69,7 +71,9 @@ class NativeApiTokenSyncInstrumentedTest {
             val targetId = register(targetFile)
             targetSync.registerDownloadedBootstrap(targetId, path)
             val payload = """{"schema":"monica.gateway.credential.v1","provider":"gitlab","api_base":"https://synthetic.example.test/api/v4/","token":"synthetic-only-token","note":"sync test","future":{"scope":"api"}}"""
-            val created = source.saveNativeApiToken(sourceId, null, "synthetic-token", payload, isFavorite = true)
+            val metadata = ApiTokenMetadata.withCustomFields(ApiTokenMetadata.withNotes(ApiTokenMetadata.empty(), "Synced app note"),
+                listOf(CustomFieldDraft(-1, "Protected scope", "synthetic scope", true)))
+            val created = source.saveNativeApiToken(sourceId, null, "synthetic-token", payload, isFavorite = true, metadata = metadata)
             assertEquals(MdbxSyncStatus.PENDING_UPLOAD.name, dao.getDatabaseById(sourceId)?.lastSyncStatus)
             assertTrue(source.getPendingSyncCount(sourceId) > 0)
 
@@ -88,6 +92,7 @@ class NativeApiTokenSyncInstrumentedTest {
             assertTrue(received.summary.isFavorite)
             assertTrue(target.listNativeApiTokens(targetId).single().isFavorite)
             assertEquals(ApiTokenPayload.decode(payload), ApiTokenPayload.decode(received.payload))
+            assertEquals(ApiTokenMetadata.decode(metadata), ApiTokenMetadata.decode(checkNotNull(received.extras).payload))
             assertEquals(0, sourceSync.synchronize(sourceId, path, transport).uploadedSegments)
             assertEquals(0, source.getPendingSyncCount(sourceId))
         } finally {

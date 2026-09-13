@@ -28,6 +28,8 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import takagi.ru.monica.R
 import takagi.ru.monica.data.ApiTokenPayload
+import takagi.ru.monica.data.ApiTokenMetadata
+import takagi.ru.monica.ui.components.CustomFieldDisplayCard
 import takagi.ru.monica.ui.components.InfoFieldWithCopy
 import takagi.ru.monica.ui.components.PasswordField
 import takagi.ru.monica.ui.icons.MonicaIcons
@@ -50,16 +52,21 @@ fun ApiTokenDetailScreen(
     val context = LocalContext.current
     var confirmDelete by remember { mutableStateOf(false) }
     var advanced by remember { mutableStateOf(false) }
+    var fieldVisibilityEpoch by remember { mutableIntStateOf(0) }
     val owner = LocalLifecycleOwner.current
     DisposableEffect(owner, model) {
-        val observer = LifecycleEventObserver { _, event -> if (event == Lifecycle.Event.ON_RESUME) model.refresh() }
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) model.refresh()
+            if (event == Lifecycle.Event.ON_STOP) fieldVisibilityEpoch++
+        }
         owner.lifecycle.addObserver(observer)
         onDispose { owner.lifecycle.removeObserver(observer) }
     }
     LaunchedEffect(state.deleted) { if (state.deleted) onNavigateBack() }
     val current = state.token
     val fields = remember(current) { current?.payload?.let { runCatching { Json.parseToJsonElement(it) as? JsonObject }.getOrNull() } }
-    val supported = remember(current) { current?.payload?.let(ApiTokenPayload::decode) != null }
+    val supported = remember(current) { current?.payload?.let(ApiTokenPayload::decode) != null &&
+        (current?.extras?.payload?.let(ApiTokenMetadata::isValid) ?: true) }
     val provider = when (ApiTokenPayload.text(fields, "provider")) {
         "github" -> "GitHub"
         "gitlab" -> "GitLab"
@@ -108,10 +115,18 @@ fun ApiTokenDetailScreen(
                         ApiTokenSecretField(stringResource(R.string.entry_type_api_token), it)
                     }
                 }
-                ApiTokenPayload.text(fields, "note").takeIf(String::isNotBlank)?.let { note ->
+                ApiTokenMetadata.notes(current.extras?.payload ?: ApiTokenMetadata.empty(),
+                    ApiTokenPayload.text(fields, "note")).takeIf(String::isNotBlank)?.let { note ->
                     ApiTokenSection(stringResource(R.string.api_token_note), Icons.Default.Notes) {
                         InfoFieldWithCopy(stringResource(R.string.api_token_note), note, context = context)
                     }
+                }
+                val customFields = remember(current) {
+                    ApiTokenMetadata.customFields(current.extras?.payload ?: ApiTokenMetadata.empty())
+                        .mapIndexed { index, field -> field.toCustomField(0, index).copy(id = field.id) }
+                }
+                key(fieldVisibilityEpoch, current.summary.entryId) {
+                    CustomFieldDisplayCard(customFields)
                 }
                 ApiTokenSection(stringResource(R.string.api_token_storage), Icons.Default.Storage) {
                     InfoFieldWithCopy(stringResource(R.string.api_token_database),

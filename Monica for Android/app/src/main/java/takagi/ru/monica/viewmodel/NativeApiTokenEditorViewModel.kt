@@ -10,6 +10,8 @@ import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import takagi.ru.monica.data.ApiTokenPayload
+import takagi.ru.monica.data.ApiTokenMetadata
+import takagi.ru.monica.data.CustomFieldDraft
 import takagi.ru.monica.data.NativeApiToken
 import takagi.ru.monica.data.NativeApiTokenSummary
 import takagi.ru.monica.security.SessionManager
@@ -21,6 +23,7 @@ internal data class NativeApiTokenEditorState(
     val title: String = "",
     val payload: String = ApiTokenPayload.empty().toString(),
     val isFavorite: Boolean = false,
+    val metadata: String = ApiTokenMetadata.empty(),
     val loading: Boolean = false,
     val saving: Boolean = false,
     val failed: Boolean = false,
@@ -30,8 +33,10 @@ internal data class NativeApiTokenEditorState(
     override fun toString() = "NativeApiTokenEditorState(redacted)"
 
     val canSave: Boolean get() = !loading && !saving && databaseId != null &&
-        ApiTokenPayload.isValidName(title.trim()) && ApiTokenPayload.isValid(payload) &&
-        !title.contains(ApiTokenPayload.text(ApiTokenPayload.decode(payload), "token"))
+        ApiTokenPayload.isValidStorageName(title.trim()) && ApiTokenPayload.isValidForStorage(payload) &&
+        ApiTokenMetadata.isValid(metadata) && ApiTokenPayload.text(ApiTokenPayload.decode(payload), "token").let {
+            it.length < 16 || !title.contains(it)
+        }
 }
 
 /** Drafts live only in memory; neither the token nor JSON is put in SavedStateHandle. */
@@ -68,7 +73,7 @@ internal class NativeApiTokenEditorViewModel(
                 val original = databases.readNativeApiToken(db, id)
                 mutableState.value = NativeApiTokenEditorState(databaseId = db, folderId = original.summary.collectionId,
                     original = original, title = original.summary.title, payload = original.payload,
-                    isFavorite = original.summary.isFavorite)
+                    isFavorite = original.summary.isFavorite, metadata = original.extras?.payload ?: ApiTokenMetadata.empty())
             } catch (cancelled: CancellationException) { throw cancelled
             } catch (_: Exception) { mutableState.update { it.copy(failed = true) }
             } finally { mutableState.update { it.copy(loading = false) } }
@@ -97,12 +102,24 @@ internal class NativeApiTokenEditorViewModel(
         }
     }
 
+    fun changeNotes(notes: String) {
+        if (!state.value.saving) mutableState.update {
+            it.copy(metadata = ApiTokenMetadata.withNotes(it.metadata, notes), changed = true, failed = false)
+        }
+    }
+
+    fun changeCustomFields(fields: List<CustomFieldDraft>) {
+        if (!state.value.saving) mutableState.update {
+            it.copy(metadata = ApiTokenMetadata.withCustomFields(it.metadata, fields), changed = true, failed = false)
+        }
+    }
+
     fun selectProvider(provider: String) {
         val fields = ApiTokenPayload.decode(state.value.payload)
         val currentEndpoint = ApiTokenPayload.text(fields, "api_base")
         changeField("provider", provider)
         if (currentEndpoint.isBlank() || currentEndpoint in DEFAULT_ENDPOINTS.values) {
-            changeField("api_base", DEFAULT_ENDPOINTS.getValue(provider))
+            DEFAULT_ENDPOINTS[provider]?.let { changeField("api_base", it) }
         }
     }
 
@@ -121,7 +138,8 @@ internal class NativeApiTokenEditorViewModel(
                 val saved = databases.saveNativeApiToken(snapshot.databaseId!!, snapshot.original,
                     snapshot.title.trim(), snapshot.payload,
                     if (snapshot.original != null) snapshot.folderId.orEmpty() else snapshot.folderId,
-                    isFavorite = snapshot.isFavorite)
+                    isFavorite = snapshot.isFavorite, metadata = ApiTokenMetadata.withCustomFields(snapshot.metadata,
+                        ApiTokenMetadata.customFields(snapshot.metadata).filter { it.shouldPersist() }))
                 mutableState.update { it.copy(saved = saved, changed = false) }
             } catch (cancelled: CancellationException) { throw cancelled
             } catch (_: Exception) { mutableState.update { it.copy(failed = true) }

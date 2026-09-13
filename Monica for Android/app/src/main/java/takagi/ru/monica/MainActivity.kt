@@ -3267,6 +3267,7 @@ fun MonicaContent(
         ) { entry ->
             takagi.ru.monica.ui.screens.NativeApiTokensScreen(
                 viewModel = mdbxViewModel,
+                appSettings = settings,
                 initialDatabaseId = entry.arguments?.getLong("databaseId")?.takeIf { it > 0 },
                 onNavigateBack = { navController.popBackStack() },
                 onOpen = { id, tokenId -> navController.navigate(Screen.ApiTokenDetail.createRoute(id, tokenId)) },

@@ -26,6 +26,9 @@ import takagi.ru.monica.data.*
 import takagi.ru.monica.repository.Mdbx2Repository
 import takagi.ru.monica.security.SecurityManager
 import takagi.ru.monica.ui.theme.MonicaTheme
+import takagi.ru.monica.ui.vaultv2.VaultV2ItemCard
+import takagi.ru.monica.ui.vaultv2.buildVaultV2NativeTokenItems
+import takagi.ru.monica.ui.components.GroupedItemDefaults
 import takagi.ru.monica.viewmodel.CategoryFilter
 import takagi.ru.monica.viewmodel.MdbxViewModel
 import java.io.File
@@ -45,10 +48,15 @@ class NativeApiTokenUiTest {
                 { only = !only }, { db, id -> opened = db to id })
             MonicaTheme { LazyColumn {
                 item { NativeTokenFilterChip(state) }
-                nativeTokenRows(state)
+                item {
+                    val item = remember(summary) { buildVaultV2NativeTokenItems(listOf(summary), "API token").single() }
+                    VaultV2ItemCard(item, null, AppSettings(), remember { SecurityManager(context) }, false,
+                        GroupedItemDefaults.shape(0, 1),
+                        onClick = { state.openDisplayEntry(checkNotNull(item.passwordEntry)) }, onLongClick = {})
+                }
             } }
         }
-        compose.onNodeWithText(context.getString(R.string.entry_type_api_token)).performClick().assertIsSelected()
+        compose.onAllNodesWithText(context.getString(R.string.entry_type_api_token))[0].performClick().assertIsSelected()
         compose.onNodeWithText("gitlab-work").performClick()
         compose.runOnIdle { assertEquals(91L to "native-id", opened) }
     }
@@ -70,7 +78,8 @@ class NativeApiTokenUiTest {
                         val list = rememberNativeTokenList(fixture.model, CategoryFilter.MdbxDatabase(databaseId), "",
                             onlyTokens = true, onToggle = {}, onOpen = { _, _ -> nav.navigate("detail") })
                         SideEffect { if (recordingReturn) returnCounts += list.entries.size }
-                        LazyColumn { nativeTokenRows(list) }
+                        NativeApiTokensScreen(fixture.model, databaseId, onNavigateBack = {},
+                            onOpen = { _, _ -> nav.navigate("detail") }, onCreate = {}, onManageDatabases = {})
                     }
                     composable("detail") {
                         ApiTokenDetailScreen(fixture.model, databaseId, summary.entryId,
@@ -103,11 +112,12 @@ class NativeApiTokenUiTest {
             assertEquals(folder.folderId, updated.summary.collectionId)
             assertFalse(updated.summary.isFavorite)
             val fields = ApiTokenPayload.decode(updated.payload)
-            assertEquals("Edited through Android", ApiTokenPayload.text(fields, "note"))
+            assertEquals("Original CLI context", ApiTokenPayload.text(fields, "note"))
+            assertEquals("Edited through Android", ApiTokenMetadata.notes(checkNotNull(updated.extras).payload, ""))
             assertNotNull(fields?.get("extension"))
             assertTrue(fixture.room.passwordEntryDao().getByMdbxDatabaseIdSync(databaseId).isEmpty())
             compose.onNodeWithContentDescription(context.getString(R.string.back)).performClick()
-            awaitTag("native-token:" + databaseId + ":" + summary.entryId)
+            awaitTag("vault_item_password:${summary.displayId}")
             compose.runOnIdle {
                 assertTrue(returnCounts.isNotEmpty())
                 assertTrue("Returning must not replace the token row with an empty list", returnCounts.all { it == 1 })
@@ -150,12 +160,23 @@ class NativeApiTokenUiTest {
             compose.onNodeWithTag("api_token_provider").performClick()
             compose.onNodeWithText("GitHub").performClick()
             compose.onNodeWithTag("api_token_api_base").assertTextContains("https://api.github.com/")
+            compose.onNodeWithTag("api_token_name").performTextReplacement("工作 API 令牌")
+            compose.onNodeWithTag("api_token_provider").performTextReplacement("Example Forge")
+            compose.onNodeWithTag("api_token_api_base").performTextReplacement("https://example.test/custom/api/")
             compose.onNodeWithTag("api_token_secret").performScrollTo().performClick().performTextReplacement(secret)
+            compose.onNodeWithTag("api_token_note").performScrollTo().performTextReplacement("Deployment notes\nSecond line")
+            compose.onNodeWithText(context.getString(R.string.custom_field_add)).performScrollTo().performClick()
+            compose.onNode(hasSetTextAction() and hasText(context.getString(R.string.custom_field_name_placeholder)))
+                .performScrollTo().performTextReplacement("Scope")
+            compose.onNode(hasSetTextAction() and hasText(context.getString(R.string.custom_field_value)))
+                .performScrollTo().performTextReplacement("synthetic-protected-scope")
+            compose.onNodeWithText(context.getString(R.string.custom_field_sensitive)).performScrollTo().performClick()
             compose.onNodeWithTag("api_token_save").assertIsEnabled().assertIsDisplayed()
             compose.onNodeWithTag("api_token_favorite").assertIsOn()
             compose.runOnIdle {
                 assertFalse("Secret draft must not enter an Android saved-state Bundle",
                     registry.performSave().toString().contains(secret))
+                assertFalse(registry.performSave().toString().contains("synthetic-protected-scope"))
             }
             screenshot("native-api-token-editor.png")
             compose.onNodeWithTag("api_token_save").performClick()
@@ -168,8 +189,52 @@ class NativeApiTokenUiTest {
             val stored = fixture.repository.readNativeApiToken(secondId, created.entryId)
             assertTrue(stored.summary.isFavorite)
             assertTrue(fixture.repository.listNativeApiTokens(secondId).single().isFavorite)
-            assertEquals("github", ApiTokenPayload.text(ApiTokenPayload.decode(stored.payload), "provider"))
+            assertEquals("Example Forge", ApiTokenPayload.text(ApiTokenPayload.decode(stored.payload), "provider"))
+            assertEquals(ApiTokenPayload.APP_SCHEMA, ApiTokenPayload.text(ApiTokenPayload.decode(stored.payload), "schema"))
+            assertEquals("工作 API 令牌", stored.summary.title)
+            assertEquals("Deployment notes\nSecond line", ApiTokenMetadata.notes(checkNotNull(stored.extras).payload, ""))
+            val field = ApiTokenMetadata.customFields(checkNotNull(stored.extras).payload).single()
+            assertEquals("Scope", field.title)
+            assertEquals("synthetic-protected-scope", field.value)
+            assertTrue(field.isProtected)
             assertEquals(secret, ApiTokenPayload.text(ApiTokenPayload.decode(stored.payload), "token"))
+        } finally {
+            compose.runOnIdle { visible.value = false }
+            compose.waitForIdle()
+            fixture.close()
+        }
+    }
+
+    @Test fun passwordCardSwipesAndLongPressCreateAndOpenATokenStack() = runBlocking {
+        val fixture = Fixture()
+        val visible = mutableStateOf(true)
+        try {
+            val databaseId = fixture.createDatabase("Native interaction test")
+            val payload = """{"schema":"monica.api-token.v1","provider":"Custom service","api_base":"","token":"synthetic-interaction-token"}"""
+            val alpha = fixture.repository.saveNativeApiToken(databaseId, null, "Alpha", payload)
+            val beta = fixture.repository.saveNativeApiToken(databaseId, null, "Beta", payload)
+            compose.setContent { if (visible.value) MonicaTheme {
+                NativeApiTokensScreen(fixture.model, databaseId, onNavigateBack = {}, onOpen = { _, _ -> },
+                    onCreate = {}, onManageDatabases = {}, appSettings = AppSettings(passwordGroupMode = "none"))
+            } }
+            awaitTag("vault_item_password:${alpha.displayId}")
+            compose.onNodeWithTag("vault_item_password:${alpha.displayId}").performTouchInput { swipeRight() }
+            compose.onNodeWithContentDescription(context.getString(R.string.select_all)).assertIsDisplayed()
+            compose.onNodeWithTag("vault_item_password:${beta.displayId}").performTouchInput { longClick() }
+            compose.onNodeWithContentDescription(context.getString(R.string.batch_stack)).performClick()
+            compose.onNodeWithText(context.getString(R.string.batch_stack_confirm_title)).assertIsDisplayed()
+            compose.onNodeWithText(context.getString(R.string.confirm)).performClick()
+            compose.waitUntil(30_000) { runBlocking {
+                fixture.room.passwordPageAggregateStackDao().getAll().count {
+                    it.itemKey in setOf("password:${alpha.displayId}", "password:${beta.displayId}")
+                } == 2
+            } }
+            compose.waitForIdle()
+            compose.onNodeWithText("Alpha").performClick()
+            awaitText("Beta")
+            compose.onNodeWithText("Beta").performTouchInput { swipeLeft() }
+            compose.onNodeWithText(context.getString(R.string.cancel)).assertIsDisplayed().performClick()
+            assertEquals(2, fixture.repository.listNativeApiTokens(databaseId).size)
         } finally {
             compose.runOnIdle { visible.value = false }
             compose.waitForIdle()
@@ -214,7 +279,12 @@ class NativeApiTokenUiTest {
 
         suspend fun close() {
             model.viewModelScope.cancel()
-            owned.forEach { (id, file) -> dao.deleteDatabaseById(id); repository.deleteOwnedVaultFile(file) }
+            owned.forEach { (id, file) ->
+                takagi.ru.monica.repository.PasswordPageAggregateStackRepository(room.passwordPageAggregateStackDao())
+                    .clearManualStack(repository.listNativeApiTokens(id).map { "password:${it.displayId}" })
+                dao.deleteDatabaseById(id)
+                repository.deleteOwnedVaultFile(file)
+            }
         }
     }
 }

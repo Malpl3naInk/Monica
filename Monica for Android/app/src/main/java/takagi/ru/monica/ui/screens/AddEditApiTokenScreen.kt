@@ -31,6 +31,9 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import takagi.ru.monica.R
 import takagi.ru.monica.data.ApiTokenPayload
+import takagi.ru.monica.data.ApiTokenMetadata
+import takagi.ru.monica.ui.components.CustomFieldEditorSection
+import takagi.ru.monica.ui.components.PasswordEditorSection
 import takagi.ru.monica.data.MdbxEngineType
 import takagi.ru.monica.data.NativeApiTokenSummary
 import takagi.ru.monica.ui.components.EntryTypeChip
@@ -76,10 +79,11 @@ fun AddEditApiTokenScreen(
     var pendingType by remember { mutableStateOf<EntryTypeChipOption?>(null) }
     var revealToken by remember { mutableStateOf(false) }
     var showImport by remember { mutableStateOf(false) }
+    var fieldVisibilityEpoch by remember { mutableIntStateOf(0) }
     val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner, model) {
         val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_STOP) { revealToken = false; showImport = false }
+            if (event == Lifecycle.Event.ON_STOP) { revealToken = false; showImport = false; fieldVisibilityEpoch++ }
             if (event == Lifecycle.Event.ON_RESUME && editing && model.state.value.original == null) model.load()
         }
         lifecycleOwner.lifecycle.addObserver(observer)
@@ -92,10 +96,13 @@ fun AddEditApiTokenScreen(
         else if (type != null) onSwitchType(type, state.databaseId, state.folderId) else onNavigateBack()
     }
     BackHandler { leave() }
-    val fields = remember(state.payload) { ApiTokenPayload.decode(state.payload) }
+    val fields = remember(state.payload) { ApiTokenPayload.decodeDraft(state.payload) }
     val provider = ApiTokenPayload.text(fields, "provider")
     val token = ApiTokenPayload.text(fields, "token")
-    val supported = !editing || state.original?.payload?.let(ApiTokenPayload::decode) != null
+    val supported = (!editing || state.original?.payload?.let(ApiTokenPayload::decode) != null) &&
+        (state.original?.extras?.payload?.let(ApiTokenMetadata::isValid) ?: true)
+    val customFields = remember(state.metadata) { ApiTokenMetadata.customFields(state.metadata) }
+    val notes = remember(state.metadata, fields) { ApiTokenMetadata.notes(state.metadata, ApiTokenPayload.text(fields, "note")) }
     val canSave = supported && state.canSave && databases.any { it.id == state.databaseId } && (!editing || state.original != null)
     Scaffold(
         modifier = Modifier.imePadding(),
@@ -148,22 +155,22 @@ fun AddEditApiTokenScreen(
                 Text(stringResource(R.string.api_token_unknown_schema))
             }
             if (!state.loading && supported && (!editing || state.original != null)) {
-                ApiTokenSection(stringResource(R.string.api_token_credentials)) {
+                PasswordEditorSection(stringResource(R.string.api_token_credentials)) {
                     OutlinedTextField(state.title, model::changeTitle,
                         saveTextState = false,
                         modifier = Modifier.fillMaxWidth().testTag("api_token_name"),
                         enabled = !state.saving, singleLine = true,
                         label = { Text(stringResource(R.string.api_token_name)) },
                         leadingIcon = { Icon(Icons.Default.Label, null) },
-                        isError = state.title.isNotEmpty() && !ApiTokenPayload.isValidName(state.title.trim()),
-                        supportingText = { Text(stringResource(R.string.api_token_name_hint)) },
+                        isError = state.title.isNotEmpty() && !ApiTokenPayload.isValidStorageName(state.title.trim()),
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next), shape = RoundedCornerShape(12.dp))
                     var expanded by remember { mutableStateOf(false) }
                     ExposedDropdownMenuBox(expanded, { if (!state.saving) expanded = it }) {
                         val providerLabel = when (provider) { "github" -> "GitHub"; "gitlab" -> "GitLab"; else -> provider }
-                        OutlinedTextField(providerLabel, {}, readOnly = true,
+                        OutlinedTextField(providerLabel, { model.changeField("provider", it); expanded = false },
+                            enabled = !state.saving, singleLine = true,
                             saveTextState = false,
-                            modifier = Modifier.fillMaxWidth().menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
+                            modifier = Modifier.fillMaxWidth().menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable)
                                 .testTag("api_token_provider"),
                             label = { Text(stringResource(R.string.api_token_provider)) },
                             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
@@ -195,17 +202,28 @@ fun AddEditApiTokenScreen(
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Next),
                         visualTransformation = if (revealToken) VisualTransformation.None else PasswordVisualTransformation(),
                         shape = RoundedCornerShape(12.dp))
-                    if (token.isNotBlank() && !ApiTokenPayload.isValid(state.payload)) {
+                    if (token.isNotBlank() && !ApiTokenPayload.isValidForStorage(state.payload)) {
                         Text(stringResource(R.string.api_token_validation), style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.error)
                     }
                 }
-                ApiTokenSection(stringResource(R.string.api_token_note), Icons.Default.Notes) {
-                    OutlinedTextField(ApiTokenPayload.text(fields, "note"), { model.changeField("note", it) },
+                PasswordEditorSection(stringResource(R.string.notes)) {
+                    OutlinedTextField(notes, model::changeNotes,
                         saveTextState = false,
                         modifier = Modifier.fillMaxWidth().testTag("api_token_note"), enabled = !state.saving,
                         label = { Text(stringResource(R.string.api_token_note)) }, minLines = 2, maxLines = 5,
                         shape = RoundedCornerShape(12.dp))
+                }
+                key(fieldVisibilityEpoch) {
+                    PasswordEditorSection(stringResource(R.string.custom_fields)) {
+                        CustomFieldEditorSection(customFields,
+                            onFieldsChange = { if (!state.saving) model.changeCustomFields(it) },
+                            modifier = Modifier.testTag("api_token_custom_fields"), saveTextState = false)
+                        if (!ApiTokenMetadata.isValid(state.metadata)) {
+                            Text(stringResource(R.string.api_token_fields_limit), color = MaterialTheme.colorScheme.error,
+                                style = MaterialTheme.typography.bodySmall)
+                        }
+                    }
                 }
                 TextButton(onClick = { showImport = true }, enabled = !state.saving) {
                     Icon(Icons.Default.DataObject, null, Modifier.size(18.dp))

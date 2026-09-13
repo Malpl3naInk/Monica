@@ -2,7 +2,6 @@ package takagi.ru.monica.ui
 
 import takagi.ru.monica.ui.screens.NativeTokenListUi
 import takagi.ru.monica.ui.screens.NativeTokenFilterChip
-import takagi.ru.monica.ui.screens.nativeTokenRows
 import takagi.ru.monica.ui.screens.rememberNativeTokenList
 
 
@@ -23,6 +22,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.QrCode2
 import androidx.compose.material.icons.filled.Wifi
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -231,10 +232,12 @@ internal fun PasswordListScrollableContent(
                 }
             }
         } else {
-            if (nativeTokens?.onlyTokens != true) renderPasswordRows()
+            renderPasswordRows()
         }
 
-        nativeTokenRows(nativeTokens)
+        if (nativeTokens?.failed == true) item("native_token_error") {
+            TextButton(onClick = nativeTokens.onRetry) { Text(stringResource(R.string.api_token_reload)) }
+        }
 
         item(key = PASSWORD_LIST_BOTTOM_SPACER_KEY) {
             Spacer(modifier = Modifier.height(80.dp))

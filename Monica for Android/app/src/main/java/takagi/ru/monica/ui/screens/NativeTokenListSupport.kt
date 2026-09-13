@@ -1,15 +1,10 @@
 package takagi.ru.monica.ui.screens
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Key
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -18,12 +13,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import takagi.ru.monica.R
 import takagi.ru.monica.data.*
 import takagi.ru.monica.ui.components.MonicaExpressiveFilterChip
-import takagi.ru.monica.ui.components.GroupedItemDefaults
-import takagi.ru.monica.ui.password.PasswordEntryCard
 import takagi.ru.monica.viewmodel.CategoryFilter
 import takagi.ru.monica.viewmodel.MdbxViewModel
 import takagi.ru.monica.viewmodel.NativeApiTokenListState
 import takagi.ru.monica.viewmodel.nativeApiTokenSource
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.launch
+import android.widget.Toast
 
 internal class NativeTokenListUi(
     val entries: List<NativeApiTokenSummary>,
@@ -34,7 +30,16 @@ internal class NativeTokenListUi(
     val onToggle: () -> Unit,
     val onOpen: (Long?, String?) -> Unit,
     val onRetry: () -> Unit = {},
-)
+    val onFavorite: (NativeApiTokenSummary, Boolean) -> Unit = { _, _ -> },
+    val byDisplayId: Map<Long, NativeApiTokenSummary> = entries.associateBy { it.displayId },
+) {
+    fun openDisplayEntry(entry: PasswordEntry): Boolean = byDisplayId[entry.id]?.let {
+        onOpen(it.databaseId, it.entryId); true
+    } ?: (entry.loginType == "API_TOKEN")
+    fun favoriteDisplayEntry(entry: PasswordEntry): Boolean = byDisplayId[entry.id]?.let {
+        onFavorite(it, !entry.isFavorite); true
+    } ?: (entry.loginType == "API_TOKEN")
+}
 
 internal fun filterNativeApiTokens(
     entries: List<NativeApiTokenSummary>, filter: CategoryFilter, query: String,
@@ -45,7 +50,8 @@ internal fun filterNativeApiTokens(
         CategoryFilter.Starred -> token.isFavorite
         is CategoryFilter.MdbxDatabase -> token.databaseId == filter.databaseId
         is CategoryFilter.MdbxFolderFilter -> token.databaseId == filter.databaseId &&
-            (token.collectionId == filter.folderId || filter.folderId in token.ancestorCollectionIds)
+            (token.collectionId == filter.folderId || filter.folderId in token.ancestorCollectionIds ||
+                (token.isRootCollection && filter.folderId == "root"))
         else -> false
     }
     inSource && (!favoritesOnly || token.isFavorite) &&
@@ -58,6 +64,8 @@ internal fun rememberNativeTokenList(
     onlyTokens: Boolean, onToggle: () -> Unit, onOpen: (Long?, String?) -> Unit,
     includeTokens: Boolean = true, favoritesOnly: Boolean = false
 ): NativeTokenListUi {
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
     val databases = viewModel?.allDatabases?.collectAsStateWithLifecycle()?.value.orEmpty()
     val databasesLoaded = viewModel?.allDatabasesLoaded?.collectAsStateWithLifecycle()?.value ?: true
     val sources = remember(databases, filter) { databases.filter {
@@ -97,8 +105,14 @@ internal fun rememberNativeTokenList(
         visible = sources.isNotEmpty() && sourceVisible,
         onlyTokens = onlyTokens && sourceVisible && sources.isNotEmpty(),
         loading = loading, failed = failed,
+        byDisplayId = remember(entries) { entries.associateBy { it.displayId } },
         onToggle = onToggle, onOpen = onOpen,
         onRetry = { store?.request(sources, refresh = true) },
+        onFavorite = { token, favorite -> scope.launch {
+            try { viewModel?.setNativeApiTokenFavorite(token, favorite) }
+            catch (cancelled: CancellationException) { throw cancelled }
+            catch (_: Exception) { Toast.makeText(context, R.string.api_token_load_error, Toast.LENGTH_LONG).show() }
+        } },
     )
 }
 
@@ -108,40 +122,4 @@ internal fun NativeTokenFilterChip(state: NativeTokenListUi?) {
         selected = state.onlyTokens, onClick = state.onToggle,
         label = stringResource(R.string.entry_type_api_token), leadingIcon = Icons.Default.Key
     )
-}
-
-internal fun LazyListScope.nativeTokenRows(state: NativeTokenListUi?) {
-    if (state == null || !state.visible) return
-    if (state.loading && state.entries.isEmpty()) item("native_token_loading") { LinearProgressIndicator(Modifier.fillMaxWidth()) }
-    if (state.failed) item("native_token_error") {
-        TextButton(onClick = state.onRetry) { Text(stringResource(R.string.api_token_reload)) }
-    }
-    itemsIndexed(state.entries, key = { _, token -> "native-token:${token.databaseId}:${token.entryId}" },
-        contentType = { _, _ -> "password_entry_card" }) { index, token ->
-        // Reuse the normal password card so native records share the same density,
-        // typography, icon slot and interaction cost as every other password row.
-        val typeLabel = stringResource(R.string.entry_type_api_token)
-        val displayEntry = remember(token, typeLabel) {
-            PasswordEntry(
-                id = token.entryId.hashCode().toLong(), title = token.title,
-                website = "", username = listOf(typeLabel, token.collectionTitle).filter(String::isNotBlank).joinToString(" · "),
-                password = "", notes = "", appName = "", isFavorite = token.isFavorite
-            )
-        }
-        Box(Modifier.testTag("native-token:${token.databaseId}:${token.entryId}")) {
-        PasswordEntryCard(
-            entry = displayEntry,
-            onClick = { state.onOpen(token.databaseId, token.entryId) },
-            onLongClick = { state.onOpen(token.databaseId, token.entryId) },
-            shape = GroupedItemDefaults.shape(index, state.entries.size),
-            enableSharedBounds = false,
-            leadingIconOverride = { Icon(Icons.Default.Key, contentDescription = null) },
-            passwordCardDisplayMode = takagi.ru.monica.data.PasswordCardDisplayMode.TITLE_USERNAME,
-            passwordCardDisplayFields = listOf(takagi.ru.monica.data.PasswordCardDisplayField.USERNAME)
-        )
-        }
-    }
-    if (state.onlyTokens && state.entries.isEmpty() && !state.loading && !state.failed) item("native_token_empty") {
-        Text(stringResource(R.string.api_token_empty))
-    }
 }

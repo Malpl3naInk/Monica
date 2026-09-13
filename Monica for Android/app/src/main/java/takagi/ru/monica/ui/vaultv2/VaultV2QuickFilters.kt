@@ -2,7 +2,6 @@ package takagi.ru.monica.ui.vaultv2
 
 import takagi.ru.monica.ui.screens.NativeTokenListUi
 import takagi.ru.monica.ui.screens.NativeTokenFilterChip
-import takagi.ru.monica.ui.screens.nativeTokenRows
 import takagi.ru.monica.ui.screens.rememberNativeTokenList
 
 
