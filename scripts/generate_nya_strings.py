@@ -7,11 +7,15 @@ to values-zh, so this script only ever produces strings derived from the
 Chinese source - the packs stay key-for-key identical by construction.
 
 Rules:
-- Every sentence-final 。 ！ ？ … gets 喵 inserted right before it.
+- Every sentence-final punctuation mark (。 ！ ？ … and half-width ! ?) gets
+  喵 inserted right before it.
 - Cores without sentence-final punctuation (buttons, labels) get a trailing 喵.
 - Cores without any CJK character (brand names, English, bare placeholders,
   bare numbers) are left untouched.
 - Lines marked translatable="false" are copied verbatim.
+- Pack-wide vocabulary normalization runs on every output value (overrides
+  included): the pronoun 你 becomes 您 and 回收站 becomes 纸箱, so the pack
+  shares one voice. See scripts/nya_mapping.md.
 - Raw line text is transformed, so Android escapes (\n, \', entities) and file
   formatting are preserved byte-for-byte outside the inserted characters.
 - The prev-character guard makes the transform idempotent (re-running on an
@@ -36,10 +40,17 @@ ITEM_RE = re.compile(r'^(\s*)<item((?:\s+[\w:.-]+="[^"]*")*)\s*>(.*)</item>(\s*<
 # Trailing markup that 喵 must be inserted in front of: whitespace, literal \n,
 # real or escaped closing tags.
 MARKUP_SUFFIX_RE = re.compile(r'((?:\s|\\n|</[A-Za-z0-9]+>|&lt;/[A-Za-z0-9]+&gt;)+)$')
-SENTENCE_PUNCT = "。！？…"
+SENTENCE_PUNCT = "。！？…!?"
 PLACEHOLDER_RE = re.compile(r"""%(?:\d+\$)?[-+# 0,(]*(?:\d+|\*)?(?:\.\d+|\.\*)?[a-zA-Z]""")
 BRANDS = ("Monica", "KeePass", "Bitwarden", "Steam", "WebDAV", "MDBX")
 FORBIDDEN_RE = re.compile(r"[<>&'\"]")
+# Pack-wide vocabulary normalization applied to every output value (overrides
+# included): 人称统一为"您"（「迷你」里的"你"是词素不是人称，负向后顾豁免），
+# 回收站在猫语里叫"纸箱"。See scripts/nya_mapping.md.
+REPLACEMENTS = (
+    (re.compile(r"(?<!迷)你"), "您"),
+    (re.compile(r"回收站"), "纸箱"),
+)
 
 
 def load_overrides() -> dict:
@@ -102,6 +113,12 @@ def nya_transform(raw: str) -> str:
     return result + colon_suffix + markup_suffix
 
 
+def normalize_vocabulary(text: str) -> str:
+    for pattern, replacement in REPLACEMENTS:
+        text = pattern.sub(replacement, text)
+    return text
+
+
 def transform_line(line: str, stats: dict) -> str:
     if line.endswith("\r\n"):
         body, eol = line[:-2], "\r\n"
@@ -124,6 +141,7 @@ def transform_line(line: str, stats: dict) -> str:
                 stats["override_rejected"] += 1
         if transformed is None:
             transformed = nya_transform(value)
+        transformed = normalize_vocabulary(transformed)
         stats["transformed" if transformed != value else "kept"] += 1
         return f'{indent}<string name="{name}"{attrs}>{transformed}</string>{comment or ""}{eol}'
 
@@ -133,6 +151,7 @@ def transform_line(line: str, stats: dict) -> str:
         if 'translatable="false"' in attrs:
             return line
         transformed = nya_transform(value)
+        transformed = normalize_vocabulary(transformed)
         stats["transformed" if transformed != value else "kept"] += 1
         return f"{indent}<item{attrs}>{transformed}</item>{comment or ''}{eol}"
 

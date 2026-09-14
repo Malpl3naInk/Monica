@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="vault_overview_archive">趴进纸箱喵</string>
-    <string name="vault_overview_trash">回收站喵</string>
+    <string name="vault_overview_archive">猫猫上柜顶打盹喵</string>
+    <string name="vault_overview_trash">纸箱喵</string>
     <string name="vault_overview_done">完成喵</string>
     <string name="vault_overview_note">笔记喵</string>
     <string name="vault_overview_passkey">通行密钥喵</string>
     <string name="vault_overview_enabled_title">储物罐概览喵</string>
     <string name="vault_overview_enabled_desc">打开储物罐时显示常用卡片、常用项目和收藏夹；关掉就回到原来的储物罐列表喵</string>
     <string name="vault_overview_title">储物罐喵</string>
-    <string name="vault_overview_customize">自定义概览喵</string>
+    <string name="vault_overview_customize">自己摆小窝喵</string>
     <string name="vault_overview_customize_hint">挑想显示的模块，拖动排好顺序喵，所有数据库共用这一套布置喵</string>
     <string name="vault_overview_cards">常用卡片喵</string>
     <string name="vault_overview_items">常用项目喵</string>
@@ -16,7 +16,7 @@
     <string name="vault_overview_types">按类型喵</string>
     <string name="vault_overview_folders">分类与文件夹喵</string>
     <string name="vault_overview_databases">数据库喵</string>
-    <string name="vault_overview_all_items">查看全部项目喵</string>
+    <string name="vault_overview_all_items">全部家当都在这喵</string>
     <string name="vault_overview_view_all">查看全部喵</string>
     <string name="vault_overview_local">Monica 的窝喵</string>
     <string name="vault_overview_all_databases">全部数据库喵</string>

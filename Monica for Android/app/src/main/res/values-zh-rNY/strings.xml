@@ -9,23 +9,23 @@
     <string name="accessibility_service_description">Monica 无障碍服务有助于提高自动填充功能,更准确地检测密码字段喵。</string>
     
     <!-- General -->
-    <string name="ok">确定喵</string>
-    <string name="cancel">取消喵</string>
-    <string name="save">保存喵</string>
-    <string name="delete">删除喵</string>
-    <string name="edit">编辑喵</string>
-    <string name="search">搜索喵</string>
+    <string name="ok">好喵</string>
+    <string name="cancel">算了喵</string>
+    <string name="save">存好喵</string>
+    <string name="delete">叼走喵</string>
+    <string name="edit">改改喵</string>
+    <string name="search">搜搜喵</string>
     
     <!-- Swipe Actions -->
     <string name="swipe_action_select">选择喵</string>
     <string name="swipe_action_delete">删除喵</string>
     
     <string name="settings">设置喵</string>
-    <string name="back">返回喵</string>
-    <string name="close">关闭喵</string>
-    <string name="logout">退出登录喵</string>
-    <string name="yes">是喵</string>
-    <string name="no">否喵</string>
+    <string name="back">回去喵</string>
+    <string name="close">关上喵</string>
+    <string name="logout">出门喵</string>
+    <string name="yes">嗯喵</string>
+    <string name="no">不喵</string>
     <string name="share">分享喵</string>
     <string name="field_action_more">更多字段操作喵</string>
     <string name="field_action_show_large">以大号字体显示喵</string>
@@ -37,33 +37,33 @@
     <string name="untitled">无标题喵</string>
     <string name="edit_note">编辑笔记喵</string>
     <string name="delete_note_confirm">确定要删除这条笔记吗喵？</string>
-    <string name="note_picker_title">选择笔记喵</string>
-    <string name="password_bound_note_title">关联笔记喵</string>
+    <string name="note_picker_title">挑一本笔记喵</string>
+    <string name="password_bound_note_title">拴着的笔记喵</string>
     <string name="bind_note">绑定笔记喵</string>
     <string name="change_bound_note">更换笔记喵</string>
     <string name="unbind_note">解绑笔记喵</string>
     <string name="open_bound_note">打开笔记喵</string>
-    <string name="bound_note_missing_message">已绑定的笔记当前不可用，你可以重新绑定或移除此引用喵。</string>
+    <string name="bound_note_missing_message">已绑定的笔记当前不可用，您可以重新绑定或移除此引用喵。</string>
     <string name="password_bound_note_empty">暂未绑定笔记喵。</string>
-    <string name="note_mode_plain">纯文本喵</string>
+    <string name="note_mode_plain">素颜文本喵</string>
     <string name="note_mode_markdown">Markdown</string>
     <string name="note_mode_edit">编辑喵</string>
-    <string name="note_mode_preview">预览喵</string>
+    <string name="note_mode_preview">瞄一眼喵</string>
     <string name="note_markdown_preview_empty">Markdown 预览为空喵。</string>
     <string name="note_all_tags">全部标签喵</string>
     <string name="note_tags_placeholder">标签1, 标签2喵</string>
-    <string name="note_images_embedded_hint">图片会以内嵌方式插入正文喵。</string>
-    <string name="note_add_image">添加图片喵</string>
-    <string name="note_remove_image">删除图片喵</string>
+    <string name="note_images_embedded_hint">图片会直接嵌进正文里喵。</string>
+    <string name="note_add_image">贴张图喵</string>
+    <string name="note_remove_image">撕掉这张图喵</string>
     <string name="note_draft_restore_title">捡回没保存的草稿喵？</string>
     <string name="note_draft_restore_message">发现一篇没写完的草稿喵，要捡回上次写的内容吗喵？</string>
-    <string name="note_draft_restore_action">恢复喵</string>
-    <string name="note_draft_discard_action">丢弃喵</string>
+    <string name="note_draft_restore_action">找回来喵</string>
+    <string name="note_draft_discard_action">不要了喵</string>
     <string name="note_image_source_title">选择图片来源喵</string>
     <string name="note_bitwarden_inline_image_disabled_reason">Bitwarden 存储：为兼容性已禁用内嵌图片喵。</string>
     <string name="note_bitwarden_inline_image_disabled_toast">Bitwarden 的笔记暂时养不了内嵌图片喵</string>
     <string name="note_bitwarden_move_warning_title">Bitwarden 图片兼容提示喵</string>
-    <string name="note_bitwarden_move_warning_message">你选择的 %1$d 条笔记包含图片喵。移动/复制到 Bitwarden 后，图片会继续保留在 Monica 本地，但不会同步到 Bitwarden，且后续无法在 Bitwarden 目标笔记中新增图片喵。是否继续喵？</string>
+    <string name="note_bitwarden_move_warning_message">您选择的 %1$d 条笔记包含图片喵。移动/复制到 Bitwarden 后，图片会继续保留在 Monica 本地，但不会同步到 Bitwarden，且后续无法在 Bitwarden 目标笔记中新增图片喵。是否继续喵？</string>
     <string name="continue_action">继续喵</string>
     <string name="note_detail_title">笔记喵</string>
     <string name="note_detail_not_found_title">找不到这条笔记喵</string>
@@ -72,57 +72,57 @@
     <string name="note_detail_share_title">把笔记叼给朋友喵</string>
     <string name="note_detail_tags_label">标签喵</string>
     <string name="note_detail_preview_tab">预览喵</string>
-    <string name="note_detail_raw_tab">纯文本喵</string>
+    <string name="note_detail_raw_tab">素颜文本喵</string>
     <string name="note_detail_preview_fullscreen">全屏预览喵</string>
     <string name="note_detail_preview_fullscreen_title">Markdown 预览喵</string>
     <string name="note_detail_empty_content">这条笔记还空着喵。</string>
-    <string name="note_detail_additional_notes">附加说明喵</string>
+    <string name="note_detail_additional_notes">补充几句喵</string>
     <string name="note_detail_updated_at">最后更新 %1$s喵</string>
     
     <!-- Login Screen -->
-    <string name="setup_master_password">设置您的主密码喵</string>
-    <string name="enter_master_password">输入您的主密码喵</string>
+    <string name="setup_master_password">给窝配一把主密码喵</string>
+    <string name="enter_master_password">交出主密码喵</string>
     <string name="master_password">主密码喵</string>
-    <string name="confirm_master_password">确认主密码喵</string>
+    <string name="confirm_master_password">再念一遍主密码喵</string>
     <string name="set_up_password">设置密码喵</string>
-    <string name="unlock">解锁喵</string>
-    <string name="ime_monica_label">Monica 键盘喵</string>
+    <string name="unlock">开窝喵</string>
+    <string name="ime_monica_label">Monica 猫爪键盘喵</string>
     <string name="ime_monica_subtype_label">Monica 安全键盘喵</string>
     <string name="ime_toolbar_monica">Monica</string>
     <string name="ime_toolbar_autofill">自动填充喵</string>
     <string name="ime_toolbar_hide_autofill">收起自动填充喵</string>
     <string name="ime_toolbar_more">更多喵</string>
     <string name="ime_toolbar_keyboard">键盘喵</string>
-    <string name="ime_state_locked">已锁定喵</string>
-    <string name="ime_state_unlocked">已解锁喵</string>
-    <string name="ime_unlock_title">在 Monica 中解锁喵</string>
+    <string name="ime_state_locked">窝锁上了喵</string>
+    <string name="ime_state_unlocked">窝开着喵</string>
+    <string name="ime_unlock_title">在 Monica 里开窝喵</string>
     <string name="ime_unlock_message">Monica 安全键盘与本体共享同一锁定状态喵。</string>
     <string name="ime_unlock_password_label">主密码喵</string>
-    <string name="ime_unlock_error">主密码不正确喵。</string>
-    <string name="ime_unlock_required">密码库已锁定，请先解锁后继续喵。</string>
+    <string name="ime_unlock_error">主密码不对喵。</string>
+    <string name="ime_unlock_required">窝还锁着喵，先开锁再继续喵。</string>
     <string name="ime_unlock_in_app_message">请使用指纹或主密码完成验证，然后继续填充喵。</string>
     <string name="ime_unlock_open_app">解锁喵</string>
     <string name="ime_unlock_open_app_error">无法打开解锁页面喵。</string>
-    <string name="ime_search_accounts">搜索账号喵</string>
+    <string name="ime_search_accounts">嗅一嗅账号喵</string>
     <string name="ime_search_results_count">%1$d 项喵</string>
     <string name="ime_sort_alphabetical">按字母排序喵</string>
     <string name="ime_sort_relevance">恢复智能排序喵</string>
     <string name="ime_settings_title">Monica 键盘喵</string>
     <string name="ime_manage_input_methods">管理输入法喵</string>
     <string name="ime_manage_input_methods_desc">在系统设置中启用 Monica 键盘或切换当前输入法喵</string>
-    <string name="ime_picker_title">密码选择器喵</string>
-    <string name="ime_picker_subtitle">先选择数据库，再点条目即可直接填入当前表单喵。</string>
-    <string name="ime_quick_fill">立即填充喵</string>
+    <string name="ime_picker_title">点喵台</string>
+    <string name="ime_picker_subtitle">先选好数据库喵，再点一只就能直接填进当前表单喵</string>
+    <string name="ime_quick_fill">马上填喵</string>
     <string name="ime_authenticator_panel_placeholder">这里已经预留成验证器页签了，下一步我可以继续把真实 TOTP 列表接进来喵。</string>
     <string name="ime_documents_panel_placeholder">这里已经预留成证件页签了，下一步我可以继续把真实证件选择器接进来喵。</string>
-    <string name="ime_empty_authenticator_title">暂无验证器喵</string>
+    <string name="ime_empty_authenticator_title">还没住进验证器喵</string>
     <string name="ime_empty_authenticator_message">解锁后，这里会显示已保存的 TOTP 验证码喵。</string>
     <string name="ime_empty_card_wallet_title">暂无卡包条目喵</string>
     <string name="ime_empty_card_wallet_message">解锁后，这里会显示银行卡和证件信息喵。</string>
     <string name="ime_totp_seconds_remaining">%1$d 秒喵</string>
-    <string name="ime_empty_title">暂无自动填充条目喵</string>
+    <string name="ime_empty_title">这儿还空着喵</string>
     <string name="ime_empty_message">打开自动填充后，这里会显示匹配当前应用的账号喵。</string>
-    <string name="ime_no_matches_title">没有匹配结果喵</string>
+    <string name="ime_no_matches_title">什么都没嗅到喵</string>
     <string name="ime_no_matches_message">换个关键词试试，比如应用名、账号或网站喵。</string>
     <string name="ime_untitled_account">未命名账号喵</string>
     <string name="ime_favorite_badge">常用喵</string>
@@ -132,18 +132,18 @@
     <string name="ime_clear_all_undo_action">撤销喵</string>
     <string name="ime_key_space">空格喵</string>
     <string name="ime_key_enter">换行喵</string>
-    <string name="ime_show">显示喵</string>
-    <string name="ime_hide">隐藏喵</string>
-    <string name="use_biometric">使用生物识别认证喵</string>
-    <string name="biometric_title">生物识别认证喵</string>
+    <string name="ime_show">亮出来喵</string>
+    <string name="ime_hide">收爪喵</string>
+    <string name="use_biometric">用爪纹或面容认证喵</string>
+    <string name="biometric_title">爪纹认证喵</string>
     <string name="biometric_subtitle">用指纹或面容解锁 Monica喵</string>
-    <string name="use_master_password">使用主密码喵</string>
+    <string name="use_master_password">用主密码喵</string>
     <string name="show_password">显示密码喵</string>
     <string name="hide_password">隐藏密码喵</string>
     
     <!-- Biometric Authentication -->
-    <string name="biometric_login_title">解锁 Monica喵</string>
-    <string name="biometric_login_subtitle">让人家认一认是不是你喵</string>
+    <string name="biometric_login_title">开门喵，Monica 在等您喵</string>
+    <string name="biometric_login_subtitle">让人家认一认是不是您喵</string>
     <string name="biometric_login_description">用指纹开门喵</string>
     <string name="biometric_available">生物识别已经就绪喵</string>
     <string name="biometric_no_hardware">这台设备没有生物识别喵</string>
@@ -152,8 +152,8 @@
     <string name="biometric_not_available">生物识别现在用不了喵</string>
     <string name="biometric_error">生物识别出错了喵： %s</string>
     <string name="biometric_requires_password_reentry">生物识别通过了，但安全密钥还没准备好喵。先用主密码解锁一次，之后就能继续用生物识别喵</string>
-    <string name="biometric_success">认出你啦喵</string>
-    <string name="biometric_unlock">指纹解锁喵</string>
+    <string name="biometric_success">认出您啦喵</string>
+    <string name="biometric_unlock">爪纹开门喵</string>
     <string name="biometric_unlock_enabled">指纹解锁已经打开喵</string>
     <string name="biometric_unlock_disabled">指纹解锁已经关上喵</string>
     <string name="biometric_cannot_enable">指纹解锁开不了喵</string>
@@ -165,8 +165,8 @@
     <!-- Autofill Authentication -->
     <string name="autofill_auth_title">验明正身再填充喵</string>
     <string name="autofill_unlock_monica">先解锁 Monica 再填充喵</string>
-    <string name="autofill_auth_subtitle">使用指纹或密码验证喵</string>
-    <string name="autofill_auth_description">验证后将自动填充密码喵</string>
+    <string name="autofill_auth_subtitle">用指纹或密码验明正身喵</string>
+    <string name="autofill_auth_description">验明正身后就替您填密码喵</string>
     
     <!-- 🔐 Password Suggestion -->
     <string name="password_suggestion">强密码建议喵</string>
@@ -187,9 +187,9 @@
     <string name="logout_confirmation">确定要退出登录吗喵？</string>
     <string name="copy_username">复制用户名喵</string>
     <string name="copy_password">复制密码喵</string>
-    <string name="copy">复制喵</string>
+    <string name="copy">叼一份喵</string>
     <string name="username_copied">用户名已复制到剪贴板喵</string>
-    <string name="password_copied">密码已复制到剪贴板喵</string>
+    <string name="password_copied">密码已经揣进肉垫喵</string>
     
     <!-- Quick Settings Tile & Smart Copy -->
     <string name="tile_autofill_label">Monica 填充喵</string>
@@ -203,9 +203,9 @@
     <string name="autofill_copy_account_unavailable">账号为空，请进入详情后手动复制喵。</string>
     
     <!-- Autofill Authentication -->
-    <string name="autofill_auth_required">自动填充验证喵</string>
-    <string name="autofill_auth_required_desc">进入自动填充前需要生物识别或密码验证喵</string>
-    <string name="autofill_auth_waiting">正在等待验证喵…</string>
+    <string name="autofill_auth_required">填充前验明正身喵</string>
+    <string name="autofill_auth_required_desc">填充之前喵，先过一道爪纹或密码验证喵</string>
+    <string name="autofill_auth_waiting">蹲着等验证喵…</string>
 
     
     <!-- Form Fields -->
@@ -225,8 +225,8 @@
     
     <!-- Password Group Actions -->
     <string name="collapse">收起喵</string>
-    <string name="collapse_group">收起 %d 个密码喵</string>
-    <string name="passwords_count">%d 个密码喵</string>
+    <string name="collapse_group">收起 %d 只密码喵</string>
+    <string name="passwords_count">%d 只密码喵</string>
 
     <!-- Stack card modes -->
     <string name="stack_mode_menu_title">堆叠展示模式喵</string>
@@ -383,7 +383,7 @@
     <string name="wifi_qr_dialog_title">扫码加入 %1$s喵</string>
     <string name="wifi_qr_unsupported">企业级 Wi-Fi 无法生成二维码喵</string>
 
-    <string name="loading">加载中喵…</string>
+    <string name="loading">踩奶中喵…</string>
     <string name="title_required">标题 *喵</string>
     <string name="website_url">网站/网址喵</string>
     <string name="username_email">用户名/邮箱喵</string>
@@ -413,7 +413,7 @@
     <string name="lowercase_az">小写字母 (a-z)喵</string>
     <string name="numbers">数字 (0-9)喵</string>
     <string name="numbers_09">数字 (0-9)喵</string>
-    <string name="symbols">符号 (!@#$...)喵</string>
+    <string name="symbols">符号 (喵!@#$...)喵</string>
     <string name="exclude_similar">排除相似字符喵</string>
     <string name="analyze_common_passwords">常用密码分析喵</string>
     <string name="analyze_common_passwords_desc">分析已保存的密码并生成相似且易记的密码喵</string>
@@ -442,19 +442,19 @@
     <string name="totp_import_uri_empty">先把验证器链接粘贴进来喵</string>
     <string name="qr_authenticator_duplicate">验证器已存在：%1$s喵</string>
     <string name="qr_authenticator_added">已添加验证器：%1$s喵</string>
-    <string name="qr_authenticator_migration_result">已导入 %1$d 个验证器，跳过 %2$d 个重复项，%3$d 个保存失败喵。</string>
-    <string name="qr_migration_multiple_fill_first">迁移二维码包含 %1$d 个验证器，当前仅填入第一项喵。</string>
-    <string name="totp_migration_review_title">导入验证器喵</string>
-    <string name="totp_migration_review_summary">发现 %1$d 个验证器 · 已叼中 %2$d 个喵</string>
-    <string name="totp_migration_import_selected">导入 %1$d 个喵</string>
+    <string name="qr_authenticator_migration_result">已收编 %1$d 只验证器喵，跳过 %2$d 只重复的喵，%3$d 只没存上喵。</string>
+    <string name="qr_migration_multiple_fill_first">迁移二维码里有 %1$d 只验证器喵，这次只收第一只喵。</string>
+    <string name="totp_migration_review_title">收编验证器喵</string>
+    <string name="totp_migration_review_summary">发现 %1$d 只验证器 · 已叼中 %2$d 只喵</string>
+    <string name="totp_migration_import_selected">收编 %1$d 只喵</string>
     <string name="totp_migration_totp_parameters">%1$s · %2$s · %3$d 位 · %4$d 秒喵</string>
     <string name="totp_migration_hotp_parameters">%1$s · %2$s · %3$d 位 · 计数器 %4$d喵</string>
     <string name="totp_migration_existing_item">已经有一只：%1$s喵。仍可手动选中并导入副本喵。</string>
     <string name="totp_migration_batch_duplicate">该二维码内的重复验证器喵</string>
-    <string name="totp_migration_error_invalid">Google 验证器迁移二维码无效或数据不完整喵。</string>
+    <string name="totp_migration_error_invalid">这张 Google 迁移二维码残了喵，读不出完整数据喵。</string>
     <string name="totp_migration_error_too_large">迁移二维码包含的数据过多喵。</string>
     <string name="totp_migration_error_multiple_qr">这次导出带了好几张二维码喵，请改成一次只导一张完整的喵。</string>
-    <string name="totp_migration_error_version">暂不支持该版本的 Google 验证器迁移格式喵。</string>
+    <string name="totp_migration_error_version">这个版本的 Google 迁移格式还不会读喵。</string>
     <string name="totp_migration_error_parameters">迁移内容包含不支持的算法、验证码位数或验证器类型喵。</string>
     <string name="totp_migration_error_missing_name">迁移内容中存在缺少账号名称的验证器喵。</string>
     <string name="issuer">发行者喵</string>
@@ -472,8 +472,8 @@
     
     <!-- OTP Types -->
     <string name="otp_type">OTP类型喵</string>
-    <string name="otp_type_totp">基于时间 (TOTP)喵</string>
-    <string name="otp_type_hotp">基于计数器 (HOTP)喵</string>
+    <string name="otp_type_totp">按时间走 (TOTP)喵</string>
+    <string name="otp_type_hotp">按计数器走 (HOTP)喵</string>
     <string name="otp_type_steam">Steam Guard</string>
     <string name="otp_type_yandex">Yandex</string>
     <string name="otp_type_motp">Mobile-OTP</string>
@@ -487,7 +487,7 @@
     <string name="steam_uses_5_chars">Steam使用5位字符码喵</string>
     <string name="hotp_counter_hint">每次使用后计数器自动加1喵</string>
     <string name="motp_pin_hint">4位数字PIN码，用于Mobile-OTP加密喵</string>
-    <string name="otp_type_description_totp">标准的基于时间验证码，每30秒刷新一次喵</string>
+    <string name="otp_type_description_totp">按时间走的验证码喵，每 30 秒换一茬喵</string>
     <string name="otp_type_description_hotp">靠计数器的验证码，每次手动摇一只新的喵</string>
     <string name="otp_type_description_steam">Steam Guard 专用的 5 位验证码喵</string>
     <string name="otp_type_description_yandex">Yandex身份验证码喵</string>
@@ -537,13 +537,13 @@
     <string name="payment_account_online_and_billing">在线与账单喵</string>
     <string name="payment_account_default">默认支付方式喵</string>
     <string name="delete_payment_account_title">删除支付方式喵？</string>
-    <string name="delete_payment_account_message">此支付方式将被移入回收站喵。</string>
+    <string name="delete_payment_account_message">此支付方式将被移入纸箱喵。</string>
     <string name="add_billing_address">添加账单地址喵</string>
     <string name="edit_billing_address">编辑账单地址喵</string>
     <string name="billing_address_empty">尚未保存账单地址喵</string>
     <string name="billing_address_contact_title">联系方式喵</string>
     <string name="delete_billing_address_title">删除账单地址喵？</string>
-    <string name="delete_billing_address_message">此账单地址将被移入回收站喵。</string>
+    <string name="delete_billing_address_message">此账单地址将被移入纸箱喵。</string>
     <string name="delete_billing_address_list_message">确定要删除“%s”吗喵？此操作无法撤销喵。</string>
     <string name="remove_billing_address">移除账单地址喵</string>
     <string name="billing_address_removed">已移除账单地址喵</string>
@@ -614,7 +614,7 @@
     <string name="move_down">下移喵</string>
     
     <!-- Content Descriptions -->
-    <string name="favorite">收藏喵</string>
+    <string name="favorite">收进爪下喵</string>
     <string name="more_options">更多喵</string>
     
     <!-- Document Type Names -->
@@ -643,13 +643,13 @@
     <!-- QR Scanner -->
     <string name="scan_qr_code_title">扫描二维码喵</string>
     <string name="grant_permission">授予权限喵</string>
-    <string name="go_back">返回喵</string>
+    <string name="go_back">退回去喵</string>
     <string name="camera_permission_required">扫描二维码需要访问相机喵。请授予相机权限以继续喵。</string>
     
     <!-- Image Picker -->
     <string name="gallery">相册喵</string>
     <string name="camera">拍照喵</string>
-    <string name="download">下载喵</string>
+    <string name="download">叼回家喵</string>
     <string name="download_success">图片已成功保存到相册喵</string>
     <string name="download_failed">保存图片失败喵</string>
     <string name="camera_permission_needed">需要相机权限才能进行拍照喵</string>
@@ -671,9 +671,9 @@
     <string name="export_data_type_bank_cards">银行卡喵</string>
     <string name="export_data_type_documents">证件喵</string>
     <string name="export_data_type_all">所有数据喵</string>
-    <string name="export_data_button">导出喵</string>
+    <string name="export_data_button">叼出去喵</string>
     <string name="export_data_success">宝贝都装好带走啦喵</string>
-    <string name="export_data_error">导出失败喵</string>
+    <string name="export_data_error">没叼出去喵</string>
     <string name="export_data_warning">CSV 文件没有上锁喵，请把导出的文件藏好喵。</string>
     
     <!-- 新的导出界面 -->
@@ -701,34 +701,34 @@
     <string name="kdbx_password_hint">此密码用于加密 KDBX 文件，请牢记密码喵。导入时需要输入此密码喵。</string>
     <string name="kdbx_import_password_title">输入 KDBX 密码喵</string>
     <string name="kdbx_import_password_hint">请输入用于解密此 KDBX 文件的密码喵</string>
-    <string name="import_data_btn">导入喵</string>
+    <string name="import_data_btn">叼进来喵</string>
     
-    <string name="import_data_warning_title">警告喵</string>
+    <string name="import_data_warning_title">注意喵</string>
     <string name="import_data_warning_message">导入可能会盖掉现有数据喵，动手前记得先把小鱼干备份好喵。</string>
-    <string name="import_data_select_file">选择文件喵</string>
-    <string name="import_data_button">导入喵</string>
+    <string name="import_data_select_file">挑个文件喵</string>
+    <string name="import_data_button">叼进来喵</string>
     <string name="import_data_success">数据都搬进窝啦喵</string>
-    <string name="import_data_error">导入失败喵</string>
+    <string name="import_data_error">没叼进来喵</string>
     <string name="import_data_supported_formats">认得应用导出的 CSV 文件和支付宝账单喵</string>
     <string name="import_data_select_type">挑一种导入方式喵</string>
     <string name="import_data_type_normal">应用数据喵</string>
     <string name="import_data_type_alipay">支付宝账单喵</string>
-    <string name="import_data_file_selected">已选择文件喵</string>
-    <string name="import_data_file_hint">点击选择 .csv 文件喵</string>
+    <string name="import_data_file_selected">文件挑好了喵</string>
+    <string name="import_data_file_hint">点这里挑一个 .csv 文件喵</string>
     <string name="import_data_file_hint_csv">点击选择 .csv 文件喵</string>
-    <string name="import_data_file_hint_csv_alipay">点击选择支付宝 .csv 文件喵</string>
+    <string name="import_data_file_hint_csv_alipay">点这里挑支付宝的 .csv 账单喵</string>
     <string name="import_data_file_hint_json">点击选择 .json 文件喵</string>
-    <string name="import_data_success_normal">成功搬进 %d 条数据喵</string>
-    <string name="import_data_success_alipay">成功导入 %d 条支付宝交易喵</string>
-    <string name="import_data_error_exception">导入失败：%s喵</string>
-    <string name="import_data_notice">叼进来的数据会排在现有数据后面，不会动你已有的宝贝喵</string>
+    <string name="import_data_success_normal">成功搬进 %d 只喵</string>
+    <string name="import_data_success_alipay">叼回来 %d 条支付宝账单喵</string>
+    <string name="import_data_error_exception">没叼进来喵：%s</string>
+    <string name="import_data_notice">叼进来的数据会排在现有数据后面，不会动您已有的宝贝喵</string>
     
     <!-- Support Author -->
-    <string name="support_author_title">给铲屎官投喂小鱼干喵</string>
+    <string name="support_author_title">给人家投喂小鱼干喵</string>
     <string name="software_free_title">💝 软件完全免费喵</string>
     <string name="software_free_description">Monica密码管理器是完全免费的开源软件，不强制收费，所有功能均可免费使用喵。</string>
     <string name="if_helpful_title">🙏 如果您觉得这个应用对您有帮助喵</string>
-    <string name="support_ways_description">欢迎用下面的方式给铲屎官投喂小鱼干喵：</string>
+    <string name="support_ways_description">欢迎用下面的方式给人家投喂小鱼干喵：</string>
     <string name="support_author_qr">支持作者 ❤️喵</string>
     <string name="qr_code_description">支持作者二维码喵</string>
     <string name="save_qr_code">保存二维码到相册喵</string>
@@ -765,9 +765,9 @@
     <string name="language">语言喵</string>
     <string name="theme">外观喵</string>  <!-- 将"主题"重命名为"外观" -->
     <string name="security">安全喵</string>
-    <string name="master_password_and_locking">主密码与锁定喵</string>
-    <string name="master_password_and_locking_description">管理指纹解锁、自动锁定、密保问题与主密码重设喵。</string>
-    <string name="auto_lock">自动锁定喵</string>
+    <string name="master_password_and_locking">主密码与门锁喵</string>
+    <string name="master_password_and_locking_description">管爪纹开门、打盹锁门、密保问题和重设主密码这些喵。</string>
+    <string name="auto_lock">打盹自动锁门喵</string>
     <string name="auto_lock_summary">打盹太久会自动锁门喵</string>
     <string name="about">关于喵</string>
     <string name="version">版本喵</string>
@@ -835,7 +835,7 @@
     <string name="select_question">选择一个问题喵</string>
     <string name="your_answer">您的答案喵</string>
     <string name="enter_answer_hint">输入您的答案（不区分大小写）喵</string>
-    <string name="security_questions_must_choose_two">请选择两道不同的问题用于找回密码喵</string>
+    <string name="security_questions_must_choose_two">挑两道不一样的问题喵，走丢了好认门喵</string>
     <string name="security_question_custom_label">自定义问题喵</string>
     <string name="security_question_custom_placeholder">输入您自己的密保问题喵</string>
     <string name="save_questions">保存密保问题喵</string>
@@ -856,10 +856,10 @@
     <string name="verify_master_password_desc">请输入主密码以继续喵</string>
     <string name="wrong_password">密码错误喵</string>
     <string name="notes_delete_selected_confirm">确定要删除选中的 %d 条笔记吗喵？</string>
-    <string name="vault_batch_delete_title">删除 %d 个条目喵？</string>
-    <string name="vault_batch_delete_message">选中的条目将移入回收站，之后可以恢复喵。</string>
+    <string name="vault_batch_delete_title">把 %d 只猫猫塞进纸箱喵？</string>
+    <string name="vault_batch_delete_message">挑中的猫猫会进纸箱喵，想它了随时抱回来喵。</string>
     <string name="vault_batch_delete_item_type">条目喵</string>
-    <string name="security_questions_verify_description">请回答您的密保问题以重置密码喵</string>
+    <string name="security_questions_verify_description">回答密保问题喵，证明您就是铲屎官本官喵</string>
     <string name="question_1">问题 1喵：</string>
     <string name="question_2">问题 2喵：</string>
     <string name="verify_answers">验证答案喵</string>
@@ -879,9 +879,9 @@
     <string name="nav_passkey">通行密钥喵</string>
     <string name="nav_steam">Steam</string>
     <string name="nav_settings">设置喵</string>
-    <string name="trash_bin">回收站喵</string>
-    <string name="trash_settings">回收站设置喵</string>
-    <string name="add">添加喵</string>
+    <string name="trash_bin">纸箱喵</string>
+    <string name="trash_settings">纸箱设置喵</string>
+    <string name="add">添一只喵</string>
     
     <!-- Main Screen Bottom Navigation (Short) -->
     <string name="nav_passwords_short">密码喵</string>
@@ -1079,7 +1079,7 @@
     <string name="steam_login_password_label">密码喵</string>
     <string name="steam_login_button">登录喵</string>
     <string name="steam_login_waiting_approval">正在等待 Steam 手机端批准喵</string>
-    <string name="steam_login_code_or_approve_message">你可以输入 Steam 令牌验证码，也可以在 Steam 手机 App 中批准本次登录喵。</string>
+    <string name="steam_login_code_or_approve_message">您可以输入 Steam 令牌验证码，也可以在 Steam 手机 App 中批准本次登录喵。</string>
     <string name="steam_login_approval_timeout">等待 Steam 登录批准超时，请重新登录并更快批准喵。</string>
     <string name="steam_activation_email_message">Steam 已发送邮箱激活码，请输入该激活码完成 Steam Guard 绑定喵。</string>
     <string name="steam_activation_sms_message">Steam 已发送短信激活码，请输入该激活码完成 Steam Guard 绑定喵。</string>
@@ -1128,7 +1128,7 @@
     
     <string name="filter_monica">Monica</string>
     <string name="filter_bitwarden">Bitwarden</string>
-    <string name="move">移动喵</string>
+    <string name="move">挪窝喵</string>
     <string name="move_to_category">移动到分类喵</string>
     <string name="ledger_select_category">选择分类喵</string>
     <string name="filter_keepass">KeePass</string>
@@ -1143,7 +1143,7 @@
     
     <!-- Passkey Screen -->
     <string name="passkey_title">通行密钥喵</string>
-    <string name="passkey_count">%1$d 个通行密钥喵</string>
+    <string name="passkey_count">%1$d 把通行密钥喵</string>
     <string name="passkey_view_only_mode">仅查看模式喵</string>
     <string name="passkey_search_placeholder">搜索通行密钥喵…</string>
     <string name="passkey_used_count">已使用 %1$d 次喵</string>
@@ -1193,9 +1193,9 @@
     <string name="passkey_bitwarden_legacy_hint">此通行密钥为旧格式，无法迁移到 Bitwarden 数据库喵。</string>
     <string name="passkey_bitwarden_move_blocked">此通行密钥无法迁移到 Bitwarden喵。</string>
     <string name="passkey_bitwarden_move_failed">Bitwarden 操作失败，未移动喵。</string>
-    <string name="passkey_bitwarden_move_blocked_count">%1$d 个通行密钥无法迁移到 Bitwarden喵。</string>
+    <string name="passkey_bitwarden_move_blocked_count">%1$d 把通行密钥没法搬去 Bitwarden 喵。</string>
     <string name="passkey_keepass_credential_conflict">目标 KeePass 数据库已存在相同通行密钥喵。</string>
-    <string name="passkey_keepass_credential_conflict_count">%1$d 个通行密钥已存在于目标 KeePass 数据库喵。</string>
+    <string name="passkey_keepass_credential_conflict_count">目标 KeePass 数据库里已经有 %1$d 把通行密钥喵。</string>
     <string name="passkey_copy_uses_move_hint">通行密钥是唯一凭据，复制将按安全移动处理喵。</string>
     <string name="keepass_copy_only_hint">KeePass 来源条目不能移动到其他数据库，只能复制喵。</string>
     
@@ -1205,7 +1205,7 @@
     <string name="no_history_records">暂无历史记录喵</string>
     <string name="password_history_title">历史密码喵</string>
     <string name="password_history_last_used">上次使用：%1$s喵</string>
-    <string name="password_history_description">仅保存在当前设备本地，最多保留最近 10 条密码喵。</string>
+    <string name="password_history_description">只保存在这台设备里喵，最多留最近 10 只密码喵。</string>
     <string name="password_history_latest">最近一次喵</string>
     <string name="password_history_unavailable">当前暂时无法读取这条历史密码喵。重新解锁后，或下次更新密码时会恢复正常喵。</string>
     <string name="bitwarden_sync_raw_history_title">Bitwarden 同步原始记录喵</string>
@@ -1250,31 +1250,31 @@
     <string name="generator_length">长度喵</string>
     <string name="generator_include_uppercase">带上大写字母 (A-Z)喵</string>
     <string name="generator_include_lowercase">带上小写字母 (a-z)喵</string>
-    <string name="generator_include_numbers">包含数字 (0-9)喵</string>
+    <string name="generator_include_numbers">加上数字 (0-9)喵</string>
     <string name="generator_include_symbols">带上符号 (!@#$...)喵</string>
     <string name="generator_exclude_similar">排除长得像的字符 (0,O,l,I)喵</string>
-    <string name="generator_exclude_ambiguous">排除不明确字符喵</string>
+    <string name="generator_exclude_ambiguous">排除容易看走眼的字符喵</string>
     <string name="generator_first_letter_uppercase">首字母大写喵</string>
     <string name="generator_include_numbers_in_password">包含数字喵</string>
     <string name="generator_custom_separator">自定义分隔符喵</string>
-    <string name="generator_separator_counts_towards_length">分隔符计入长度喵</string>
+    <string name="generator_separator_counts_towards_length">分隔符也算进长度里喵</string>
     <string name="generator_segment_length">分段长度喵</string>
-    <string name="generator_pin_length">PIN码长度喵</string>
-    <string name="generator_generate">生成喵</string>
-    <string name="generator_result">结果喵</string>
+    <string name="generator_pin_length">PIN 位数喵</string>
+    <string name="generator_generate">搓一只喵</string>
+    <string name="generator_result">搓出来的喵</string>
     <string name="generator_copy">复制喵</string>
     <string name="generator_copied">已经叼到剪贴板喵</string>
-    <string name="generator_invalid_length">长度无效喵</string>
+    <string name="generator_invalid_length">长度不对劲喵</string>
     <string name="generator_action">生成喵</string>  <!-- 新增：生成按钮文字 -->
     <string name="generator">生成器喵</string>
-    <string name="generator_hint">让生成器帮你搓一根结实的密码喵</string>
+    <string name="generator_hint">让生成器帮您搓一根结实的密码喵</string>
     <string name="ime_generator_length_value">长度 %1$d喵</string>
     <string name="add_url">添加 URL喵</string>
     <string name="bind_app">绑定应用喵</string>
 
     <!-- Detail Screens -->
     <string name="bank_card_details">银行卡详情喵</string>
-    <string name="card_details">卡片信息喵</string>
+    <string name="card_details">卡片小档案喵</string>
     <string name="card_number">卡号喵</string>
     <string name="delete_card_title">删除银行卡喵</string>
     <string name="delete_card_message">确定要删除这张银行卡吗喵？</string>
@@ -1295,12 +1295,12 @@
     <string name="reset_zoom">重置缩放喵</string>
 
     <!-- Settings Screen -->
-    <string name="settings_general">通用喵</string>
-    <string name="settings_security">安全喵</string>
-    <string name="settings_data_management">数据管理喵</string>
+    <string name="settings_general">日常喵</string>
+    <string name="settings_security">看门喵</string>
+    <string name="settings_data_management">家当管理喵</string>
     <string name="settings_about">关于人家喵</string>
     <string name="settings_language_description">选个顺口的语言喵</string>
-    <string name="settings_auto_lock_title">自动锁定喵</string>
+    <string name="settings_auto_lock_title">打盹自动锁门喵</string>
     <string name="settings_auto_lock_description">离开窝以后自动锁门喵</string>
     <string name="settings_biometric_title">生物识别喵</string>
     <string name="settings_biometric_description">用指纹或面容快速开门喵</string>
@@ -1311,9 +1311,9 @@
     <string name="settings_bottom_sheet_title">底部抽屉模式喵</string>
     <string name="settings_bottom_sheet_description">启用可上拉的抽屉式导航喵</string>
     <string name="settings_export_data">导出数据喵</string>
-    <string name="settings_export_data_description">导出为CSV文件到本地喵</string>
+    <string name="settings_export_data_description">打包成 CSV 叼到本地喵</string>
     <string name="settings_import_data">导入数据喵</string>
-    <string name="settings_import_data_description">从备份文件恢复喵</string>
+    <string name="settings_import_data_description">从备份文件把家当接回家喵</string>
     <string name="settings_version_info">版本信息喵</string>
     <string name="version_info_dialog_title">版本与链接喵</string>
     <string name="version_info_github_label">GitHub</string>
@@ -1330,12 +1330,12 @@
     <string name="update_check_no_update_title">已经是最新的窝啦喵</string>
     <string name="update_check_failed_title">检查更新失败喵</string>
     <string name="update_check_update_available_message">Monica for Android 搬出了新窝喵。</string>
-    <string name="update_check_no_update_message">当前安装版本已经是最新 Release喵。</string>
+    <string name="update_check_no_update_message">您这版已经是最新的了喵，不用搬新窝喵。</string>
     <string name="update_check_failed_message">无法检查 GitHub Releases：%1$s喵</string>
     <string name="update_check_failed_unknown">未知错误喵</string>
     <string name="update_check_current_version">当前版本：%1$s喵</string>
     <string name="update_check_latest_version">最新版本：%1$s喵</string>
-    <string name="update_check_open_release">打开 Release喵</string>
+    <string name="update_check_open_release">去看看新窝喵</string>
     <string name="update_download_and_install">搬进新窝喵</string>
     <string name="update_download_downloading">正在搬新窝喵...</string>
     <string name="update_download_progress_known">%1$s / %2$s</string>
@@ -1355,7 +1355,7 @@
     <string name="custom_icon_upload_failed">上传失败：%1$s喵</string>
     <string name="settings_support_author">投喂小鱼干喵</string>
     <string name="settings_support_author_description">每一根小鱼干都被记在心里喵</string>
-    <string name="settings_privacy_policy">隐私政策喵</string>
+    <string name="settings_privacy_policy">隐私条约喵</string>
     
     <!-- Icon Cards -->
     <string name="icon_cards_title">网站图标喵</string>
@@ -1403,17 +1403,17 @@
     
     <!-- Security Question Screen -->
     <string name="security_question_title">密保问题喵</string>
-    <string name="security_question_description">设置密保问题以便在忘记密码时恢复账户喵。这些问题将帮助验证您的身份喵。</string>
+    <string name="security_question_description">设好密保问题喵，万一忘了主密码还能靠它们认出您喵。</string>
     <string name="security_question_label_1">密保问题 1 *喵</string>
     <string name="security_question_label_2">密保问题 2 *喵</string>
     <string name="security_question_label_3">密保问题 3 *喵</string>
     <string name="security_question_select">选择一个问题喵</string>
     <string name="security_question_custom">自定义问题喵</string>
     <string name="security_question_answer">您的答案 *喵</string>
-    <string name="security_question_answer_hint">输入您的答案（不区分大小写）喵</string>
+    <string name="security_question_answer_hint">把答案写在这里喵，大小写不用纠结喵</string>
     <string name="security_question_save">保存密保问题喵</string>
     <string name="security_question_success_title">设置成功喵</string>
-    <string name="security_question_success_message">密保问题已成功设置喵。您可以使用这些问题来恢复密码喵。</string>
+    <string name="security_question_success_message">密保问题设好了喵，以后靠它们找回密码喵。</string>
     <string name="security_question_error_q1_empty">请选择第一个密保问题喵</string>
     <string name="security_question_error_q2_empty">请选择第二个密保问题喵</string>
     <string name="security_question_error_q3_empty">请选择第三个密保问题喵</string>
@@ -1424,7 +1424,7 @@
     
     <!-- Preset Security Questions -->
     <string name="security_question_preset_1">您母亲的娘家姓是什么喵？</string>
-    <string name="security_question_preset_2">您的第一只宠物叫什么名字喵？</string>
+    <string name="security_question_preset_2">您的第一只猫叫什么名字喵？</string>
     <string name="security_question_preset_3">您在哪个城市出生喵？</string>
     <string name="security_question_preset_4">您最喜欢的书是什么喵？</string>
     <string name="security_question_preset_5">您的小学叫什么名字喵？</string>
@@ -1438,12 +1438,12 @@
     <string name="security_question_childhood_food">您小时候最喜欢的食物是什么喵？</string>
     <string name="security_question_grew_up_street">您成长的街道名称是什么喵？</string>
     <string name="security_question_hs_mascot">您高中的吉祥物是什么喵？</string>
-    <string name="security_question_ultraman">你喜欢什么奥特曼喵？</string>
+    <string name="security_question_ultraman">您喜欢哪只奥特曼喵？</string>
     
     <!-- Support Author Screen (legacy) -->
-    <string name="support_author_description">如果这个小窝帮到了你，欢迎给铲屎官投喂小鱼干喵，这是人家持续打理的最大动力喵！</string>
-    <string name="support_author_thanks">摸摸头感谢你喵！</string>
-    <string name="support_author_thanks_message">谢谢你使用 Monica 喵，你投喂的每根小鱼干都是搭窝的动力喵！</string>
+    <string name="support_author_description">如果这个小窝帮到了您，欢迎给人家投喂小鱼干喵，这是人家持续打理的最大动力喵！</string>
+    <string name="support_author_thanks">摸摸头感谢您喵！</string>
+    <string name="support_author_thanks_message">谢谢您使用 Monica 喵，您投喂的每根小鱼干都是搭窝的动力喵！</string>
     
     <!-- Common -->
     <string name="search_passwords_hint">搜索密码喵</string>
@@ -1570,12 +1570,12 @@
     <string name="mdbx_open_vault_button">打开 Vault喵</string>
     <string name="mdbx_creating_vault">正在创建 Vault喵…</string>
     <string name="mdbx_no_vaults">暂无 MDBX Vault喵</string>
-    <string name="mdbx_create_first_vault">在 WebDAV 上创建你的第一个 MDBX Vault喵</string>
+    <string name="mdbx_create_first_vault">在 WebDAV 上创建您的第一个 MDBX Vault喵</string>
     <string name="mdbx_manager_intro_title">MDBX 格式喵</string>
     <string name="mdbx_manager_intro_description">本地优先的加密密码数据库，使用 Git 风格的 commit DAG 实现增量同步喵。在云存储（WebDAV / OneDrive）上的同步性能显著优于 KDBX喵。</string>
     <string name="mdbx_manager_intro_features">Project 中心化组织 · Tiga 三档安全模式 · 原生附件支持 · 字段级 AEAD 加密 · 追加友好写入 · KB 级增量更新喵</string>
     <string name="mdbx_create_new_vault_button">创建新 Vault喵</string>
-    <string name="mdbx_your_vaults">你的 Vault喵</string>
+    <string name="mdbx_your_vaults">您的 Vault喵</string>
     <string name="mdbx_delete_vault_title">删除 Vault喵</string>
     <string name="mdbx_delete_vault_message">确定要删除 \"%s\" 吗喵？\n\n此操作仅移除本地引用，WebDAV 上的文件不会被删除喵。</string>
     <string name="mdbx_delete">删除喵</string>
@@ -1631,18 +1631,18 @@
 
     
     <!-- Support Author -->
-    <string name="support_author">给铲屎官投喂小鱼干喵</string>
+    <string name="support_author">给人家投喂小鱼干喵</string>
     <string name="support_author_subtitle">应用完全免费，小鱼干全都用来搭窝喵</string>
     
     <!-- Data Management in Settings -->
     <string name="data_management">数据管理喵</string>
-    <string name="export_data">导出数据喵</string>
+    <string name="export_data">把家当叼出去喵</string>
     <string name="export_data_description">把储物罐里的数据倒进 CSV 文件喵</string>
     <string name="import_data">导入数据喵</string>
     <string name="import_data_description">把 CSV 文件里的数据叼进窝喵</string>
     
     <!-- WebDAV Backup -->
-    <string name="webdav_backup">WebDAV 备份喵</string>
+    <string name="webdav_backup">WebDAV 囤粮喵</string>
     <string name="webdav_backup_description">把小鱼干藏到 WebDAV 服务器喵</string>
     <string name="webdav_config">WebDAV 配置喵</string>
     <string name="webdav_fill_from_password">从储物罐填充喵</string>
@@ -1654,11 +1654,11 @@
     <string name="webdav_reconfigure">重新配置喵</string>
     <string name="webdav_connection_success">连上了喵</string>
     <string name="webdav_connection_failed">连接失败：%s喵</string>
-    <string name="webdav_fill_all_fields">请输入服务器地址喵</string>
-    <string name="webdav_backup_list">备份列表喵</string>
+    <string name="webdav_fill_all_fields">先写上服务器地址喵</string>
+    <string name="webdav_backup_list">囤粮清单喵</string>
     <string name="webdav_no_backups">还没藏过备份喵</string>
     <string name="delete_backup">删除备份喵</string>
-    <string name="delete_backup_confirm">确定要删除备份吗:\n%s?喵</string>
+    <string name="delete_backup_confirm">确定要删除备份吗:\n%s喵?</string>
     <string name="backup_deleted">备份已删除喵</string>
     <string name="delete_failed">删除失败喵： %s</string>
     <string name="refresh">刷新喵</string>
@@ -1672,26 +1672,26 @@
     <string name="webdav_encryption_password_mismatch">密码不匹配喵</string>
     <string name="webdav_encryption_password_empty">加密密码不能为空喵</string>
     <string name="webdav_encryption_password_short">密码长度至少8个字符喵</string>
-    <string name="webdav_backup_encrypted">已加密喵</string>
-    <string name="webdav_backup_unencrypted">未加密喵</string>
+    <string name="webdav_backup_encrypted">上了锁喵</string>
+    <string name="webdav_backup_unencrypted">没上锁喵</string>
     <string name="webdav_enter_decrypt_password">输入解密密码喵</string>
     <string name="webdav_decrypt_password_hint">用于解密备份的密码喵</string>
     <string name="webdav_decryption_failed">解密失败喵：密码不对或文件损坏了喵。</string>
     
     <!-- WebDAV Auto Backup -->
-    <string name="webdav_auto_backup">自动备份喵</string>
+    <string name="webdav_auto_backup">自动囤粮喵</string>
     <string name="webdav_auto_backup_description">每天第一次进窝或每 12 小时自动备份喵</string>
     <string name="webdav_sync_settings">同步设置喵</string>
-    <string name="webdav_change_triggered_title">改动后自动同步喵</string>
-    <string name="webdav_change_triggered_description">停止编辑后就上传，不必等 12 小时的周期喵</string>
+    <string name="webdav_change_triggered_title">一有改动就囤喵</string>
+    <string name="webdav_change_triggered_description">爪子一停就上传喵，不用干等 12 小时喵</string>
     <string name="webdav_change_triggered_quiet">静默时长喵</string>
     <string name="webdav_change_triggered_quiet_value">%d 分钟喵</string>
-    <string name="webdav_change_triggered_quiet_hint">最后一次改动后等待这么久再上传喵</string>
+    <string name="webdav_change_triggered_quiet_hint">最后一次改动后再等这么久喵，才出发上传喵</string>
     <string name="webdav_change_triggered_min_interval">最小上传间隔喵</string>
     <string name="webdav_change_triggered_min_interval_value">%d 分钟喵</string>
     <string name="webdav_change_triggered_min_interval_off">不限制喵</string>
-    <string name="webdav_change_triggered_min_interval_hint">每次备份都会重新上传完整压缩包，间隔越小流量越大喵。</string>
-    <string name="webdav_change_triggered_requires_auto_backup">请先开启自动备份喵</string>
+    <string name="webdav_change_triggered_min_interval_hint">每次囤粮都是整包重传喵，隔得越近流量吃得越多喵。</string>
+    <string name="webdav_change_triggered_requires_auto_backup">要先把自动囤粮打开喵</string>
     <string name="webdav_sync_settings_saved">同步设置已保存喵</string>
     <string name="webdav_retention_title">限制备份数量喵</string>
     <string name="webdav_retention_description">每次上传成功后留下最新的备份，多出来的旧备份会自动扫地出门喵</string>
@@ -1699,14 +1699,14 @@
     <string name="webdav_retention_count_hint">请输入 %1$d 到 %2$d 之间的整数喵</string>
     <string name="webdav_retention_permanent_hint">永久备份不占用数量额度，也不会被自动清理喵。</string>
     <string name="webdav_retention_disabled_hint">关闭数量限制时，仅清理超过 %1$d 天的普通备份，且至少保留最新 %2$d 份喵。</string>
-    <string name="webdav_cleanup_failed">备份已上传，但旧备份清理失败，将在下次备份成功后重试喵。</string>
+    <string name="webdav_cleanup_failed">新粮已经上架喵，只是旧粮没清掉喵，下次囤成功再补扫喵。</string>
     <string name="webdav_backup_unknown_date">日期未知喵</string>
     <string name="webdav_auto_backup_enabled">自动备份开好了喵</string>
     <string name="webdav_auto_backup_disabled">自动备份收起来了喵</string>
-    <string name="webdav_last_backup">上次备份喵</string>
+    <string name="webdav_last_backup">上次囤粮喵</string>
     <string name="webdav_last_backup_never">还没备份过喵</string>
     <string name="webdav_last_backup_time">%s 前喵</string>
-    <string name="webdav_backup_now">立即备份喵</string>
+    <string name="webdav_backup_now">现在就囤喵</string>
     <string name="webdav_backup_in_progress">正在藏小鱼干喵…</string>
     <string name="webdav_backup_success">小鱼干藏好了喵</string>
     <string name="webdav_backup_failed">备份失败：%s喵</string>
@@ -1715,22 +1715,22 @@
     <string name="webdav_network_unreachable">网络不可达，请检查网络连接喵</string>
     <string name="webdav_connection_timeout">连接超时了喵，请检查服务器地址和网络喵。</string>
     <string name="webdav_auth_failed">身份没对上喵，请检查用户名和密码喵。</string>
-    <string name="webdav_path_not_found">服务器路径未找到，请检查服务器地址喵</string>
-    <string name="webdav_backup_trigger_failed">触发备份失败: %s喵</string>
+    <string name="webdav_path_not_found">这条路走不通喵，再核对一下服务器地址喵。</string>
+    <string name="webdav_backup_trigger_failed">没能开始囤粮喵：%s</string>
     <!-- OpenList / WebDAV 错误分类 -->
-    <string name="webdav_error_rate_limited">服务器正在限流，请在 %1$d 秒后重试喵。</string>
-    <string name="webdav_error_rate_limited_toast">服务器正在限流备份请求，请稍后再试喵。</string>
-    <string name="webdav_error_auth_failed">鉴权失败，请检查用户名和密码喵。</string>
-    <string name="webdav_error_method_not_allowed">服务器不支持此 WebDAV 操作，请检查服务器路径喵。</string>
-    <string name="webdav_error_network_unreachable">无法到达服务器，请检查地址与网络连接喵。</string>
-    <string name="webdav_error_malformed_response">服务器返回的响应格式不合规喵。</string>
+    <string name="webdav_error_rate_limited">服务器在限流喵，喘 %1$d 秒再试喵。</string>
+    <string name="webdav_error_rate_limited_toast">服务器在限流喵，过会儿再来囤喵。</string>
+    <string name="webdav_error_auth_failed">门口被哈气了喵，查一下用户名和密码喵。</string>
+    <string name="webdav_error_method_not_allowed">这台服务器不吃这一套 WebDAV 操作喵，看看路径对不对喵。</string>
+    <string name="webdav_error_network_unreachable">够不着服务器喵，看看地址和网络喵。</string>
+    <string name="webdav_error_malformed_response">服务器回话含糊不清喵。</string>
     <string name="webdav_create_backup_failed">创建备份失败喵</string>
     <string name="webdav_create_new_backup">再藏一份新备份喵</string>
     <string name="webdav_backup_success_detail">小鱼干藏好了：%s喵</string>
-    <string name="webdav_backup_passwords">密码: %d 个喵</string>
-    <string name="webdav_backup_authenticators">验证器: %d 个喵</string>
-    <string name="webdav_backup_documents">证件: %d 个喵</string>
-    <string name="webdav_backup_bank_cards">银行卡: %d 个喵</string>
+    <string name="webdav_backup_passwords">密码：%d 只喵</string>
+    <string name="webdav_backup_authenticators">验证器：%d 只喵</string>
+    <string name="webdav_backup_documents">证件：%d 本喵</string>
+    <string name="webdav_backup_bank_cards">银行卡：%d 张喵</string>
     
     <!-- Restore Settings -->
     <string name="webdav_restore_settings">恢复设置喵</string>
@@ -1740,12 +1740,12 @@
     <!-- Selection Mode -->
     <string name="selected_items">已选择 %d 项喵</string>
     <string name="exit_selection_mode">退出选择模式喵</string>
-    <string name="select_all">全选喵</string>
+    <string name="select_all">全都挑喵</string>
     <string name="batch_delete">批量删除喵</string>
     <string name="batch_delete_passwords_title">批量删除密码喵</string>
-    <string name="batch_delete_passwords_message">确定要删除 %d 个密码吗?喵</string>
+    <string name="batch_delete_passwords_message">确定要叼走 %d 只密码吗喵？</string>
     <string name="batch_delete_totp_title">批量删除TOTP喵</string>
-    <string name="batch_delete_totp_message">确定要删除 %d 个TOTP项吗?喵</string>
+    <string name="batch_delete_totp_message">确定要叼走 %d 只验证器吗喵？</string>
     <string name="bound_totp_delete_warning_title_single">删除已绑定的验证器喵？</string>
     <string name="bound_totp_delete_warning_title_multi">删除已绑定的验证器喵？</string>
     <string name="bound_totp_delete_warning_message_single">这个验证器已绑定到一个密码喵。删除后，也会从该密码中移除验证器密钥喵。</string>
@@ -1753,9 +1753,9 @@
     <string name="bound_totp_delete_missing_password">缺失的密码 #%1$d喵</string>
     <string name="bound_totp_delete_warning_continue">继续喵</string>
     <string name="batch_delete_documents_title">批量删除证件喵</string>
-    <string name="batch_delete_documents_message">确定要删除 %d 个证件吗?喵</string>
+    <string name="batch_delete_documents_message">确定要删除 %d 个证件吗喵?</string>
     <string name="batch_delete_bankcards_title">批量删除银行卡喵</string>
-    <string name="batch_delete_bankcards_message">确定要删除 %d 张银行卡吗?喵</string>
+    <string name="batch_delete_bankcards_message">确定要删除 %d 张银行卡吗喵?</string>
     <string name="batch_delete_in_progress_title">正在删除项目喵</string>
     <string name="batch_delete_in_progress_message">正在删除所选项目，请稍候喵。</string>
     <string name="batch_delete_in_progress_count">%1$d / %2$d</string>
@@ -1767,7 +1767,7 @@
     <string name="batch_delete_notification_done_detail_success">已删除 %1$d 项喵</string>
     <string name="batch_delete_notification_done_detail_partial">已删除 %1$d 项，失败 %2$d 项喵</string>
     <string name="batch_delete_settings_card_title">批量删除进行中喵</string>
-    <string name="deleted_items">叼走了 %d 项喵</string>
+    <string name="deleted_items">叼走了 %d 只喵</string>
     <string name="deleted">删掉了喵</string>
     <string name="batch_favorite">批量收藏喵</string>
     <string name="batch_stack">堆叠喵</string>
@@ -1779,20 +1779,20 @@
     <string name="batch_stack_mode_auto_desc">取消自定义堆叠，回到自动堆叠逻辑喵。</string>
     <string name="batch_stack_mode_never">不堆叠喵</string>
     <string name="batch_stack_mode_never_desc">选中密码将永不参与堆叠，始终以独立卡片显示喵。</string>
-    <string name="batch_stack_success">已堆叠 %1$d 个密码喵</string>
-    <string name="batch_stack_auto_success">已将 %1$d 个密码恢复为自动堆叠喵</string>
-    <string name="batch_stack_never_success">已将 %1$d 个密码设为不堆叠喵</string>
-    <string name="batch_favorited">已将 %d 个密码添加到收藏喵</string>
-    <string name="batch_unfavorited">已将 %d 个密码从收藏中移除喵</string>
-    <string name="group_favorited">已将整组 %d 个密码添加到收藏喵</string>
-    <string name="group_unfavorited">已将整组 %d 个密码从收藏中移除喵</string>
+    <string name="batch_stack_success">已堆叠 %1$d 只密码喵</string>
+    <string name="batch_stack_auto_success">已把 %1$d 只密码恢复为自动堆叠喵</string>
+    <string name="batch_stack_never_success">已把 %1$d 只密码设为不堆叠喵</string>
+    <string name="batch_favorited">已把 %d 只密码收进爪下喵</string>
+    <string name="batch_unfavorited">已把 %d 只密码从爪下放出喵</string>
+    <string name="group_favorited">已把整组 %d 只密码收进爪下喵</string>
+    <string name="group_unfavorited">已把整组 %d 只密码从爪下放出喵</string>
     <string name="add_to_favorites">添加到收藏喵</string>
     <string name="remove_from_favorites">取消收藏喵</string>
-    <string name="enter_master_password_confirm">请输入主密码确认喵</string>
+    <string name="enter_master_password_confirm">再念一遍主密码喵</string>
     
     <!-- Autofill -->
     <string name="autofill">自动填充喵</string>
-    <string name="autofill_subtitle">帮你在应用和网站里自动填密码喵</string>
+    <string name="autofill_subtitle">帮您在应用和网站里自动填密码喵</string>
     
     <!-- Passkey Settings -->
     <string name="passkey_settings">通行密钥提供者喵</string>
@@ -1834,10 +1834,10 @@
     <string name="passkey_diagnostics_cleared">已清空通行密钥诊断数据喵</string>
     
     <!-- Passkey 生物识别认证 -->
-    <string name="biometric_title_passkey_auth">验证身份以登录喵</string>
-    <string name="biometric_subtitle_passkey_auth">使用通行密钥登录 %1$s喵</string>
-    <string name="biometric_title_passkey_create">验证身份以创建通行密钥喵</string>
-    <string name="biometric_subtitle_passkey_create">为 %1$s 创建通行密钥喵</string>
+    <string name="biometric_title_passkey_auth">验明正身再进门喵</string>
+    <string name="biometric_subtitle_passkey_auth">用通行密钥进 %1$s 的门喵</string>
+    <string name="biometric_title_passkey_create">验明正身，再配通行密钥喵</string>
+    <string name="biometric_subtitle_passkey_create">给 %1$s 配一把通行密钥喵</string>
     
     <string name="autofill_save_password">存进储物罐喵</string>
     <string name="autofill_save_to_monica">把密码存进 Monica 喵</string>
@@ -1868,8 +1868,8 @@
     <!-- Clear All Data -->
     <string name="clear_all_data">清空所有数据喵</string>
     <string name="clear_all_data_subtitle">删除所有密码、验证器、银行卡和证件数据喵</string>
-    <string name="clear_all_data_confirm">确认清空所有数据?喵</string>
-    <string name="clear_all_data_warning">此操作将永久删除所有密码、验证器、银行卡和证件数据，且无法恢复喵。\n\n建议在清空前先导出备份!喵</string>
+    <string name="clear_all_data_confirm">确认清空所有数据喵?</string>
+    <string name="clear_all_data_warning">此操作将永久删除所有密码、验证器、银行卡和证件数据，且无法恢复喵。\n\n建议在清空前先导出备份喵!</string>
     <string name="clearing_data">正在清空数据喵…</string>
     <string name="password_incorrect">密码错误喵</string>
     <string name="data_type_passwords">密码喵</string>
@@ -1880,13 +1880,13 @@
     <string name="data_type_generator_history">密码生成历史记录喵</string>
     
     <!-- Security Analysis -->
-    <string name="security_analysis">安全分析喵</string>
-    <string name="security_analysis_description">检查密码安全性、泄露情况和2FA状态喵</string>
-    <string name="security_analysis_pull_hint">下拉或点按进入安全分析喵</string>
-    <string name="security_analysis_pull_release">松手进入安全分析喵</string>
+    <string name="security_analysis">安全体检喵</string>
+    <string name="security_analysis_description">给所有密码做个体检喵：结不结实、有没有被泄露、两步验证齐不齐全喵。</string>
+    <string name="security_analysis_pull_hint">往下拽一拽或者点点它喵，就能去做安全体检喵</string>
+    <string name="security_analysis_pull_release">松开爪子就去做安全体检喵</string>
     <string name="start_security_analysis">开始安全分析喵</string>
     <string name="analysis_may_take_time">分析可能需要几分钟时间喵</string>
-    <string name="security_overview">安全概览喵</string>
+    <string name="security_overview">安全总览喵</string>
     <string name="analyzing_security">正在分析安全性喵…</string>
     <string name="duplicate_passwords">重复密码喵</string>
     <string name="duplicate_urls">重复URL喵</string>
@@ -1899,20 +1899,20 @@
     <string name="inactive_passkeys">可用通行密钥喵</string>
     <string name="inactive_passkeys_short">通行密钥喵</string>
     <string name="security_analysis_realtime">实时喵</string>
-    <string name="security_analysis_in_progress_short">分析中喵</string>
-    <string name="security_analysis_score">安全得分喵</string>
+    <string name="security_analysis_in_progress_short">体检中喵</string>
+    <string name="security_analysis_score">体检得分喵</string>
     <string name="security_analysis_score_short">得分喵</string>
-    <string name="security_analysis_auto_toggle_title">自动分析喵</string>
-    <string name="security_analysis_auto_toggle_subtitle">开启后自动分析；关闭后仅手动点击分析喵。</string>
+    <string name="security_analysis_auto_toggle_title">自动体检喵</string>
+    <string name="security_analysis_auto_toggle_subtitle">打开后随到随体检喵；关掉就得自己动手点喵。</string>
     <string name="password_detail_security_analysis_title">密码详情安全分析喵</string>
     <string name="password_detail_security_analysis_desc">在密码详情页显示密码强度、通行密钥可用性和 2FA 状态喵。</string>
-    <string name="security_strength_distribution">密码强度分布喵</string>
-    <string name="security_strength_medium">中喵</string>
-    <string name="security_strength_very_strong">极强喵</string>
-    <string name="security_analysis_scope_title">分析范围喵</string>
+    <string name="security_strength_distribution">密码结实程度分布喵</string>
+    <string name="security_strength_medium">中等喵</string>
+    <string name="security_strength_very_strong">固若金汤喵</string>
+    <string name="security_analysis_scope_title">体检范围喵</string>
     <string name="security_analysis_scope_label">选择数据库喵</string>
     <string name="security_analysis_scope_all">全部数据库喵</string>
-    <string name="security_analysis_scope_local">Monica数据库喵</string>
+    <string name="security_analysis_scope_local">Monica 本窝的数据库喵</string>
     <string name="security_analysis_scope_keepass">KeePass 库 #%1$d喵</string>
     <string name="security_analysis_scope_bitwarden">Bitwarden 库 #%1$d喵</string>
     <string name="security_risk_cards_title">风险分类喵</string>
@@ -1962,12 +1962,12 @@
     <!-- 自动填充设置 - 填充行为 -->
     <string name="autofill_fill_behavior_title">填充行为喵</string>
     <string name="autofill_active_fill_notification_title">主动填充通知喵</string>
-    <string name="autofill_active_fill_notification_desc">已绑定密码的应用聚焦登录字段时显示通知喵。需要启用 Monica 无障碍服务并允许通知喵。</string>
+    <string name="autofill_active_fill_notification_desc">绑好密码的应用一碰到登录框就提醒您喵。需要开着 Monica 的无障碍服务并允许通知喵。</string>
     <string name="autofill_active_fill_channel_name">自动填充提示喵</string>
     <string name="autofill_active_fill_channel_desc">Monica 检测到已绑定登录字段时显示通知喵</string>
-    <string name="autofill_active_fill_notification_content_title">Monica 可以填充当前应用喵</string>
-    <string name="autofill_active_fill_notification_content_text">点击选择用于 %1$s 的登录信息喵</string>
-    <string name="autofill_active_fill_target_unavailable">请返回检测到的应用后重试喵</string>
+    <string name="autofill_active_fill_notification_content_title">Monica 可以替您填这个应用了喵</string>
+    <string name="autofill_active_fill_notification_content_text">点一下喵，挑要用在 %1$s 的登录信息喵</string>
+    <string name="autofill_active_fill_target_unavailable">先退回那个应用喵，再试一次喵</string>
     <string name="autofill_fill_verify_identity">填充前先验明正身喵</string>
     <string name="autofill_fill_verify_identity_desc">选择密码后需要指纹或密码验证才能填充喵</string>
     <string name="autofill_fill_suggestions">填充建议喵</string>
@@ -1992,11 +1992,11 @@
     <string name="autofill_save_website_info_desc">自动记录网站域名到密码条目喵</string>
     
     <!-- 自动填充设置 - 黑名单 -->
-    <string name="autofill_blacklist_title">黑名单喵</string>
-    <string name="autofill_blacklist_enable">启用黑名单喵</string>
-    <string name="autofill_blacklist_enable_desc">禁止特定应用使用自动填充功能喵</string>
-    <string name="autofill_blacklist_manage">管理黑名单应用喵</string>
-    <string name="autofill_blacklist_manage_desc">已添加 %d 个应用喵</string>
+    <string name="autofill_blacklist_title">禁足名单喵</string>
+    <string name="autofill_blacklist_enable">开启禁足名单喵</string>
+    <string name="autofill_blacklist_enable_desc">上了名单的应用喵，一律不给自动填充喵。</string>
+    <string name="autofill_blacklist_manage">管理禁足名单喵</string>
+    <string name="autofill_blacklist_manage_desc">已经禁足 %d 个应用喵</string>
     <string name="autofill_save_blocked_targets_title">不保存目标喵</string>
     <string name="autofill_save_blocked_targets_manage">管理不保存名单喵</string>
     <string name="autofill_save_blocked_targets_manage_desc">共有 %1$d 个应用或网站不会再弹出保存提示喵。</string>
@@ -2007,11 +2007,11 @@
     <string name="autofill_save_blocked_targets_domain_only">网站目标喵</string>
     <string name="autofill_save_blocked_targets_app_only">Android 应用目标喵</string>
     <string name="autofill_save_blocked_targets_clear_all">清空不保存名单喵</string>
-    <string name="autofill_blacklist_dialog_title">黑名单管理喵</string>
+    <string name="autofill_blacklist_dialog_title">禁足名单管理喵</string>
     <string name="autofill_blacklist_dialog_desc">进了黑名单的应用，Monica 一律不出爪喵</string>
     <string name="autofill_blacklist_dialog_done">完成喵</string>
-    <string name="autofill_blacklist_no_apps">未找到已安装的应用喵</string>
-    <string name="autofill_blacklist_no_match">未找到匹配"%s"的应用喵</string>
+    <string name="autofill_blacklist_no_apps">没找到装好的应用喵</string>
+    <string name="autofill_blacklist_no_match">没有应用能对上「%s」喵</string>
     
     <!-- 自动填充设置 - 信息卡片 -->
     <string name="autofill_info_card_text">自动填充功能需要Android 8.0及以上版本喵。启用后，Monica将在您访问应用和网站时自动填充保存的密码喵。</string>
@@ -2181,7 +2181,7 @@
     <string name="suggestion_add_lowercase">添加小写字母 (a-z)喵</string>
     <string name="suggestion_add_uppercase">添加大写字母 (A-Z)喵</string>
     <string name="suggestion_add_digits">添加数字 (0-9)喵</string>
-    <string name="suggestion_add_special">添加特殊字符 (!@#$%^&amp;*)喵</string>
+    <string name="suggestion_add_special">添加特殊字符 (喵!@#$%^&amp;*)喵</string>
     <string name="suggestion_avoid_repeating">避免重复字符 (如 aaa, 111)喵</string>
     <string name="suggestion_avoid_sequential">避免连续字符 (如 abc, 123)喵</string>
     <string name="suggestion_common_password">⚠️ 这是常见密码，容易被破解喵！</string>
@@ -2210,7 +2210,7 @@
     <string name="generator_passphrase">短语喵</string>
     <string name="generator_pin">PIN</string>
     <string name="generator_switch_type">换个花样生成喵</string>
-    <string name="generator_generate_current">生成当前类型喵</string>
+    <string name="generator_generate_current">按当前类型搓一只喵</string>
     <string name="generated_password">生成的密码喵</string>
     <string name="symbol_password_generator">符号密码生成器喵</string>
     <string name="history">历史记录喵</string>
@@ -2235,17 +2235,17 @@
     <string name="include_uppercase">包含大写字母 (A-Z)喵</string>
     <string name="include_lowercase">包含小写字母 (a-z)喵</string>
     <string name="include_numbers">包含数字 (0-9)喵</string>
-    <string name="include_symbols">包含符号 (!@#$%)喵</string>
+    <string name="include_symbols">包含符号 (喵!@#$%)喵</string>
     <string name="generator_custom_symbols_label">自定义符号喵</string>
     <string name="generator_custom_symbols_placeholder">例如: *_-.@喵</string>
-    <string name="generator_custom_symbols_reset">重置喵</string>
-    <string name="generator_effective_symbols">生效符号: %s喵</string>
+    <string name="generator_custom_symbols_reset">清空重来喵</string>
+    <string name="generator_effective_symbols">现在生效的符号：%s喵</string>
     <string name="generator_custom_symbols_empty_error">筛完一只符号都不剩喵，请加几个允许的符号或关掉排除喵。</string>
     <string name="generator_symbols_setup">符号规则喵</string>
-    <string name="generator_symbols_mode_exclude">从默认中排除喵</string>
+    <string name="generator_symbols_mode_exclude">从默认里划掉喵</string>
     <string name="generator_symbols_mode_whitelist">自定义白名单喵</string>
     <string name="generator_symbols_exclude_hint">点一下就能把符号排除喵，只想挡掉几个时这样更快喵。</string>
-    <string name="generator_exclude_amp_bang">排除 &amp; 和 !喵</string>
+    <string name="generator_exclude_amp_bang">排除 &amp; 和 喵!</string>
     <string name="generator_require_symbol">必须包含符号喵</string>
     <string name="passphrase_generator">密码短语生成器喵</string>
     <string name="pin_length">PIN码长度: %d喵</string>
@@ -2283,7 +2283,7 @@
     <string name="clear_documents">证件喵</string>
     <string name="clear_bank_cards">银行卡喵</string>
     <string name="clear_generator_history">生成历史记录喵</string>
-    <string name="enter_master_password_to_confirm">请输入主密码确认喵</string>
+    <string name="enter_master_password_to_confirm">再念一遍主密码喵</string>
 
     <!-- Permission Management -->
     <string name="permission_management_title">权限管理喵</string>
@@ -2372,13 +2372,13 @@
     <string name="backup_content_generator_history">密码生成历史喵</string>
     <string name="backup_content_images">图片喵</string>
     <string name="backup_content_timeline">操作历史喵</string>
-    <string name="backup_content_trash">回收站喵</string>
+    <string name="backup_content_trash">纸箱喵</string>
     <string name="backup_content_passkeys">通行密钥喵</string>
     <string name="passkey_backup_encryption_required">通行密钥备份包含 %1$d 个私钥，请先启用备份加密喵。</string>
     <string name="passkey_backup_private_key_missing">私钥不可用，无法备份此通行密钥喵。</string>
-    <string name="passkey_restore_private_keys_missing">有 %1$d 个通行密钥缺少私钥，仅恢复了元数据，使用前需要重新注册喵。</string>
-    <string name="backup_content_trash_and_history">回收站与历史喵</string>
-    <string name="backup_content_trash_and_history_hint">包含回收站、密码生成历史和操作历史喵</string>
+    <string name="passkey_restore_private_keys_missing">有 %1$d 把通行密钥缺了私钥喵，只找回档案的话，用之前要重新注册喵。</string>
+    <string name="backup_content_trash_and_history">纸箱与历史喵</string>
+    <string name="backup_content_trash_and_history_hint">包含纸箱、密码生成历史和操作历史喵</string>
     <string name="backup_content_local_keepass">本地 KeePass 数据库喵</string>
     <string name="backup_content_local_keepass_hint">包含所有本地 KeePass 数据库（内部和外部存储）喵。恢复时统一存储到内部存储喵。</string>
     <string name="backup_content_local_keepass_empty">暂无本地 KeePass 数据库喵</string>
@@ -2395,7 +2395,7 @@
     <string name="zip_config_export_continue">继续喵</string>
     <string name="zip_backup_password_title">设置备份密码喵</string>
     <string name="zip_backup_password_desc">导入加密备份时需要使用此密码，Monica 不会保存它喵。</string>
-    <string name="zip_backup_passkey_password_hint">备份中包含 %1$d 个通行密钥，通行密钥不允许明文导出，请设置备份密码后加密导出喵。</string>
+    <string name="zip_backup_passkey_password_hint">备份里有 %1$d 把通行密钥喵，通行密钥不许明文带出去喵，设个备份密码加密导出喵。</string>
     <string name="zip_backup_password_label">备份密码喵</string>
     <string name="zip_backup_password_confirm_label">确认备份密码喵</string>
     <string name="zip_backup_password_required">请输入备份密码喵</string>
@@ -2420,7 +2420,7 @@
     <string name="sync_backup_title">数据库与备份喵</string>
     <string name="sync_backup_description">打理储物罐、文件夹和备份喵</string>
     <string name="sync_backup_local">本地备份喵</string>
-    <string name="sync_backup_cloud">云同步喵</string>
+    <string name="sync_backup_cloud">云朵同步喵</string>
     <string name="sync_backup_plus_hint">升级 Monica Plus，解锁更多云同步玩法喵</string>
 
     <string name="database_folder_management_title">数据库文件夹管理喵</string>
@@ -2501,11 +2501,11 @@
     <string name="confirm_remove_internal_description">这将移除数据库记录，内部存储中的文件也会被删除喵。</string>
     <string name="confirm_remove_external_description">这将移除数据库引用，原始文件不会被删除喵。</string>
     <string name="confirm_remove_remote_description">这将移除远端数据库记录与本地工作副本，WebDAV 上的原始文件不会被删除喵。</string>
-    <string name="remove">移除喵</string>
+    <string name="remove">挪走喵</string>
     <string name="create">创建喵</string>
-    <string name="import_existing_database">导入已有数据库喵</string>
+    <string name="import_existing_database">把现成的数据库接回家喵</string>
     <string name="enter_database_password_hint">输入此 KeePass 数据库的密码以解锁喵</string>
-    <string name="import_button">导入喵</string>
+    <string name="import_button">叼进来喵</string>
     <string name="keepass_remote_sync_status">同步状态喵</string>
     <string name="keepass_remote_sync_status_format">远端同步：%1$s喵</string>
     <string name="keepass_remote_sync_status_local_only">仅本地喵</string>
@@ -2550,8 +2550,8 @@
     <string name="no_validators_available">暂无验证器喵</string>
     
     <!-- Support Author Page -->
-    <string name="support_author_page_title">给铲屎官投喂小鱼干喵</string>
-    <string name="support_author_page_description">谢谢你住进 Monica 喵！如果这个储物罐对你有用，欢迎用下面的方式给铲屎官投喂小鱼干喵：</string>
+    <string name="support_author_page_title">给人家投喂小鱼干喵</string>
+    <string name="support_author_page_description">谢谢您住进 Monica 喵！如果这个储物罐对您有用，欢迎用下面的方式给人家投喂小鱼干喵：</string>
     <string name="support_via_kofi">去 Ko-fi 投喂小鱼干喵</string>
     <string name="support_via_afdian">去爱发电投喂小鱼干喵</string>
     <string name="open_link">打开链接喵</string>
@@ -2583,16 +2583,16 @@
     
     <!-- Common Account / Quick Fill -->
     <string name="common_account_title">常用账号信息喵</string>
-    <string name="common_account_configured">已配置喵</string>
-    <string name="common_account_not_configured">未配置喵</string>
-    <string name="common_account_description">设置常用的默认值，新建条目时可快速填入喵</string>
+    <string name="common_account_configured">已经安排好喵</string>
+    <string name="common_account_not_configured">还没安排喵</string>
+    <string name="common_account_description">提前记好常用的默认值喵，新建条目时爪子一挥就填上喵。</string>
     <string name="common_account_email">默认邮箱喵</string>
     <string name="common_account_phone">默认手机号喵</string>
     <string name="common_account_username">默认用户名喵</string>
-    <string name="common_account_username_hint">你的用户名喵</string>
+    <string name="common_account_username_hint">您的名字喵</string>
     <string name="common_account_auto_fill">自动填充默认值喵</string>
     <string name="common_account_auto_fill_desc">新建条目时自动填充默认信息喵</string>
-    <string name="common_account_saved">已保存喵</string>
+    <string name="common_account_saved">记好了喵</string>
     <string name="fill_common_account">填充喵</string>
     <string name="common_account_templates_title">常用账号信息喵</string>
     <string name="common_account_templates_description">管理可复用的账号模板，支持邮箱、账号、手机号、密码四种类型喵。</string>
@@ -2600,19 +2600,19 @@
     <string name="common_account_billing_address_desc">保存默认账单地址，用于付款和银行卡表单喵。</string>
     <string name="common_account_billing_use_saved">使用常用账单地址喵</string>
     <string name="common_account_billing_filled">已填入常用账单地址喵</string>
-    <string name="common_account_billing_use_location">使用当前位置喵</string>
-    <string name="common_account_billing_location_filled">已根据当前位置填入地址喵</string>
-    <string name="common_account_billing_location_failed">无法从当前位置获取地址喵</string>
-    <string name="common_account_billing_location_permission_denied">需要位置权限才能自动填入地址喵</string>
-    <string name="common_account_templates_empty_title">还没有模板喵</string>
+    <string name="common_account_billing_use_location">就用当前位置喵</string>
+    <string name="common_account_billing_location_filled">按现在的位置把地址填好了喵</string>
+    <string name="common_account_billing_location_failed">定不到现在在哪喵</string>
+    <string name="common_account_billing_location_permission_denied">要给位置权限喵，才能自动填地址喵。</string>
+    <string name="common_account_templates_empty_title">小本本还空着喵</string>
     <string name="common_account_templates_empty_desc">点击下方按钮创建第一条常用账号模板喵。</string>
-    <string name="common_account_template_add">创建模板喵</string>
+    <string name="common_account_template_add">做个新模板喵</string>
     <string name="common_account_template_edit">编辑模板喵</string>
     <string name="common_account_template_type">类型喵</string>
     <string name="common_account_template_title">标题喵</string>
     <string name="common_account_template_content">内容喵</string>
     <string name="common_account_template_delete_title">删除模板喵</string>
-    <string name="common_account_template_delete_message">确定删除这条模板吗喵？</string>
+    <string name="common_account_template_delete_message">要把这条模板叼走喵？</string>
     <string name="common_account_templates_count">%1$d 条模板喵</string>
     <string name="common_account_templates_create_hint">创建可复用条目，后续可快速复制与填充喵。</string>
     <string name="common_account_type_email">邮箱喵</string>
@@ -2680,7 +2680,7 @@
 
     <!-- V2 Folder Management -->
     <string name="v2_folder_management_title">文件夹管理喵</string>
-    <string name="v2_folder_management_subtitle">整理并同步你的文件夹喵</string>
+    <string name="v2_folder_management_subtitle">整理并同步您的文件夹喵</string>
     <string name="v2_sync_all_title">Bitwarden 全量同步喵</string>
     <string name="v2_sync_all_desc">按已关联分类同步到 Bitwarden 云端喵</string>
     <string name="v2_apply_sync">立即应用喵</string>
@@ -2715,7 +2715,7 @@
     <string name="v2_no_folder_root">不关联文件夹（根目录）喵</string>
 
     <!-- New Folder Management (M3E Design) -->
-    <string name="folder_management_subtitle">整理并同步你的文件夹喵</string>
+    <string name="folder_management_subtitle">整理并同步您的文件夹喵</string>
     <string name="sync_all_title">Bitwarden 全量同步喵</string>
     <string name="sync_all_desc">按已关联分类同步到 Bitwarden 云端喵</string>
     <string name="sync_apply_now">立即应用喵</string>
@@ -2788,8 +2788,8 @@
     <string name="autofill_open_picker">点击进入选择界面喵</string>
     <string name="autofill_manual_entry_title">Monica自动填充喵</string>
     <string name="autofill_save_for_next_fill">自动保存并在下次填充喵</string>
-    <string name="autofill_select_password">挑一个密码喵</string>
-    <string name="autofill_detected_passwords">嗅到 %1$d 个密码喵</string>
+    <string name="autofill_select_password">挑一只密码喵</string>
+    <string name="autofill_detected_passwords">嗅到 %1$d 只密码喵</string>
     <string name="autofill_password_index">密码 %1$d喵</string>
     <string name="autofill_credentials">凭据喵</string>
     <string name="autofill_storage_sync_summary">%1$s · %2$s</string>
@@ -2800,7 +2800,7 @@
     <string name="autofill_select_password_and_copy">选择密码后复制到剪贴板喵</string>
     <string name="autofill_suggested_fill">建议填充喵</string>
     <string name="autofill_other_entries">其他条目喵</string>
-    <string name="autofill_all_entries">所有条目喵</string>
+    <string name="autofill_all_entries">全部家当喵</string>
     <string name="autofill_no_suggestions_in_context">在此上下文中没有建议的项目喵</string>
     <string name="autofill_choose_from_all_passwords">可以从所有密码中选择一个喵</string>
     <string name="autofill_try_search_or_add">试试换个搜索词喵\n或去主应用里存个新密码喵</string>
@@ -2808,11 +2808,11 @@
     <string name="autofill_for_app">为以下应用自动填充喵</string>
     <string name="autofill_source_with_value">来源: %1$s喵</string>
     <string name="autofill_no_payment_info">未找到账单信息喵</string>
-    <string name="autofill_adjust_search_or_add_payment">尝试调整搜索条件或添加新的支付信息喵</string>
+    <string name="autofill_adjust_search_or_add_payment">换个搜索词试试喵，或者添一条新的支付信息喵</string>
     <string name="autofill_card_expiry">有效期: %1$s喵</string>
     <string name="autofill_for_display_name">为 %1$s喵</string>
     <string name="autofill_suggested_strong_password">建议的强密码喵</string>
-    <string name="autofill_generate_password">搓个新密码喵</string>
+    <string name="autofill_generate_password">搓只新密码喵</string>
     <string name="autofill_generated_password_title">刚搓好的密码喵</string>
     <string name="autofill_generated_password_fill">填入喵</string>
     <string name="autofill_generated_password_options">生成设置喵</string>
@@ -2823,7 +2823,7 @@
     <string name="autofill_generated_password_symbols">符号喵</string>
     <string name="autofill_generated_password_readable">易读模式喵</string>
     <string name="autofill_structured_fill_unavailable">自动填充不可用喵</string>
-    <string name="autofill_structured_copy_message">当前页面被识别为%1$s，不能直接填入%2$s喵。你可以复制需要的字段喵。</string>
+    <string name="autofill_structured_copy_message">当前页面被识别为%1$s，不能直接填入%2$s喵。您可以复制需要的字段喵。</string>
     <string name="password_strength_label">密码强度喵</string>
     
     <!-- Send 页面 -->
@@ -2840,7 +2840,7 @@
     <string name="send_delete_title">删除 Send喵</string>
     <string name="send_delete_message">确定删除“%1$s”吗喵？此操作无法撤销喵。</string>
     <string name="send_secure_share_title">端到端加密分享喵</string>
-    <string name="send_secure_share_desc">你的 Send 数据通过 Bitwarden 协议加密，链接可设置有效期、访问次数与访问密码喵。</string>
+    <string name="send_secure_share_desc">您的 Send 数据通过 Bitwarden 协议加密，链接可设置有效期、访问次数与访问密码喵。</string>
     <string name="send_chip_total">总计 %1$d喵</string>
     <string name="send_chip_text">文本 %1$d喵</string>
     <string name="send_chip_file">文件 %1$d喵</string>
@@ -2874,8 +2874,8 @@
     <string name="send_hide_text_desc">首次查看后隐藏明文（Bitwarden 标准）喵</string>
     
     <!-- 回收站设置 -->
-    <string name="trash_enable">启用回收站喵</string>
-    <string name="trash_enable_desc">删除的条目会先移入回收站喵</string>
+    <string name="trash_enable">启用纸箱喵</string>
+    <string name="trash_enable_desc">叼走的猫猫先在纸箱里住几天喵</string>
     <string name="trash_auto_clear_time">自动清空时间喵</string>
     <string name="trash_no_auto_clear">不自动清空喵</string>
     <string name="trash_day_format">%1$d天喵</string>
@@ -2888,7 +2888,7 @@
     <string name="topbar_close_search">关闭搜索喵</string>
     <string name="back_to_top">回到顶部喵</string>
     <string name="loading_default">加载中...喵</string>
-    <string name="common_count_items">%1$d 项喵</string>
+    <string name="common_count_items">%1$d 只喵</string>
     <string name="developer_mode_password_disabled">开发者模式: 已关闭密码验证喵</string>
     <string name="sync_status_synced_short">已同步喵</string>
     <string name="sync_status_pending_short">等待同步喵</string>
@@ -2930,10 +2930,10 @@
     <string name="pull_syncing_bitwarden">正在同步 Bitwarden...喵</string>
     <string name="pull_sync_requires_bitwarden_login">请先登录并解锁 Bitwarden喵</string>
     <string name="pull_sync_success">Bitwarden 同步完成喵</string>
-    <string name="bitwarden_sync_success_with_offline_ready">同步完成喵。本次处理 %1$d 处变更，当前有 %2$d 条密码可离线查看喵。</string>
+    <string name="bitwarden_sync_success_with_offline_ready">同步好啦喵。这次处理 %1$d 处变更喵，现在有 %2$d 只密码能离线查看喵。</string>
     <string name="bitwarden_sync_summary_success_title">Bitwarden 已同步 %1$d 条变更喵</string>
     <string name="bitwarden_sync_summary_warning_title">Bitwarden 已同步 %1$d 条变更，但有提醒喵</string>
-    <string name="bitwarden_sync_summary_offline_detail">%1$d 条密码可离线查看喵</string>
+    <string name="bitwarden_sync_summary_offline_detail">%1$d 只密码可离线查看喵</string>
     <string name="bitwarden_sync_summary_conflict_detail">%1$d 个冲突喵</string>
     <string name="bitwarden_sync_summary_upload_failed_detail">%1$d 个上传失败喵</string>
     <string name="bitwarden_sync_summary_local_dirty_detail">%1$d 条待上传数据喵</string>
@@ -2948,7 +2948,7 @@
     
     <!-- 时间线/回收站硬编码修复 -->
     <string name="timeline_title">时间线喵</string>
-    <string name="timeline_and_trash_title">时间线/回收站喵</string>
+    <string name="timeline_and_trash_title">时间线/纸箱喵</string>
     <string name="sync_bitwarden_database_menu">同步bitwarden数据库喵</string>
     <string name="cache_bitwarden_database_menu">一键缓存bitwarden数据喵</string>
     <string name="clear_bitwarden_cache_menu">清除bitwarden缓存喵</string>
@@ -2964,7 +2964,7 @@
     <string name="bitwarden_cache_blocked_empty_vault">Bitwarden 缓存被阻止：%1$s喵</string>
     <string name="bitwarden_clear_cache_confirm_title">清除 Bitwarden 缓存喵？</string>
     <string name="bitwarden_clear_cache_confirm_message">将清除当前 Vault 的本地 Bitwarden 缓存数据，后续可再次同步恢复喵。</string>
-    <string name="bitwarden_clear_cache_confirm_message_with_risk">检测到待同步改动（待处理操作：%1$d，密码本地修改：%2$d，安全项本地修改：%3$d，未解决冲突：%4$d）喵。你可以仅清除已同步缓存，或强制清除全部本地 Bitwarden 缓存喵。</string>
+    <string name="bitwarden_clear_cache_confirm_message_with_risk">检测到待同步改动（待处理操作：%1$d，密码本地修改：%2$d，安全项本地修改：%3$d，未解决冲突：%4$d）喵。您可以仅清除已同步缓存，或强制清除全部本地 Bitwarden 缓存喵。</string>
     <string name="bitwarden_clear_cache_action">清除缓存喵</string>
     <string name="bitwarden_clear_cache_action_safe">仅清除已同步缓存喵</string>
     <string name="bitwarden_clear_cache_action_force">强制全部清除喵</string>
@@ -2973,7 +2973,7 @@
     <string name="bitwarden_clear_cache_force_success">Bitwarden 缓存已强制清除（%1$d 项）喵</string>
     <string name="bitwarden_clear_cache_failed">清除 Bitwarden 缓存失败：%1$s喵</string>
     <string name="timeline_subtitle">操作历史喵</string>
-    <string name="timeline_trash_title">回收站喵</string>
+    <string name="timeline_trash_title">纸箱喵</string>
     <string name="timeline_trash_subtitle">已删除项目喵</string>
     <string name="timeline_date_today">今天喵</string>
     <string name="timeline_date_yesterday">昨天喵</string>
@@ -3014,13 +3014,13 @@
     <string name="password_batch_transfer_progress_title_copy">正在批量复制喵</string>
     <string name="password_batch_transfer_progress_title_move">正在批量移动喵</string>
     <string name="password_batch_transfer_target">目标：%1$s喵</string>
-    <string name="password_batch_transfer_partial_result">成功 %1$d 项，失败 %2$d 项喵</string>
+    <string name="password_batch_transfer_partial_result">成了 %1$d 只喵，砸了 %2$d 只喵</string>
     <string name="password_batch_keepass_failure_title">无法移动到 KeePass喵</string>
     <string name="password_batch_keepass_failure_conflict">%1$s 的云端文件和本机工作副本都有修改喵。为防止数据被覆盖，%2$d 项内容未移动，源项目仍保留喵。请进入“数据库与备份 → KeePass → 该数据库 → 数据库工具 → 冲突中心”处理冲突，然后重新移动喵。</string>
     <string name="password_batch_keepass_failure_network">无法连接 %1$s，%2$d 项内容未移动，源项目仍保留喵。请检查网络和远程存储服务状态后重试喵。</string>
     <string name="password_batch_keepass_failure_auth">%1$s 的远程账号登录状态已失效，%2$d 项内容未移动，源项目仍保留喵。请重新登录远程账号后重试喵。</string>
     <string name="password_batch_keepass_failure_permission">%1$s 缺少写入权限或已设为只读，%2$d 项内容未移动，源项目仍保留喵。请重新授权或关闭只读模式后重试喵。</string>
-    <string name="password_batch_keepass_failure_locked">%1$s 尚未解锁，%2$d 项内容未移动，源项目仍保留喵。请解锁数据库后重试喵。</string>
+    <string name="password_batch_keepass_failure_locked">%1$s 还锁着喵，%2$d 只没搬动喵，原来的都好好留着喵。</string>
     <string name="password_batch_keepass_failure_unknown">%1$s 无法写入 %2$d 项内容，源项目仍保留喵。原因：%3$s喵</string>
     <string name="category_folder_transfer_source_missing">源分类文件夹已不存在喵。</string>
     <string name="category_folder_transfer_no_change">该文件夹已经位于所选位置喵。</string>
@@ -3043,8 +3043,8 @@
     <string name="password_batch_transfer_notification_channel_desc">显示数据库间批量复制与移动的进度喵</string>
     <string name="password_batch_transfer_notification_progress">已完成 %1$d/%2$d喵</string>
     <string name="password_batch_transfer_progress_preparing">准备中...喵</string>
-    <string name="password_batch_transfer_notification_done_copy">批量复制完成喵</string>
-    <string name="password_batch_transfer_notification_done_move">批量移动完成喵</string>
+    <string name="password_batch_transfer_notification_done_copy">批量叼好了喵</string>
+    <string name="password_batch_transfer_notification_done_move">批量搬完窝了喵</string>
     <string name="password_batch_transfer_notification_done_detail_success">已完成 %1$d 项喵</string>
     <string name="password_batch_transfer_notification_done_detail_partial">成功 %1$d 项，失败 %2$d 项喵</string>
     <string name="password_batch_transfer_continue_in_background">后台继续喵</string>
@@ -3056,8 +3056,8 @@
     <string name="timeline_restore_snapshot">恢复快照喵</string>
     <string name="timeline_redo_operation">重做操作喵</string>
     <string name="timeline_save_old_as_new">旧数据另存为新条目喵</string>
-    <string name="timeline_empty_trash_title">清空回收站喵</string>
-    <string name="timeline_empty_trash_message">确定要永久删除回收站中的 %1$d 个条目吗喵？此操作无法撤销喵。</string>
+    <string name="timeline_empty_trash_title">纸箱大扫除喵</string>
+    <string name="timeline_empty_trash_message">确定要永久删除纸箱中的 %1$d 个条目吗喵？此操作无法撤销喵。</string>
     <string name="timeline_empty_action">清空喵</string>
     <string name="timeline_exit_selection">退出选择喵</string>
     <string name="timeline_deleted_items_count">%1$d 个已删除条目喵</string>
@@ -3074,10 +3074,10 @@
     <string name="timeline_auto_permanent_delete_in_days">%1$d 天后自动永久删除喵</string>
     <string name="timeline_restore_this_item">恢复此条目喵</string>
     <string name="timeline_permanent_delete_item_message">确定要永久删除「%1$s」吗喵？此操作无法撤销喵。</string>
-    <string name="timeline_trash_disabled_title">回收站已禁用喵</string>
-    <string name="timeline_trash_disabled_hint">启用回收站后，删除的条目会在这里保留一段时间喵</string>
-    <string name="timeline_trash_empty_title">回收站为空喵</string>
-    <string name="timeline_trash_empty_hint">删除的密码、验证器等会在这里保留喵</string>
+    <string name="timeline_trash_disabled_title">纸箱已禁用喵</string>
+    <string name="timeline_trash_disabled_hint">启用纸箱后，删除的条目会在这里保留一段时间喵</string>
+    <string name="timeline_trash_empty_title">纸箱空空，猫猫都出去玩啦喵</string>
+    <string name="timeline_trash_empty_hint">被叼走的猫猫先在纸箱里打盹喵，随时能捞回来喵</string>
     
     <!-- 应用选择器 / 自定义字段 / 照片选择器 / TOTP 菜单 -->
     <string name="app_selector_manual_input_cd">手动输入应用信息喵</string>
@@ -3233,13 +3233,13 @@
     <string name="bind_title_desc">将该应用关联到所有相同标题的密码喵</string>
     <string name="add_email">添加邮箱喵</string>
     <string name="add_phone">添加电话喵</string>
-    <string name="import_from_bank_card">从银行卡导入喵</string>
+    <string name="import_from_bank_card">从银行卡里叼一点喵</string>
     <string name="select_bank_card">选择银行卡喵</string>
     <string name="no_bank_card_data">暂无银行卡数据喵</string>
     <string name="tail_number_last4">尾号 %1$s喵</string>
     <string name="parse_failed">解析失败喵</string>
     <string name="imported">已导入喵</string>
-    <string name="select">选择喵</string>
+    <string name="select">挑一个喵</string>
     <string name="sync_save_to_bitwarden">将同步保存到 Bitwarden喵</string>
     <string name="saved_to_gallery">已保存到相册喵</string>
     <string name="switch_to_list">切换到列表喵</string>
@@ -3271,13 +3271,13 @@
     <string name="dedup_engine_worklist_desc">当前视图下还有 %1$d 个分组等待处理喵</string>
     <string name="dedup_engine_recommendation_title">建议处理方式喵</string>
     <string name="dedup_engine_items_title">涉及条目喵</string>
-    <string name="dedup_engine_scanning">正在扫描重复分组喵…</string>
+    <string name="dedup_engine_scanning">正在满窝嗅探重复的喵…</string>
     <string name="dedup_engine_cluster_count">%1$d 个分组喵</string>
-    <string name="dedup_engine_selected_count">已选 %1$d 个喵</string>
+    <string name="dedup_engine_selected_count">抱住了 %1$d 只喵</string>
     <string name="dedup_engine_multi_source_hint">多数据源治理喵</string>
     <string name="dedup_engine_preferred_source_hint">当前主数据库喵</string>
     <string name="dedup_engine_preferred_source_title">主数据库喵</string>
-    <string name="dedup_engine_preferred_source_desc">先告诉 Monica 你更常用哪个数据库，去重建议会优先保留它，再处理其他密码副本喵。</string>
+    <string name="dedup_engine_preferred_source_desc">先告诉 Monica 您更常用哪个数据库，去重建议会优先保留它，再处理其他密码副本喵。</string>
     <string name="dedup_engine_controls_title">治理策略与筛选喵</string>
     <string name="dedup_engine_controls_desc">主数据库、来源范围和问题类型都收在这里，默认保持简洁喵。</string>
     <string name="dedup_engine_controls_expand">展开设置喵</string>
@@ -3303,8 +3303,8 @@
     <string name="dedup_engine_selected_short">已选中喵</string>
     <string name="dedup_engine_select_short">选择喵</string>
     <string name="dedup_engine_type_all">全部类型喵</string>
-    <string name="dedup_engine_empty_title">未发现重复分组喵</string>
-    <string name="dedup_engine_empty_desc">当前范围内看起来比较干净，或者剩余分组已被你主动忽略喵。</string>
+    <string name="dedup_engine_empty_title">没嗅到重复的喵</string>
+    <string name="dedup_engine_empty_desc">当前范围内看起来比较干净，或者剩余分组已被您主动忽略喵。</string>
     <string name="dedup_engine_more_items">还有 %1$d 项喵</string>
     <string name="dedup_scope_all">全部来源喵</string>
     <string name="dedup_scope_local">Monica 本地喵</string>
@@ -3319,12 +3319,12 @@
     <string name="dedup_source_local">Monica</string>
     <string name="dedup_source_keepass">KeePass</string>
     <string name="dedup_source_bitwarden">Bitwarden</string>
-    <string name="dedup_action_archive_local_passwords">归档 Monica 副本喵</string>
+    <string name="dedup_action_archive_local_passwords">把 Monica 的副本抱去柜顶喵</string>
     <string name="dedup_action_keep_source_archive_others">保留 %1$s，归档其他密码副本喵</string>
     <string name="dedup_action_keep_one_source_password">保留 1 条 %1$s 记录，归档其余重复项喵</string>
-    <string name="dedup_action_keep_one_local_item">保留 1 条 Monica 记录，移入回收站其余项喵</string>
-    <string name="dedup_action_trash_local_items">移入回收站喵</string>
-    <string name="dedup_action_ignore">忽略喵</string>
+    <string name="dedup_action_keep_one_local_item">保留 1 条 Monica 记录，移入纸箱其余项喵</string>
+    <string name="dedup_action_trash_local_items">移入纸箱喵</string>
+    <string name="dedup_action_ignore">装没看见喵</string>
     <string name="dedup_cluster_exact_password_desc">同一来源内，账号与密码完全一致，适合在 %1$s 内清理喵。</string>
     <string name="dedup_cluster_cross_source_password_desc">同一账号同时存在于 %1$s，建议先治理主次而不是直接删除喵。</string>
     <string name="dedup_cluster_exact_password_recommendation">同一来源内发现完全重复的密码喵。建议保留 1 条 %1$s 记录，归档其余重复项喵。</string>
@@ -3396,21 +3396,21 @@
     <string name="import_type_monica_backup_desc">把完整的 ZIP 备份搬回窝，一样都不少喵</string>
     <string name="import_type_monica_backup_file_hint">选择 .zip 文件喵</string>
     <string name="import_type_keepass_format_title">KeePass 格式喵</string>
-    <string name="import_type_keepass_format_desc">导入 KeePass 兼容的 .kdbx 数据库文件喵</string>
+    <string name="import_type_keepass_format_desc">把 KeePass 家的 .kdbx 数据库叼进来喵</string>
     <string name="import_type_keepass_format_file_hint">选择 .kdbx 文件喵</string>
     <string name="import_type_csv_data_title">CSV 数据喵</string>
     <string name="import_type_csv_data_desc">认得 Monica / KeePass / Bitwarden / Proton Pass / 密码键盘软件导出的 CSV 喵</string>
     <string name="import_type_csv_data_file_hint">选择 .csv 文件喵</string>
     <string name="import_type_aegis_title">Aegis 验证器喵</string>
-    <string name="import_type_aegis_desc">导入 Aegis Authenticator 的 JSON 备份喵</string>
+    <string name="import_type_aegis_desc">把 Aegis Authenticator 的 JSON 备份叼进来喵</string>
     <string name="import_type_aegis_file_hint">选择 .json 文件喵</string>
     <string name="import_type_stratum_title">Stratum Auth</string>
     <string name="import_type_stratum_desc">导入 Stratum/AuthPro 备份（.stratum/.txt/.html）喵</string>
     <string name="import_type_stratum_file_hint">选择 .stratum / .txt / .html 文件喵</string>
-    <string name="import_csv_file_unreadable">无法读取文件，请检查文件是否存在喵</string>
-    <string name="import_csv_file_empty">文件为空喵</string>
-    <string name="import_csv_invalid_format">文件格式错误喵</string>
-    <string name="import_csv_no_data_found">一条数据都没叼到喵，请检查文件格式喵。</string>
+    <string name="import_csv_file_unreadable">这个文件读不出来喵，确认它还在不在喵。</string>
+    <string name="import_csv_file_empty">文件里空空如也喵</string>
+    <string name="import_csv_invalid_format">格式不对味喵</string>
+    <string name="import_csv_no_data_found">一只都没叼到喵，请检查文件格式喵。</string>
     <string name="import_type_steam_title">Steam Guard</string>
     <string name="import_type_steam_desc">导入 Steam 令牌的 maFile 文件喵</string>
     <string name="import_type_steam_file_hint">选择 .maFile 文件喵</string>
@@ -3418,13 +3418,13 @@
     <string name="import_type_steam_mode_mafile">maFile 文件喵</string>
     <string name="import_type_steam_mode_coexist">Steam 共存导入喵</string>
     <string name="import_type_steam_mode_login">Steam 账号登录喵</string>
-    <string name="import_type_steam_coexist_desc">粘贴设备ID与 SteamGuard JSON，按共存方式导入喵。</string>
+    <string name="import_type_steam_coexist_desc">贴上设备 ID 和 SteamGuard JSON喵，按共存方式收进来喵。</string>
     <string name="import_type_steam_login_desc">使用 Steam 账号登录，按提示输入验证代码后完成导入喵。</string>
     <string name="import_type_steam_login_username_label">Steam 账号喵</string>
     <string name="import_type_steam_login_password_label">Steam 密码喵</string>
     <string name="import_type_steam_login_code_label">验证码喵</string>
     <string name="import_type_steam_login_code_hint">输入邮箱码或令牌码喵</string>
-    <string name="import_type_steam_login_challenge_required">需要验证，请输入验证码喵。</string>
+    <string name="import_type_steam_login_challenge_required">要先验明正身喵，把验证码交出来喵。</string>
     <string name="import_type_steam_login_submit_code">提交验证码喵</string>
     <string name="import_type_steam_device_id_label">设备ID喵</string>
     <string name="import_type_steam_device_id_hint">android:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx 或包含 uuidKey 的 XML喵</string>
@@ -3434,13 +3434,13 @@
     <string name="import_type_steam_custom_name_hint">留空则使用 JSON 中的 account_name喵</string>
     <string name="steam_login_fill_from_password_applied">已从所选密码填充 Steam 登录信息喵</string>
     <string name="import_type_csv_monica_title">Monica CSV</string>
-    <string name="import_type_csv_monica_desc">导入 Monica 应用导出的 CSV 文件喵</string>
+    <string name="import_type_csv_monica_desc">把 Monica 自己导出的 CSV 叼回来喵</string>
     <string name="import_type_csv_monica_file_hint">选择 Monica .csv 文件喵</string>
     <string name="import_type_csv_keepass_title">KeePass CSV</string>
-    <string name="import_type_csv_keepass_desc">导入 KeePass 导出的 CSV 文件喵</string>
+    <string name="import_type_csv_keepass_desc">把 KeePass 导出的 CSV 叼进来喵</string>
     <string name="import_type_csv_keepass_file_hint">选择 KeePass .csv 文件喵</string>
     <string name="import_type_csv_bitwarden_title">Bitwarden CSV</string>
-    <string name="import_type_csv_bitwarden_desc">导入 Bitwarden 导出的 CSV 文件喵</string>
+    <string name="import_type_csv_bitwarden_desc">把 Bitwarden 导出的 CSV 叼进来喵</string>
     <string name="import_type_csv_bitwarden_file_hint">选择 Bitwarden .csv 文件喵</string>
     <string name="import_type_csv_proton_pass_title">Proton Pass CSV</string>
     <string name="import_type_csv_proton_pass_desc">导入 Proton Pass 导出的 CSV 文件喵</string>
@@ -3452,25 +3452,25 @@
     <string name="import_type_csv_password_keyboard_desc">导入密码键盘软件导出的 CSV 文件喵</string>
     <string name="import_type_csv_password_keyboard_file_hint">选择密码键盘软件 .csv 文件喵</string>
     <string name="import_password_keyboard_tag_dialog_title">标签字段处理喵</string>
-    <string name="import_password_keyboard_tag_dialog_message">检测到密码键盘 CSV 可能包含“标签”字段喵。对于密码和卡包条目，Monica 暂无内置标签功能喵。你希望将标签转换为自定义字段，还是在导入时删除标签喵？（验证器字段会在可解析时导入为 Monica 原生验证器）喵</string>
+    <string name="import_password_keyboard_tag_dialog_message">检测到密码键盘 CSV 可能包含“标签”字段喵。对于密码和卡包条目，Monica 暂无内置标签功能喵。您希望将标签转换为自定义字段，还是在导入时删除标签喵？（验证器字段会在可解析时导入为 Monica 原生验证器）喵</string>
     <string name="import_password_keyboard_tag_convert_action">转为自定义字段喵</string>
     <string name="import_password_keyboard_tag_drop_action">删除标签喵</string>
     <string name="import_type_csv_source_title">这份 CSV 是从哪来的喵</string>
-    <string name="import_data_file_select_failed">文件选择失败：%1$s喵</string>
-    <string name="import_data_unknown_error">未知错误喵</string>
+    <string name="import_data_file_select_failed">文件没挑成喵：%1$s</string>
+    <string name="import_data_unknown_error">不知道哪里哈气了喵</string>
     <string name="import_data_operation_unavailable">无法启动操作喵</string>
     <string name="import_data_tap_to_select_file">点击选择文件喵</string>
     <string name="aegis_decrypt_password_title">输入解密密码喵</string>
     <string name="aegis_decrypt_password_hint">此 Aegis 备份文件已加密，请输入密码以解密喵。</string>
     <string name="stratum_decrypt_password_title">输入 Stratum 备份密码喵</string>
     <string name="stratum_decrypt_password_hint">此 Stratum/AuthPro 备份已加密，请输入密码解密喵。</string>
-    <string name="import_data_password_cannot_be_empty">密码不能为空喵</string>
-    <string name="import_data_zip_restore_success_count">备份搬回窝成功喵，一共 %1$d 个条目喵</string>
-    <string name="import_data_aegis_import_success_count">成功收编 %1$d 个 TOTP 验证器喵</string>
-    <string name="import_data_stratum_import_success_count">成功导入 %1$d 个 Stratum 验证器喵</string>
+    <string name="import_data_password_cannot_be_empty">密码不能空着喵</string>
+    <string name="import_data_zip_restore_success_count">备份搬回窝成功喵，一共 %1$d 只喵</string>
+    <string name="import_data_aegis_import_success_count">成功收编 %1$d 只 TOTP 验证器喵</string>
+    <string name="import_data_stratum_import_success_count">叼回来 %1$d 只 Stratum 验证器喵</string>
     <string name="import_data_password_incorrect_retry">密码不对喵，再试一次喵</string>
-    <string name="import_data_failed_with_reason">导入失败：%1$s喵</string>
-    <string name="import_data_kdbx_import_success_count">成功导入 %1$d 条记录喵</string>
+    <string name="import_data_failed_with_reason">没叼进来喵：%1$s</string>
+    <string name="import_data_kdbx_import_success_count">叼回来 %1$d 只喵</string>
     <string name="import_data_steam_import_success">成功收编 Steam Guard 验证器喵</string>
     <string name="webdav_image_optimization_title">图片优化喵</string>
     <string name="webdav_image_stats_total">共 %1$d 张图片，总大小 %2$s喵</string>
@@ -3480,20 +3480,20 @@
     <string name="webdav_image_no_need_compress">所有图片已优化，无需压缩喵</string>
     <string name="webdav_compress_images_one_tap">一键压缩图片喵</string>
     <string name="webdav_compress_dialog_title">压缩图片喵</string>
-    <string name="webdav_compress_dialog_message">将压缩 %1$d 张大图片以减少备份文件大小喵。\n\n• 压缩后的图片质量会略有下降\n• 已压缩的图片不会重复压缩\n• 此操作不可撤销\n\n是否继续喵？</string>
-    <string name="webdav_compress_status_preparing">正在准备...喵</string>
+    <string name="webdav_compress_dialog_message">要压一压 %1$d 张大图喵，让备份包轻一点喵。\n\n• 压过的图片会稍微糊一点点喵\n• 已经压过的不会再压喵\n• 这一步不能反悔喵\n\n还要继续喵？</string>
+    <string name="webdav_compress_status_preparing">正在磨爪喵…</string>
     <string name="webdav_compress_status_processing">正在压缩 %1$d/%2$d...喵</string>
     <string name="webdav_compress_status_done">完成喵</string>
-    <string name="webdav_compress_failed">压缩失败: %1$s喵</string>
+    <string name="webdav_compress_failed">没压成喵：%1$s</string>
     <string name="webdav_optimizing_images">正在优化图片...喵</string>
     <string name="webdav_restore_success">宝贝都搬回窝啦喵</string>
     <string name="webdav_tag_permanent">永久喵</string>
     <string name="webdav_tag_expiring">即将清理喵</string>
     <string name="webdav_unmark_permanent">取消永久标记喵</string>
-    <string name="webdav_mark_permanent">标记为永久喵</string>
+    <string name="webdav_mark_permanent">标成永久粮喵</string>
     <string name="webdav_unmark_permanent_success">已取消永久标记喵</string>
-    <string name="webdav_mark_permanent_success">已标记为永久备份喵</string>
-    <string name="webdav_operation_failed">操作失败: %1$s喵</string>
+    <string name="webdav_mark_permanent_success">这份囤粮已经盖章「永久」喵</string>
+    <string name="webdav_operation_failed">爪子滑了一下喵：%1$s</string>
     <string name="webdav_restore_backup_title">恢复备份喵</string>
     <string name="webdav_restore_backup_confirm_message">要把这份备份里的宝贝都搬回窝吗喵?\n\n%1$s\n\n注意: 这会把备份中的所有数据导入当前应用喵。</string>
     <string name="webdav_restore_local_only_dedup">仅与 Monica 本地数据去重喵</string>
@@ -3508,7 +3508,7 @@
     <string name="webdav_restore_mode_global_dedup_desc">可能把 KeePass / Bitwarden 条目视为重复喵。</string>
     <string name="webdav_restore_mode_local_safe_desc">默认只与 Monica 本地数据去重喵。</string>
     <string name="webdav_restore_mode_replace_warning">KeePass / Bitwarden 的数据一根毛都不会动喵。</string>
-    <string name="webdav_restore_action">恢复喵</string>
+    <string name="webdav_restore_action">接回家喵</string>
     <string name="webdav_restore_config_detected_title">检测到 Monica 配置喵</string>
     <string name="webdav_restore_config_detected_desc">此备份包含 %1$d 项 Monica 配置，是否同时覆盖本地配置喵？</string>
     <string name="webdav_restore_config_detected_more">其余 %1$d 项配置喵…</string>
@@ -3520,14 +3520,14 @@
     <string name="webdav_restore_restart_ready">可确认喵</string>
     <string name="webdav_restore_restart_hint">倒计时结束后点击确认，然后重新打开 Monica喵。</string>
     <string name="webdav_restore_restart_wait_action">等待 %1$d秒喵</string>
-    <string name="webdav_restore_encrypted_hint">此备份文件已加密，请输入密码进行解密喵：</string>
+    <string name="webdav_restore_encrypted_hint">这份备份上着锁喵，交出解锁的密码喵：</string>
     <string name="webdav_restore_failed">恢复失败：%1$s喵</string>
-    <string name="webdav_restore_summary_part_passwords">%1$d 个密码喵</string>
+    <string name="webdav_restore_summary_part_passwords">%1$d 只密码喵</string>
     <string name="webdav_restore_summary_part_other_data">%1$d 个其他数据喵</string>
     <string name="webdav_restore_summary_success">搬窝成功喵！导入了 %1$s喵</string>
     <string name="webdav_restore_summary_part_duplicate_passwords">%1$d 个重复密码喵</string>
     <string name="webdav_restore_summary_part_duplicate_data">%1$d 个重复数据喵</string>
-    <string name="webdav_restore_summary_part_password_failed">%1$d 个密码导入失败喵</string>
+    <string name="webdav_restore_summary_part_password_failed">%1$d 只密码没接回家喵</string>
     <string name="webdav_restore_summary_part_data_failed">%1$d 个数据导入失败喵</string>
     <string name="webdav_restore_summary_issues_prefix">跳过/失败: %1$s喵</string>
     <string name="webdav_restore_summary_failed_details">导入失败详情喵:</string>
@@ -3577,7 +3577,7 @@
     <string name="keepass_webdav_attach_title">接入远端数据库喵</string>
     <string name="keepass_webdav_attach_message">将接入以下远端数据库喵：</string>
     <string name="keepass_webdav_browser_message">先登录 WebDAV，然后浏览文件夹，选择已有的 .kdbx，或在当前目录直接创建新数据库喵。</string>
-    <string name="keepass_webdav_attach_success">接入成功：%1$d 个条目喵</string>
+    <string name="keepass_webdav_attach_success">接进窝啦喵：%1$d 只喵</string>
     <string name="keepass_webdav_attach_failed">接入失败：%1$s喵</string>
     <string name="keepass_webdav_attach_exception">接入异常：%1$s喵</string>
     <string name="keepass_webdav_confirm_attach">确认接入喵</string>
@@ -3667,7 +3667,7 @@
     <string name="click_to_pay">点击付款喵</string>
     <string name="monica_plus_features_title">Plus 功能喵</string>
     <string name="monica_plus_features_placeholder">更多功能敬请期待...喵</string>
-    <string name="payment_page_title">给铲屎官投喂小鱼干喵</string>
+    <string name="payment_page_title">给人家投喂小鱼干喵</string>
     <string name="payment_qr_code_title">小鱼干收款码喵</string>
     <string name="free_donation_toggle">自由打赏喵</string>
     <string name="payment_kofi_link">ko-fi.com/joyinjoester</string>
@@ -3683,7 +3683,7 @@
     <string name="plus_feature_unlocked">已解锁喵</string>
     <string name="plus_feature_locked">需要 Plus喵</string>
     <string name="cd_back">返回喵</string>
-    <string name="plus_thank_you">感谢你的支持喵！</string>
+    <string name="plus_thank_you">感谢您的支持喵！</string>
     <string name="plus_payment_links_title">支付链接喵</string>
     <string name="page_adjust_custom_title">页面调整自定义喵</string>
     <string name="page_adjust_custom_subtitle">自定义页面布局与显示行为喵</string>
@@ -3750,7 +3750,7 @@
     <string name="password_list_preview_folder_count">18 条喵</string>
     <string name="password_list_preview_folder_name">GitHub</string>
     <string name="password_card_adjust_title">密码卡片调整喵</string>
-    <string name="password_card_adjust_subtitle">重做密码卡片的显示与分组体验喵</string>
+    <string name="password_card_adjust_subtitle">重新摆一摆密码卡片喵，显示和分组都顺爪了喵</string>
     <string name="authenticator_card_adjust_title">验证器卡片调整喵</string>
     <string name="authenticator_card_adjust_subtitle">自定义验证器卡片显示内容与顺序喵</string>
     <string name="icon_settings_title">图标设置喵</string>
@@ -3830,13 +3830,13 @@
     <string name="autofill_v2_blacklist_desc">在敏感应用里不出爪喵（现有 %1$d 个包名）。</string>
     <string name="autofill_blocked_fields_title">非自动填充字段喵</string>
     <string name="autofill_blocked_fields_manage">管理已标记字段喵</string>
-    <string name="autofill_blocked_fields_manage_desc">当前有 %1$d 个字段被标记为非自动填充喵。</string>
-    <string name="autofill_blocked_fields_dialog_title">非自动填充字段管理喵</string>
+    <string name="autofill_blocked_fields_manage_desc">现在有 %1$d 个字段挂上了「不给填」的牌子喵。</string>
+    <string name="autofill_blocked_fields_dialog_title">不给填名单喵</string>
     <string name="autofill_blocked_fields_dialog_desc">这些字段曾被标记为“不适合自动填充”喵。移除后会重新允许自动填充喵。</string>
-    <string name="autofill_blocked_fields_empty">还没有被标记的字段喵。</string>
-    <string name="autofill_blocked_fields_badge">此处已禁用自动填充喵</string>
-    <string name="autofill_blocked_fields_clear_all">清空全部喵</string>
-    <string name="autofill_blocked_fields_remove">移除喵</string>
+    <string name="autofill_blocked_fields_empty">还没有字段被拉黑喵。</string>
+    <string name="autofill_blocked_fields_badge">这里不给填喵</string>
+    <string name="autofill_blocked_fields_clear_all">解除全部标记喵</string>
+    <string name="autofill_blocked_fields_remove">摘掉牌子喵</string>
     <string name="autofill_blocked_fields_package">应用：%1$s喵</string>
     <string name="autofill_blocked_fields_package_only">Android 应用目标喵</string>
     <string name="autofill_blocked_fields_domain">网站：%1$s喵</string>
@@ -3940,8 +3940,8 @@
     <string name="qs_step_security_title">安全设置喵</string>
     <string name="qs_step_security_subtitle">设好主密码、生物识别和密保问题喵</string>
     <string name="qs_step_autofill_title">自动填充喵</string>
-    <string name="qs_step_autofill_subtitle">带你打开 Monica 的自动填充喵</string>
-    <string name="qs_step_appearance_title">外观配色喵</string>
+    <string name="qs_step_autofill_subtitle">带您打开 Monica 的自动填充喵</string>
+    <string name="qs_step_appearance_title">毛色和外观喵</string>
     <string name="qs_step_appearance_subtitle">挑一只看着顺眼的 Monica喵</string>
     <string name="qs_step_bottom_nav_title">猫爬架喵</string>
     <string name="qs_step_bottom_nav_subtitle">决定常用的页面蹲在哪根爬柱上喵</string>
@@ -3957,13 +3957,13 @@
     <string name="qs_step_monica_plus_subtitle">最后决定是否开启更多扩展能力喵</string>
     <string name="qs_finish_dialog_title">窝搭好了喵</string>
     <string name="qs_finish_dialog_message">别担心喵，哪一步没弄好，之后随时能在设置里改，也可以从「功能拓展」里再找到人家喵</string>
-    <string name="qs_finish">完成喵</string>
+    <string name="qs_finish">收工喵</string>
     <string name="qs_start">开始喵</string>
     <string name="qs_next">下一步喵</string>
-    <string name="qs_skip">跳过喵</string>
+    <string name="qs_skip">先跳过喵</string>
     <string name="qs_previous">上一步喵</string>
-    <string name="qs_step_counter">第 %1$d 步，共 %2$d 步喵</string>
-    <string name="qs_welcome_heading">Monica 的设置有点多，让人家带你快速搭一遍窝好不好喵？</string>
+    <string name="qs_step_counter">第 %1$d 步喵，一共 %2$d 步喵</string>
+    <string name="qs_welcome_heading">Monica 的设置有点多，让人家带您快速搭一遍窝好不好喵？</string>
     <string name="qs_welcome_description">下面只放了第一次使用最要紧的几个设置喵。可以先跳过，以后也能在「功能拓展」里重新打开喵</string>
     <string name="qs_language_selection">选个顺口的语言喵</string>
     <string name="qs_collapse">收起喵</string>
@@ -3976,33 +3976,33 @@
     <string name="qs_lang_russian">Русский</string>
     <string name="qs_master_password">主密码喵</string>
     <string name="qs_master_password_set">已经设好，能解锁和保护数据喵</string>
-    <string name="qs_master_password_unset">建议先设置一个主密码喵</string>
+    <string name="qs_master_password_unset">建议先给窝上一把主密码锁喵</string>
     <string name="qs_completed">已完成喵</string>
     <string name="qs_go_setup">去设置喵</string>
-    <string name="qs_biometric">生物验证喵</string>
+    <string name="qs_biometric">爪纹验证喵</string>
     <string name="qs_biometric_desc">验证通过后打开，以后用指纹或面容更快开门喵</string>
     <string name="qs_security_questions">密保问题喵</string>
-    <string name="qs_security_questions_set">已设置，用于忘记主密码时验证身份喵</string>
-    <string name="qs_security_questions_unset">设置后忘记主密码时更容易找回喵</string>
-    <string name="qs_autofill_enable">开启自动填充喵</string>
-    <string name="qs_autofill_enable_desc">打开后，Monica 会在登录表单里帮你叼来账号、密码、卡包和验证器候选喵</string>
+    <string name="qs_security_questions_set">已经设好了喵，忘了主密码就靠它认亲喵</string>
+    <string name="qs_security_questions_unset">设好了以后喵，忘了主密码也容易找回喵</string>
+    <string name="qs_autofill_enable">打开自动填充喵</string>
+    <string name="qs_autofill_enable_desc">打开后，Monica 会在登录表单里帮您叼来账号、密码、卡包和验证器候选喵</string>
     <string name="qs_open_autofill_settings">打开自动填充设置喵</string>
-    <string name="qs_autofill_hint">如果系统已经开启，直接下一步就可以喵。后续也可以在设置里继续调整自动填充来源和验证方式喵。</string>
+    <string name="qs_autofill_hint">如果系统那边已经开了喵，直接下一步就行喵。之后也能在设置里慢慢调整自动填充的来源和验证方式喵。</string>
     <string name="qs_color_scheme">配色喵</string>
     <string name="qs_bottom_preview">底部预览喵</string>
     <string name="qs_display_items">显示项目喵</string>
     <string name="qs_keep_at_least_one_tab">至少留一根爬柱，用起来才顺手喵</string>
     <string name="qs_data_import_heading">可以先把数据叼进 Monica 里喵</string>
-    <string name="qs_data_import_desc">如果你已经在用其他密码库或备份方式，可以从这里先完成连接或导入喵。</string>
-    <string name="qs_link_bitwarden">链接到 Bitwarden喵</string>
+    <string name="qs_data_import_desc">已经在用别的密码库或备份方式的话喵，从这里先牵上线或把数据叼进来喵。</string>
+    <string name="qs_link_bitwarden">和 Bitwarden 牵上爪喵</string>
     <string name="qs_link_bitwarden_desc">打开 Bitwarden 同步设置页，连上就能同步已有的储物罐喵</string>
     <string name="qs_go_link">去链接喵</string>
-    <string name="qs_link_webdav">链接 WebDAV喵</string>
-    <string name="qs_link_webdav_desc">用于快照备份，把 Monica 数据备份到你的 WebDAV 存储喵。</string>
-    <string name="qs_link_keepass">链接到 KeePass喵</string>
+    <string name="qs_link_webdav">连上 WebDAV 喵</string>
+    <string name="qs_link_webdav_desc">用来做快照备份喵，把 Monica 的家当定期叼去您的 WebDAV 存一份喵。</string>
+    <string name="qs_link_keepass">和 KeePass 牵上爪喵</string>
     <string name="qs_link_keepass_desc">打开本地 KeePass 设置页，把本地 KDBX 储物罐接进窝里喵</string>
     <string name="qs_manual_import">手动文件导入喵</string>
-    <string name="qs_manual_import_desc">进入导入页面，从文件中手动导入已有数据喵。</string>
+    <string name="qs_manual_import_desc">进导入页面喵，从文件里把旧家当叼进来喵。</string>
     <string name="qs_go_import">去导入喵</string>
     <string name="qs_list_content">列表内容喵</string>
     <string name="qs_aggregate_all_items">在密码页面管理所有项目喵</string>
@@ -4024,10 +4024,10 @@
     <string name="qs_live_preview">实时预览喵</string>
     <string name="qs_preview_note_3_fields">卡片上只会显示已选择字段中的前 3 项喵。</string>
     <string name="qs_authenticator_preview_note">验证器卡片会按这里的字段和进度设置实时展示喵。</string>
-    <string name="qs_plus_activated">Monica Plus 已开启喵</string>
-    <string name="qs_plus_prompt">是否要开启 Monica Plus喵？</string>
-    <string name="qs_plus_activated_desc">Plus 能力已经可用，完成初始化后就可以继续使用喵。</string>
-    <string name="qs_plus_prompt_desc">如果你需要 Plus 配色、更多同步与扩展能力，可以现在去开启；不需要的话直接完成就行喵。</string>
+    <string name="qs_plus_activated">Monica Plus 已经打开了喵</string>
+    <string name="qs_plus_prompt">要不要打开 Monica Plus 喵？</string>
+    <string name="qs_plus_activated_desc">Plus 的本事已经就位喵，初始化完就能用喵。</string>
+    <string name="qs_plus_prompt_desc">想要 Plus 配色和更多同步扩展的话喵，现在就去开喵；不想要就直接收工喵。</string>
     <string name="qs_open_monica_plus">打开 Monica Plus喵</string>
     <string name="qs_yes">是喵</string>
     <string name="qs_no">不是喵</string>
@@ -4073,17 +4073,17 @@
     <string name="attachment_soft_limit_message">该文件 %1$d MB，超过推荐的 %2$d MB 上限，可能占用较多存储空间喵。仍要继续吗喵？</string>
 
     <string name="attachment_move_dialog_title">移动到 Bitwarden喵</string>
-    <string name="attachment_move_dialog_message">已选中 %1$d 项密码，其中 %2$d 项带有附件喵。\n\n你的 Bitwarden 账户为免费账户，无法同步附件：\n• %2$d 项带附件的条目将仅复制到 Bitwarden（不含附件），本地保留喵。\n• 其余 %3$d 项将正常移动到 Bitwarden喵。</string>
+    <string name="attachment_move_dialog_message">已选中 %1$d 项密码，其中 %2$d 项带有附件喵。\n\n您的 Bitwarden 账户为免费账户，无法同步附件：\n• %2$d 项带附件的条目将仅复制到 Bitwarden（不含附件），本地保留喵。\n• 其余 %3$d 项将正常移动到 Bitwarden喵。</string>
     <string name="attachment_move_dialog_confirm">确定喵</string>
     <string name="attachment_move_dialog_cancel">取消喵</string>
     <string name="attachment_move_dialog_details">查看详情喵</string>
     <string name="mdbx_unresolved_conflicts">未解决冲突：%1$d 个喵</string>
-    <string name="security_score_out_of_100">安全评分，满分 100喵</string>
-    <string name="security_accounts_need_attention">%1$d 个账号需要处理喵</string>
-    <string name="security_no_accounts_need_attention">没有账号需要处理喵</string>
-    <string name="security_score_good">防护良好喵</string>
-    <string name="security_score_fair">仍可改进喵</string>
-    <string name="security_score_needs_attention">需要处理喵</string>
+    <string name="security_score_out_of_100">体检评分喵，满分 100</string>
+    <string name="security_accounts_need_attention">有 %1$d 个账号要操点心喵</string>
+    <string name="security_no_accounts_need_attention">所有账号都很健康喵</string>
+    <string name="security_score_good">看家本领不错喵</string>
+    <string name="security_score_fair">还能再练练喵</string>
+    <string name="security_score_needs_attention">要上心喵</string>
     <string name="steam_search_tokens_hint">搜索 Steam 账号喵</string>
     <string name="steam_search_confirmations_hint">搜索确认项目喵</string>
     <string name="steam_section_inventory">库存喵</string>
@@ -4178,8 +4178,8 @@
     <string name="mdbx_snapshot_no_changes_title">没有新的数据库变更喵</string>
     <string name="mdbx_snapshot_no_changes_message">最新快照已经对应当前数据库状态，增量创建没有可保存的内容喵。是否仍创建一个完整快照喵？</string>
     <string name="mdbx_snapshot_create_full_anyway">创建完整快照喵</string>
-    <string name="select_password_hint">选择一个密码以查看详情喵</string>
-    <string name="select_totp_hint">选择一个验证器以查看详情喵</string>
+    <string name="select_password_hint">挑一只密码看详情喵</string>
+    <string name="select_totp_hint">挑一只验证器看详情喵</string>
     <string name="select_item_hint">选择一个项目以查看详情喵</string>
     <string name="select_steam_account_hint">选择一个 Steam 账号以查看详情喵</string>
     <string name="select_note_hint">选择一条笔记进行查看或编辑喵</string>
@@ -4219,7 +4219,7 @@
     <string name="keepass_native_regex">正则表达式喵</string>
     <string name="keepass_native_search_protected">搜索受保护字段喵</string>
     <string name="keepass_native_include_expired">包含已过期条目喵</string>
-    <string name="keepass_native_include_recycle_bin">包含回收站喵</string>
+    <string name="keepass_native_include_recycle_bin">包含纸箱喵</string>
     <string name="keepass_native_include_templates">包含模板喵</string>
     <string name="keepass_native_groups">文件夹喵</string>
     <string name="keepass_native_entries">条目喵</string>
@@ -4229,7 +4229,7 @@
     <string name="keepass_native_rename_group">重命名文件夹喵</string>
     <string name="keepass_native_delete_group">永久删除文件夹喵</string>
     <string name="keepass_native_delete_group_message">要永久删除“%1$s”及其中全部内容吗喵？此操作无法撤销喵。</string>
-    <string name="keepass_native_group_counts">%1$d 个子文件夹 · %2$d 个条目喵</string>
+    <string name="keepass_native_group_counts">%1$d 个子文件夹 · %2$d 只猫猫喵</string>
     <string name="keepass_native_entry_details">条目详情喵</string>
     <string name="keepass_native_fields">字段喵</string>
     <string name="keepass_native_raw_value">原始表达式：%1$s喵</string>
@@ -4285,12 +4285,12 @@
     <string name="custom_fields">自定义字段喵</string>
     <string name="enabled">已启用喵</string>
     <string name="disabled">已停用喵</string>
-    <string name="retry">重试喵</string>
+    <string name="retry">再试一次喵</string>
     <string name="keepass_database_settings_title">数据库设置喵</string>
     <string name="keepass_database_settings_load_failed">无法读取原生数据库设置喵</string>
     <string name="keepass_database_settings_invalid">请检查数据库名称与各项数值后再保存喵</string>
     <string name="keepass_database_settings_general">常规喵</string>
-    <string name="keepass_database_settings_history_recycle">历史、回收站与模板喵</string>
+    <string name="keepass_database_settings_history_recycle">历史、纸箱与模板喵</string>
     <string name="keepass_database_settings_encryption">加密与密钥派生喵</string>
     <string name="keepass_database_description">数据库描述喵</string>
     <string name="keepass_database_default_username">默认用户名喵</string>
@@ -4300,10 +4300,10 @@
     <string name="keepass_database_history_max_items">每个条目的最大历史版本数喵</string>
     <string name="keepass_database_history_max_size_mb">每个条目的最大历史容量（MB）喵</string>
     <string name="keepass_database_unlimited_hint">填写 -1 表示不限制；降低限制后，旧历史会在条目下次修改时按规则清理喵。</string>
-    <string name="keepass_database_recycle_bin">启用回收站喵</string>
+    <string name="keepass_database_recycle_bin">启用纸箱喵</string>
     <string name="keepass_database_recycle_bin_summary">永久删除前，先把条目与文件夹移动到指定分组喵</string>
-    <string name="keepass_database_recycle_bin_group">回收站分组喵</string>
-    <string name="keepass_database_recycle_bin_auto_create">自动创建标准回收站喵</string>
+    <string name="keepass_database_recycle_bin_group">纸箱分组喵</string>
+    <string name="keepass_database_recycle_bin_auto_create">自动创建标准纸箱喵</string>
     <string name="keepass_database_templates_group">模板分组喵</string>
     <string name="keepass_database_compression">数据压缩喵</string>
     <string name="keepass_database_compression_none">不压缩喵</string>
@@ -4334,7 +4334,7 @@
     <string name="keepass_integrity_report">完整性报告喵</string>
     <string name="keepass_integrity_healthy">未发现结构问题喵</string>
     <string name="keepass_integrity_problems_found">发现需要处理的项目喵</string>
-    <string name="keepass_integrity_counts">%1$d 个文件夹 · %2$d 个条目喵</string>
+    <string name="keepass_integrity_counts">%1$d 个文件夹 · %2$d 只猫猫喵</string>
     <string name="keepass_duplicate_group_uuids">重复的文件夹 UUID喵</string>
     <string name="keepass_duplicate_entry_uuids">重复的条目 UUID喵</string>
     <string name="keepass_missing_attachments">缺失的附件数据喵</string>
@@ -4377,8 +4377,8 @@
     <string name="keepass_conflict_resolved_with_copies">冲突已处理，并保留了 %1$d 个冲突副本喵</string>
     <string name="keepass_repair_completed">修复完成：共 %1$d 项变更；恢复副本 %2$s喵</string>
     <string name="repair">修复喵</string>
-    <string name="restore">恢复喵</string>
-    <string name="export">导出喵</string>
+    <string name="restore">捡回来喵</string>
+    <string name="export">叼出去喵</string>
     <string name="merge">合并喵</string>
     <string name="select_key_file_optional">选择密钥文件（可选）喵</string>
     <string name="key_file_selected">已选择密钥文件喵</string>
@@ -4393,17 +4393,17 @@
     <string name="keepass_native_create_entry">新建条目喵</string>
     <string name="keepass_native_group_properties">文件夹属性喵</string>
     <string name="keepass_native_duplicate_entry_confirmation">在同一文件夹中完整复制“%1$s”喵？</string>
-    <string name="keepass_native_move_entries">移动 %1$d 个条目喵</string>
-    <string name="keepass_native_delete_entries">删除 %1$d 个条目喵</string>
-    <string name="keepass_native_delete_entries_summary">将这些条目移入 KDBX 回收站；永久删除作为单独操作保留喵。</string>
-    <string name="keepass_native_permanent_delete_summary">这些条目已经位于回收站，将永久删除并写入 KDBX 删除记录喵。</string>
+    <string name="keepass_native_move_entries">把 %1$d 只猫猫挪个窝喵</string>
+    <string name="keepass_native_delete_entries">叼走 %1$d 只猫猫喵</string>
+    <string name="keepass_native_delete_entries_summary">将这些条目移入 KDBX 纸箱；永久删除作为单独操作保留喵。</string>
+    <string name="keepass_native_permanent_delete_summary">这些条目已经位于纸箱，将永久删除并写入 KDBX 删除记录喵。</string>
     <string name="keepass_native_default_auto_type_sequence">默认自动输入序列喵</string>
     <string name="keepass_native_search_policy">搜索：%1$s喵</string>
     <string name="keepass_native_auto_type_policy">自动输入：%1$s喵</string>
     <string name="keepass_native_policy_inherit">继承上级设置喵</string>
-    <string name="duplicate">复制副本喵</string>
+    <string name="duplicate">再抱一只喵</string>
     <string name="delete_permanently">永久删除喵</string>
-    <string name="move_to_recycle_bin">移入回收站喵</string>
+    <string name="move_to_recycle_bin">移入纸箱喵</string>
     <string name="keepass_native_title_required">保存前请输入标题喵</string>
     <string name="keepass_native_field_name_required">每个字段都需要名称喵</string>
     <string name="keepass_native_field_name_duplicate">字段名称必须唯一喵</string>
@@ -4445,15 +4445,15 @@
 <string name="keepass_native_folder_drag_target">正在移动“%1$s”，点击目标文件夹喵。</string>
 <string name="keepass_native_folder_drag_drop">放入此处喵</string>
 <string name="keepass_native_folder_drag_count">已选择 %1$d 个文件夹喵</string>
-    <string name="card_face_customize">自定义卡面喵</string>
-    <string name="card_face_customize_description">用你自己的图片，再挑挑卡上露哪些信息喵。</string>
+    <string name="card_face_customize">给卡面打扮喵</string>
+    <string name="card_face_customize_description">用您自己的图片，再挑挑卡上露哪些信息喵。</string>
     <string name="card_face_choose_image">选择图片喵</string>
     <string name="card_face_replace_image">更换图片喵</string>
-    <string name="card_face_remove">移除自定义卡面喵</string>
+    <string name="card_face_remove">脱掉这身衣服喵</string>
     <string name="card_face_display_title">卡面信息显示喵</string>
     <string name="card_face_display_all">显示全部卡片信息喵</string>
     <string name="card_face_display_number">仅显示卡号喵</string>
-    <string name="card_face_display_hidden">隐藏全部卡片信息喵</string>
+    <string name="card_face_display_hidden">全都藏起来喵</string>
     <string name="card_face_display_all_description">显示标题、主要信息、姓名及有效期等已有内容喵。</string>
     <string name="card_face_display_number_description">仅在卡面中部偏下显示脱敏卡号喵。</string>
     <string name="card_face_display_hidden_description">只保留图片，不显示文字或卡组织图标喵。</string>
@@ -4469,14 +4469,14 @@
     <string name="card_face_show_brand">显示卡组织图标喵</string>
     <string name="card_face_brand_description">显示 Visa、Mastercard 等卡组织标识喵。</string>
     <string name="card_face_brand_hidden_description">隐藏全部信息时，卡组织图标也会隐藏喵。</string>
-    <string name="card_face_empty_preview">选择图片，预览你的卡面喵</string>
+    <string name="card_face_empty_preview">先挑张图喵，预览卡面长啥样喵</string>
     <string name="card_face_crop_hint">拖动图片摆位置，双指缩放，选框不动喵</string>
     <string name="card_face_image_hint">JPEG、PNG 或 WebP · 最大 25 MB · 手动裁剪喵</string>
-    <string name="card_face_processing">正在处理图片喵…</string>
+    <string name="card_face_processing">正在给图片梳毛喵…</string>
     <string name="card_face_edit_description">更换图片或调整显示信息喵</string>
     <string name="card_face_image_unreadable">无法读取所选图片，请先将图片保存到设备，然后重新选择喵。</string>
     <string name="card_face_image_too_large">这张图片太肥了喵，超过 25 MB，换张小的喵。</string>
-    <string name="card_face_image_unsupported">请选择 JPEG、PNG 或 WebP 图片喵。</string>
+    <string name="card_face_image_unsupported">只吃 JPEG、PNG、WebP 这几种图喵。</string>
     <string name="card_face_crop_title">裁剪卡面喵</string>
     <string name="card_face_crop_reset">重置喵</string>
 
