@@ -2708,10 +2708,7 @@ fun LanguageSelectionDialog(
         onDismissRequest = onDismiss,
         title = { Text(context.getString(R.string.language)) },
         text = {
-            Column(
-                // 11 个语言选项已超出对话框高度，不加滚动时最后一行（喵喵语）会被裁掉
-                modifier = Modifier.verticalScroll(rememberScrollState())
-            ) {
+            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                 Language.values().forEach { language ->
                     Row(
                         modifier = Modifier

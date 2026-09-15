@@ -1435,16 +1435,21 @@ class BitwardenRepository(private val context: Context) {
     }
 
     suspend fun permanentDeleteCipher(vaultId: Long, cipherId: String): Result<Unit> = withContext(Dispatchers.IO) {
+        fun failure(message: String): Result<Unit> {
+            // Keep the reason in exported diagnostics without logging credentials or item contents.
+            BitwardenDiagLogger.append("BitwardenRepository permanentDeleteCipher: vaultId=$vaultId, failure=$message")
+            return Result.failure(IllegalStateException(message))
+        }
         try {
             val vault = vaultDao.getVaultById(vaultId)
-                ?: return@withContext Result.failure(IllegalStateException("Vault 不存在"))
+                ?: return@withContext failure(context.getString(takagi.ru.monica.R.string.bitwarden_trash_vault_missing))
 
             if (!isVaultUnlocked(vaultId)) {
-                return@withContext Result.failure(IllegalStateException("Vault 未解锁"))
+                return@withContext failure(context.getString(takagi.ru.monica.R.string.bitwarden_cache_requires_unlock))
             }
 
             var accessToken = accessTokenCache[vaultId]
-                ?: return@withContext Result.failure(IllegalStateException("令牌不可用"))
+                ?: return@withContext failure(context.getString(takagi.ru.monica.R.string.pull_sync_requires_bitwarden_login))
 
             val expiresAt = vault.accessTokenExpiresAt ?: 0
             if (expiresAt <= System.currentTimeMillis() + 60000) {
@@ -1453,21 +1458,25 @@ class BitwardenRepository(private val context: Context) {
                     accessToken = refreshed
                     accessTokenCache[vaultId] = refreshed
                 } else {
-                    return@withContext Result.failure(IllegalStateException("Token 刷新失败，请重新登录"))
+                    return@withContext failure(context.getString(takagi.ru.monica.R.string.pull_sync_requires_bitwarden_login))
                 }
             }
 
             val vaultApi = apiManager.getVaultApi(vault)
             val response = vaultApi.permanentDeleteCipher("Bearer $accessToken", cipherId)
             if (!response.isSuccessful && response.code() != 404) {
-                return@withContext Result.failure(
-                    IllegalStateException("永久删除失败: ${response.code()} ${response.message()}")
+                return@withContext failure(
+                    context.getString(takagi.ru.monica.R.string.bitwarden_trash_delete_http_error, response.code())
                 )
             }
 
+            BitwardenDiagLogger.append("BitwardenRepository permanentDeleteCipher: vaultId=$vaultId, status=${response.code()}")
             Result.success(Unit)
+        } catch (e: kotlinx.coroutines.CancellationException) {
+            throw e
         } catch (e: Exception) {
             Log.e(TAG, "永久删除 Bitwarden Cipher 失败", e)
+            BitwardenDiagLogger.append("BitwardenRepository permanentDeleteCipher: vaultId=$vaultId, exception=${e.javaClass.simpleName}")
             Result.failure(e)
         }
     }

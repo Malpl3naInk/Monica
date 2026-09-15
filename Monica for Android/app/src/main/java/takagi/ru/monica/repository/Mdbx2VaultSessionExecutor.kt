@@ -38,7 +38,6 @@ internal class Mdbx2VaultSessionExecutor(
     private val externalStorage: Mdbx2ExternalStorage = Mdbx2ExternalStorage(context)
 ) {
     private val appContext = context.applicationContext
-    private val vaultLocks = ConcurrentHashMap<Long, Mutex>()
 
     private val deviceId: String by lazy {
         val preferences = appContext.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE)
@@ -141,6 +140,7 @@ internal class Mdbx2VaultSessionExecutor(
         if (candidate.parentFile != directory || candidate.extension.lowercase() != "mdbx") {
             return@withContext false
         }
+        Mdbx2NativeReadSessions.clear()
         val blobStoreSidecars = listOf("blobs", "leases", "transfers").map { suffix ->
             File(directory, "${candidate.name}.$suffix").canonicalFile
         }
@@ -163,6 +163,22 @@ internal class Mdbx2VaultSessionExecutor(
         databaseId: Long,
         block: suspend (LocalMdbxDatabase, MdbxVault) -> T
     ): T = withVaultInternal(databaseId, mutating = false, block)
+
+    /** Reuse the list's unlock for individual native token reads during foreground navigation. */
+    suspend fun <T> withNativeReadVault(
+        databaseId: Long,
+        block: (LocalMdbxDatabase, MdbxVault) -> T
+    ): T = withContext(Dispatchers.IO) {
+        Mdbx2NativeRuntime.ensureLoaded()
+        vaultLocks.getOrPut(databaseId) { Mutex() }.withLock {
+            val database = requireDatabase(databaseId)
+            val file = resolveLocalFile(database)
+            if (!file.isFile) throw Mdbx2ErrorMapper.fileMissing()
+            Mdbx2NativeReadSessions.read(database, file,
+                open = { openVaultForRead(database, file) },
+                block = { vault -> block(database, vault) })
+        }
+    }
 
     suspend fun <T> withMutatingVault(
         databaseId: Long,
@@ -225,6 +241,7 @@ internal class Mdbx2VaultSessionExecutor(
     suspend fun flushExternalWorkingCopy(databaseId: Long, onlyIfPending: Boolean) =
         withContext(Dispatchers.IO) {
             vaultLocks.getOrPut(databaseId) { Mutex() }.withLock {
+                Mdbx2NativeReadSessions.invalidate(databaseId)
                 val database = requireDatabase(databaseId)
                 if (database.sourceTypeEnum != MdbxSourceType.LOCAL_EXTERNAL) return@withLock
                 if (onlyIfPending && database.lastSyncStatus != takagi.ru.monica.data.MdbxSyncStatus.PENDING_UPLOAD.name) {
@@ -238,6 +255,7 @@ internal class Mdbx2VaultSessionExecutor(
 
     suspend fun refreshExternalWorkingCopy(databaseId: Long) = withContext(Dispatchers.IO) {
         vaultLocks.getOrPut(databaseId) { Mutex() }.withLock {
+            Mdbx2NativeReadSessions.invalidate(databaseId)
             var database = requireDatabase(databaseId)
             require(database.sourceTypeEnum == MdbxSourceType.LOCAL_EXTERNAL) {
                 "MDBX2 refresh requires an external local vault"
@@ -270,18 +288,13 @@ internal class Mdbx2VaultSessionExecutor(
     ): T = withContext(Dispatchers.IO) {
         Mdbx2NativeRuntime.ensureLoaded()
         vaultLocks.getOrPut(databaseId) { Mutex() }.withLock {
+            // Includes sync/restore operations: their blocks may change the vault even when
+            // they do not use the normal mutation publication path.
+            Mdbx2NativeReadSessions.invalidate(databaseId)
             val database = requireDatabase(databaseId)
             val file = resolveLocalFile(database)
             if (!file.isFile) throw Mdbx2ErrorMapper.fileMissing()
-            val vault = try {
-                openVaultForDatabase(database, file)
-            } catch (error: Throwable) {
-                val mapped = Mdbx2ErrorMapper.openFailure(error)
-                MdbxDiagLogger.append(
-                    "[MDBX2][open] failed databaseId=$databaseId kind=${mapped.kind.name} cause=${error::class.java.simpleName}"
-                )
-                throw mapped
-            }
+            val vault = openVaultForRead(database, file)
             val result = try {
                 block(database, vault)
             } finally {
@@ -290,6 +303,16 @@ internal class Mdbx2VaultSessionExecutor(
             if (mutating) finalizeMutation(database, file)
             result
         }
+    }
+
+    private fun openVaultForRead(database: LocalMdbxDatabase, file: File): MdbxVault = try {
+        openVaultForDatabase(database, file)
+    } catch (error: Throwable) {
+        val mapped = Mdbx2ErrorMapper.openFailure(error)
+        MdbxDiagLogger.append(
+            "[MDBX2][open] failed databaseId=${database.id} kind=${mapped.kind.name} cause=${error::class.java.simpleName}"
+        )
+        throw mapped
     }
 
     private fun decryptPassword(database: LocalMdbxDatabase): String {
@@ -594,6 +617,8 @@ internal class Mdbx2VaultSessionExecutor(
     }
 
     companion object {
+        // All repository instances coordinate with the same retained native readers.
+        private val vaultLocks = ConcurrentHashMap<Long, Mutex>()
         private const val PREFERENCES_NAME = "mdbx2_vault_sessions"
         private const val DEVICE_ID_KEY = "device_id"
         private const val MDBX2_DIRECTORY = "mdbx2"

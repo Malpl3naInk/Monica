@@ -4,9 +4,11 @@
 Mechanism: values-zh-rNY is a fake-region variant (Locale("zh", "NY"), same
 trick as the official en-rXA pseudo locale). Strings missing from it fall back
 to values-zh, so this script only ever produces strings derived from the
-Chinese source - the packs stay key-for-key identical by construction.
+Chinese source. Partial translations may use that Chinese fallback.
 
 Rules:
+- Short dock labels (nav_*_short) are omitted to retain the concise Chinese
+  labels through resource fallback.
 - Every sentence-final punctuation mark (。 ！ ？ … and half-width ! ?) gets
   喵 inserted right before it.
 - Cores without sentence-final punctuation (buttons, labels) get a trailing 喵.
@@ -80,8 +82,6 @@ def check_override(name: str, source: str, text: str) -> str | None:
     if problem:
         print(f"  ! override rejected for {name}: {problem}", file=sys.stderr)
         return None
-    if CJK_RE.search(source) and "喵" not in text:
-        text += "喵"
     return text
 
 
@@ -130,6 +130,8 @@ def transform_line(line: str, stats: dict) -> str:
     string_match = STRING_RE.match(body)
     if string_match:
         indent, name, attrs, value, comment = string_match.groups()
+        if name.startswith("nav_") and name.endswith("_short"):
+            return ""
         if 'translatable="false"' in attrs:
             return line
         transformed = None

@@ -162,7 +162,9 @@ internal fun CompactDraggableTabContent(
     onSelectAllDocuments: () -> Unit,
     onMoveToCategoryDocuments: () -> Unit,
     onDeleteSelectedDocuments: () -> Unit,
-    vaultV2PaneState: VaultV2PaneState
+    vaultV2PaneState: VaultV2PaneState,
+    onCreateApiToken: (takagi.ru.monica.data.model.StorageTarget.Mdbx?) -> Unit = {},
+    onOpenApiTokens: (Long?, String?) -> Unit = { _, _ -> },
 ) {
     val appSettings by settingsViewModel.settings.collectAsState()
     val currentFilter by passwordViewModel.categoryFilter.collectAsState()
@@ -197,6 +199,7 @@ internal fun CompactDraggableTabContent(
         when (displayedTab) {
             BottomNavItem.VaultV2 -> {
                 VaultV2Pane(
+                    onOpenApiTokens = onOpenApiTokens,
                     passwordViewModel = passwordViewModel,
                     totpViewModel = totpViewModel,
                     bankCardViewModel = bankCardViewModel,
@@ -234,6 +237,8 @@ internal fun CompactDraggableTabContent(
             }
             BottomNavItem.Passwords -> {
                 PasswordTabPane(
+                    onCreateApiToken = onCreateApiToken,
+                    onOpenApiTokens = onOpenApiTokens,
                     isCompactWidth = true,
                     wideListPaneWidth = 0.dp,
                     passwordViewModel = passwordViewModel,

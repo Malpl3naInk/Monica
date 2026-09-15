@@ -1,7 +1,7 @@
 # 喵喵语人工润色 override 表（由润色 agent 产出，generate_nya_strings.py 应用）
 # 选词规范与代指体系见 scripts/nya_mapping.md。
 # 格式：name=文案。以 # 开头的行是注释。应用后仍会校验：键名必须存在于 values-zh、
-# 占位符与品牌词必须与原文一致、含中文的文案必须带喵（缺了会自动补）。
+# 占位符与品牌词必须与原文一致；允许简短中文，不强制每句带喵。
 # ===== 核心骨架（设置/导航/储物罐/解锁/快速搭窝） =====
 confirm_remove=要移除这个数据库喵？
 deleted=删掉了喵
@@ -26,7 +26,6 @@ settings_search_hint=想找哪个设置，搜搜看喵
 settings_search_empty_hint=换个关键词再翻翻喵
 appearance_sheet_description=挑一个顺眼的毛色喵，还能把深色表面切换成 OLED 绝对深色喵
 nav_v2_vault=储物罐（测试功能）喵
-nav_v2_vault_short=储物罐喵
 # bottom_nav_settings 是设置页签的标签，保留"设置"语义不用代称
 bottom_nav_settings=设置喵
 bottom_nav_settings_entry_subtitle=挑几根顺手的爬柱，排好顺序喵

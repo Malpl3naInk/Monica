@@ -1,5 +1,8 @@
 package takagi.ru.monica.viewmodel
 
+import takagi.ru.monica.data.ApiTokenPayload
+import takagi.ru.monica.data.NativeApiToken
+import takagi.ru.monica.data.NativeApiTokenSummary
 import android.app.Application
 import android.content.Context
 import android.content.Intent
@@ -188,6 +191,49 @@ class MdbxViewModel(
         secureItemDao = secureItemDao,
         customFieldDao = customFieldDao
     )
+    suspend fun listNativeApiTokens(databaseId: Long) = mdbx2Repository.listNativeApiTokens(databaseId)
+
+    internal val nativeApiTokenList by lazy {
+        NativeApiTokenListStore(viewModelScope, mdbx2Repository::listNativeApiTokens)
+    }
+
+    suspend fun readNativeApiToken(summary: NativeApiTokenSummary) = mdbx2Repository.readNativeApiToken(summary)
+
+    suspend fun readNativeApiToken(databaseId: Long, entryId: String) =
+        mdbx2Repository.readNativeApiToken(databaseId, entryId)
+
+    suspend fun deleteNativeApiToken(original: NativeApiToken) {
+        mdbx2Repository.deleteNativeApiToken(original)
+        nativeApiTokenList.invalidate(original.summary.databaseId)
+    }
+
+    suspend fun deleteNativeApiToken(summary: NativeApiTokenSummary) {
+        deleteNativeApiToken(readNativeApiToken(summary.databaseId, summary.entryId))
+    }
+
+    suspend fun setNativeApiTokenFavorite(summary: NativeApiTokenSummary, favorite: Boolean) {
+        val current = readNativeApiToken(summary.databaseId, summary.entryId)
+        saveNativeApiToken(summary.databaseId, current, current.summary.title, current.payload,
+            current.summary.collectionId, isFavorite = favorite)
+    }
+
+    suspend fun nativeApiTokenFolders(databaseId: Long) = mdbx2Repository.listFolders(databaseId)
+
+    suspend fun transferNativeApiToken(summary: NativeApiTokenSummary, targetDatabaseId: Long,
+        targetFolderId: String?, copy: Boolean): NativeApiTokenSummary = try {
+        mdbx2Repository.transferNativeApiToken(summary, targetDatabaseId, targetFolderId, copy)
+    } finally {
+        nativeApiTokenList.invalidate(summary.databaseId)
+        nativeApiTokenList.invalidate(targetDatabaseId)
+    }
+
+    suspend fun saveNativeApiToken(
+        databaseId: Long, original: NativeApiToken?, title: String, payload: String, collectionId: String?,
+        isFavorite: Boolean = original?.summary?.isFavorite ?: false,
+        metadata: String = original?.extras?.payload ?: takagi.ru.monica.data.ApiTokenMetadata.empty()
+    ): NativeApiTokenSummary = mdbx2Repository.saveNativeApiToken(databaseId, original, title, payload, collectionId, isFavorite, metadata)
+        .also { nativeApiTokenList.invalidate(databaseId) }
+
     private val vaultStore: MdbxRepository = MdbxRepositoryRouter(
         databaseDao = databaseDao,
         legacyRepository = legacyVaultStore,
