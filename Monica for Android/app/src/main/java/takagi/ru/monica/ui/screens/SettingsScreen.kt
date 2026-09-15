@@ -2855,6 +2855,7 @@ private fun getLanguageDisplayName(language: Language, context: android.content.
         Language.GERMAN -> context.getString(R.string.language_german)
         Language.SPANISH -> context.getString(R.string.language_spanish)
         Language.FRENCH -> context.getString(R.string.language_french)
+        Language.NYA -> context.getString(R.string.language_nya)
     }
 }
 

@@ -38,7 +38,8 @@ enum class Language {
     KOREAN,
     GERMAN,
     SPANISH,
-    FRENCH
+    FRENCH,
+    NYA
 }
 
 enum class ProgressBarStyle {

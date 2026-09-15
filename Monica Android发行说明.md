@@ -4,6 +4,7 @@
 
 ### 简要
 
+- 感谢 [@aiguozhi123456](https://github.com/aiguozhi123456) 贡献 [#137](https://github.com/Monica-Pass/Monica/pull/137)：新增喵喵语；缺失文案回退中文，底栏沿用简短中文标签。
 - 修复 Bitwarden 回收站无法清空的问题，删除失败时显示具体原因。
 
 - 改善 API 令牌详情页的打开速度，减少加载等待。
@@ -66,6 +67,7 @@
 
 ### Summary
 
+- Thanks to [@aiguozhi123456](https://github.com/aiguozhi123456) for [#137](https://github.com/Monica-Pass/Monica/pull/137): added Nya (meow-speak), with Chinese fallback for missing text and concise Chinese dock labels.
 - Fix emptying the Bitwarden recycle bin and show the reason when deletion fails.
 
 - API token details open faster with less time spent loading.

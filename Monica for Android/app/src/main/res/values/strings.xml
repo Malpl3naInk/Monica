@@ -4672,4 +4672,6 @@
     <string name="wallet_stack_open_card">Open card details</string>
     <string name="language_french">Français</string>
     <string name="qs_lang_french">Français</string>
+    <string name="language_nya">喵喵语</string>
+    <string name="qs_lang_nya">喵喵语</string>
 </resources>

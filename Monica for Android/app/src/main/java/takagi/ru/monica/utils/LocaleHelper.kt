@@ -20,6 +20,7 @@ object LocaleHelper {
             Language.GERMAN -> Locale.GERMANY
             Language.SPANISH -> Locale("es", "ES")
             Language.FRENCH -> Locale.FRENCH
+            Language.NYA -> Locale("zh", "NY")
         }
 
         return updateResources(context, locale)
@@ -72,7 +73,7 @@ object LocaleHelper {
         }
 
         return when (currentLocale.language) {
-            "zh" -> Language.CHINESE
+            "zh" -> if (currentLocale.country == "NY") Language.NYA else Language.CHINESE
             "en" -> Language.ENGLISH
             "vi" -> Language.VIETNAMESE
             "ja" -> Language.JAPANESE
