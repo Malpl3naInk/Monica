@@ -165,6 +165,7 @@ internal fun CompactDraggableTabContent(
     vaultV2PaneState: VaultV2PaneState,
     onCreateApiToken: (takagi.ru.monica.data.model.StorageTarget.Mdbx?) -> Unit = {},
     onOpenApiTokens: (Long?, String?) -> Unit = { _, _ -> },
+    onTrashSelectionModeChange: (Boolean) -> Unit = {},
 ) {
     val appSettings by settingsViewModel.settings.collectAsState()
     val currentFilter by passwordViewModel.categoryFilter.collectAsState()
@@ -198,42 +199,56 @@ internal fun CompactDraggableTabContent(
         AuthenticatorPasskeyAnimatedContent(currentTab = currentTab) { displayedTab ->
         when (displayedTab) {
             BottomNavItem.VaultV2 -> {
-                VaultV2Pane(
-                    onOpenApiTokens = onOpenApiTokens,
-                    passwordViewModel = passwordViewModel,
-                    totpViewModel = totpViewModel,
-                    bankCardViewModel = bankCardViewModel,
-                    documentViewModel = documentViewModel,
-                    billingAddressViewModel = billingAddressViewModel,
-                    noteViewModel = noteViewModel,
-                    passkeyViewModel = passkeyViewModel,
-                    keepassDatabases = keepassDatabases,
-                    mdbxDatabases = mdbxDatabases,
-                    bitwardenVaults = bitwardenVaults,
-                    localKeePassViewModel = localKeePassViewModel,
-                    mdbxViewModel = mdbxViewModel,
-                    settingsViewModel = settingsViewModel,
-                    state = vaultV2PaneState,
-                    onOpenPassword = onPasswordOpen,
-                    onOpenTotp = onTotpOpen,
-                    onOpenBankCard = onBankCardOpen,
-                    onOpenDocument = onDocumentOpen,
-                    onOpenBillingAddress = onNavigateToBillingAddressDetail,
-                    onOpenNote = onNoteOpen,
-                    onOpenPasskey = onNavigateToPasskeyDetail,
-                    onOpenMdbxCommitHistory = onNavigateToMdbxCommitHistory,
-                    onOpenHistory = onOpenVaultV2HistoryPage,
-                    onOpenTrashPage = onOpenVaultV2TrashPage,
-                    onOpenArchivePage = onOpenVaultV2ArchivePage,
-                    onOpenCommonAccountTemplates = onNavigateToCommonAccountTemplates,
-                    onScanFidoQr = onNavigateToFidoQrScan,
-                    onOpenStandaloneSettings = onOpenStandaloneSettings,
-                    showStandaloneSettingsEntry = showStandaloneSettingsEntry,
-                    appSettings = appSettings,
-                    securityManager = securityManager,
-                    biometricEnabled = appSettings.biometricEnabled,
-                    modifier = Modifier.fillMaxSize()
-                )
+                if (passwordHistoryPageMode.isVisible) {
+                    takagi.ru.monica.ui.screens.TimelineScreen(
+                        viewModel = timelineViewModel,
+                        initialTab = passwordHistoryPageMode.tab ?: takagi.ru.monica.ui.screens.HistoryTab.TIMELINE,
+                        initialTrashScopeKey = passwordHistoryInitialTrashScopeKey,
+                        enableTabSwitch = false,
+                        showBackButton = true,
+                        onNavigateBack = onCloseHistoryPage,
+                        showReturnFab = false,
+                        onTrashSelectionModeChange = onTrashSelectionModeChange
+                    )
+                } else {
+                    VaultV2Pane(
+                        onOpenApiTokens = onOpenApiTokens,
+                        passwordViewModel = passwordViewModel,
+                        totpViewModel = totpViewModel,
+                        bankCardViewModel = bankCardViewModel,
+                        documentViewModel = documentViewModel,
+                        billingAddressViewModel = billingAddressViewModel,
+                        noteViewModel = noteViewModel,
+                        passkeyViewModel = passkeyViewModel,
+                        keepassDatabases = keepassDatabases,
+                        mdbxDatabases = mdbxDatabases,
+                        bitwardenVaults = bitwardenVaults,
+                        localKeePassViewModel = localKeePassViewModel,
+                        mdbxViewModel = mdbxViewModel,
+                        settingsViewModel = settingsViewModel,
+                        state = vaultV2PaneState,
+                        onOpenPassword = onPasswordOpen,
+                        onOpenTotp = onTotpOpen,
+                        onOpenBankCard = onBankCardOpen,
+                        onOpenDocument = onDocumentOpen,
+                        onOpenBillingAddress = onNavigateToBillingAddressDetail,
+                        onOpenNote = onNoteOpen,
+                        onOpenPasskey = onNavigateToPasskeyDetail,
+                        onOpenMdbxCommitHistory = onNavigateToMdbxCommitHistory,
+                        onOpenHistory = onOpenVaultV2HistoryPage,
+                        onOpenTrashPage = onOpenVaultV2TrashPage,
+                        onOpenArchivePage = onOpenVaultV2ArchivePage,
+                        onOpenCommonAccountTemplates = onNavigateToCommonAccountTemplates,
+                        onScanFidoQr = onNavigateToFidoQrScan,
+                        onOpenStandaloneSettings = onOpenStandaloneSettings,
+                        showStandaloneSettingsEntry = showStandaloneSettingsEntry,
+                        useEmbeddedHistoryPages = false,
+                        appSettings = appSettings,
+                        securityManager = securityManager,
+                        biometricEnabled = appSettings.biometricEnabled,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
             }
             BottomNavItem.Passwords -> {
                 PasswordTabPane(
@@ -277,6 +292,7 @@ internal fun CompactDraggableTabContent(
                     onCloseHistoryPage = onCloseHistoryPage,
                     passwordHistoryPageMode = passwordHistoryPageMode,
                     passwordHistoryInitialTrashScopeKey = passwordHistoryInitialTrashScopeKey,
+                    onTrashSelectionModeChange = onTrashSelectionModeChange,
                     onTimelineLogSelected = {},
                     onSelectionModeChange = onPasswordSelectionModeChange,
                     onBackToTopVisibilityChange = onBackToTopVisibilityChange,

@@ -27,21 +27,34 @@ internal class Mdbx2ReadSessionCache<K : Any, V : Any>(
         canRetain: () -> Boolean,
         open: () -> V,
         keyAfterRead: () -> K?,
+        remainingLifetimeMillis: ((V) -> Long)? = null,
         read: (V) -> T,
     ): T {
         val (startedGeneration, cached) = synchronized(monitor) {
             generation to idle.remove(databaseId)
         }
         cached?.expiry?.cancel()
-        val reusable = cached?.takeIf { it.key == key && nowMillis() < it.expiresAt && canRetain() }
+        val reusable = try {
+            cached?.takeIf { it.key == key && nowMillis() < it.expiresAt && canRetain() &&
+                (remainingLifetimeMillis?.invoke(it.value) ?: 1L) > 0L }
+        } catch (failure: Throwable) {
+            cached?.let(::dispose)
+            throw failure
+        }
         if (cached != null && reusable == null) dispose(cached)
         val value = reusable?.value ?: open()
-        val expiresAt = reusable?.expiresAt ?: (nowMillis() + lifetimeMillis)
+        val fixedExpiry = reusable?.expiresAt ?: (nowMillis() + lifetimeMillis)
         var succeeded = false
         try {
             return read(value).also { succeeded = true }
         } finally {
             val updatedKey = if (succeeded && canRetain()) runCatching(keyAfterRead).getOrNull() else null
+            // Native policy owns the deadline. Metadata reads cannot renew authentication;
+            // authorized activity may renew idle time, subject to the same absolute limit.
+            val expiresAt = if (updatedKey != null && remainingLifetimeMillis != null) {
+                val remaining = runCatching { remainingLifetimeMillis(value) }.getOrDefault(0L)
+                nowMillis() + remaining.coerceAtLeast(0L)
+            } else fixedExpiry
             var retained = false
             val evicted = mutableListOf<Entry<K, V>>()
             synchronized(monitor) {

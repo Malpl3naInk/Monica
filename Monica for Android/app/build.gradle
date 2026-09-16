@@ -15,7 +15,7 @@ android {
     // Intentionally frozen: same-signature sideloaded builds must remain mutually replaceable
     // for emergency rollback. Do not increment this value for routine releases.
     def appVersionCode = 12
-    def baseVersionName = previewVersionSuffix ? "1.0.311-${previewVersionSuffix}" : "1.0.311"
+    def baseVersionName = previewVersionSuffix ? "1.0.312-${previewVersionSuffix}" : "1.0.312"
     def normalizeTwoDigits = { raw ->
         def value = raw?.toString()?.trim()?.replaceAll('\\D', '')
         if (!value) {
@@ -279,8 +279,10 @@ dependencies {
     implementation libs.androidx.slice.builders
     
     // Credentials API (for Passkey support, Android 14+)
-    implementation "androidx.credentials:credentials:1.3.0"
-    implementation "androidx.credentials:credentials-play-services-auth:1.3.0"
+    implementation "androidx.credentials:credentials:1.6.0"
+    implementation "androidx.credentials:credentials-play-services-auth:1.6.0"
+    implementation "androidx.credentials.providerevents:providerevents:1.0.0-beta01"
+    implementation "androidx.credentials.providerevents:providerevents-play-services:1.0.0-beta01"
     
     // Google Play Services Auth (for SMS Retriever API - OTP auto-read)
     implementation libs.play.services.auth

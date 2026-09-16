@@ -1,5 +1,7 @@
 package takagi.ru.monica.utils
 
+import takagi.ru.monica.R
+
 import android.accounts.Account
 import android.app.PendingIntent
 import android.content.Context
@@ -41,6 +43,7 @@ private data class GoogleUserInfoResponse(
 )
 
 class GoogleDriveAuthManager(context: Context) {
+    private val strings = AppLocaleStringResolver(context)
     private val appContext = context.applicationContext
     private val authClient by lazy { Identity.getAuthorizationClient(appContext) }
     private val httpClient = OkHttpClient()
@@ -85,7 +88,7 @@ class GoogleDriveAuthManager(context: Context) {
         return when (val step = beginAuthorization(accountId)) {
             is GoogleDriveAuthorizationStep.Authorized -> step.session
             is GoogleDriveAuthorizationStep.ResolutionRequired -> {
-                throw IllegalStateException("Google Drive 需要重新授权，请重新连接账户")
+                throw IllegalStateException(strings.get(R.string.cloud_message_google_reconnect))
             }
         }
     }
@@ -111,14 +114,14 @@ class GoogleDriveAuthManager(context: Context) {
 
     private suspend fun AuthorizationResult.toSession(expectedAccountId: String? = null): GoogleDriveAccountSession {
         val token = accessToken?.takeIf { it.isNotBlank() }
-            ?: throw IllegalStateException("Google Drive 访问令牌为空")
+            ?: throw IllegalStateException(strings.get(R.string.cloud_message_provider_token_missing, "Google Drive"))
         val userInfo = fetchUserInfo(token)
         val email = userInfo.email?.trim().orEmpty()
         if (email.isBlank()) {
-            throw IllegalStateException("Google Drive 账户邮箱为空")
+            throw IllegalStateException(strings.get(R.string.cloud_message_google_email_missing))
         }
         if (!expectedAccountId.isNullOrBlank() && !email.equals(expectedAccountId, ignoreCase = true)) {
-            throw IllegalStateException("当前 Google 账户与已接入账户不一致，请切换到 $expectedAccountId")
+            throw IllegalStateException(strings.get(R.string.cloud_message_google_account_mismatch, expectedAccountId))
         }
         return GoogleDriveAccountSession(
             accountId = email,
@@ -138,7 +141,7 @@ class GoogleDriveAuthManager(context: Context) {
             val responseBody = response.body?.string().orEmpty()
             if (!response.isSuccessful) {
                 throw IOException(
-                    responseBody.ifBlank { "获取 Google 账户信息失败: HTTP ${response.code}" }
+                    responseBody.ifBlank { strings.get(R.string.cloud_message_google_account_http, response.code) }
                 )
             }
             json.decodeFromString(GoogleUserInfoResponse.serializer(), responseBody)
@@ -149,7 +152,7 @@ class GoogleDriveAuthManager(context: Context) {
         addOnSuccessListener { result -> continuation.resume(result) }
         addOnFailureListener { error -> continuation.resumeWithException(error) }
         addOnCanceledListener {
-            continuation.resumeWithException(IllegalStateException("已取消 Google Drive 授权"))
+            continuation.resumeWithException(IllegalStateException(strings.get(R.string.cloud_message_google_cancelled)))
         }
     }
 

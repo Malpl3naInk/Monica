@@ -561,6 +561,7 @@ fun CustomFieldDetailCard(
     ) {
         Column(
             modifier = Modifier
+                .animateMonicaContentSize()
                 .clickable { 
                     clipboardManager.setText(AnnotatedString(field.value))
                     onCopy(field.title)
@@ -634,6 +635,7 @@ fun CustomFieldDetailCard(
                 } else {
                     "••••••••"
                 },
+                maxLines = if (valueVisible || !field.isProtected) Int.MAX_VALUE else 1,
                 style = MaterialTheme.typography.bodyLarge.copy(fontSize = 16.sp),
                 color = MaterialTheme.colorScheme.onSurface
             )

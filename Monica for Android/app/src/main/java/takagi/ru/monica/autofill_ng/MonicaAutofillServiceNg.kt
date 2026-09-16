@@ -1,5 +1,9 @@
 package takagi.ru.monica.autofill_ng
 
+import takagi.ru.monica.R
+import takagi.ru.monica.utils.AppLocaleStringResolver
+import takagi.ru.monica.utils.LocaleHelper
+import takagi.ru.monica.utils.StartupLanguageCache
 import android.app.PendingIntent
 import android.app.assist.AssistStructure
 import android.content.BroadcastReceiver
@@ -119,6 +123,12 @@ class MonicaAutofillServiceNg : AutofillService() {
     @Volatile
     private var recentFillSuggestions: RecentFillSuggestions? = null
 
+    private val strings by lazy { AppLocaleStringResolver(this) }
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LocaleHelper.setLocale(newBase, StartupLanguageCache.read(newBase)))
+    }
+
     override fun onCreate() {
         super.onCreate()
         AutofillLogger.initialize(applicationContext)
@@ -208,7 +218,7 @@ class MonicaAutofillServiceNg : AutofillService() {
                     )
                 )
                 diagnostics.logError("AF", "Fill request failed: ${e.message}", e)
-                callback.onFailure(e.message ?: "Autofill failed")
+                callback.onFailure(e.message ?: strings.get(R.string.legacy_ui_autofill_failed))
             }
         }
         cancellationSignal.setOnCancelListener {
@@ -1209,7 +1219,7 @@ class MonicaAutofillServiceNg : AutofillService() {
                 }
             } catch (e: Exception) {
                 AutofillLogger.e("AF", "onSaveRequest failed", e)
-                callback.onFailure(e.message ?: "Save failed")
+                callback.onFailure(e.message ?: strings.get(R.string.legacy_ui_autofill_save_failed))
             }
         }
     }

@@ -1,5 +1,7 @@
 package takagi.ru.monica.viewmodel
 
+import takagi.ru.monica.utils.AppLocaleStringResolver
+
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -69,7 +71,7 @@ internal fun TrashSettings.shouldAutoCleanup(): Boolean =
  * 回收站 ViewModel
  */
 class TrashViewModel(application: Application) : AndroidViewModel(application) {
-    
+    private val strings = AppLocaleStringResolver(application)
     private val database = PasswordDatabase.getDatabase(application)
     private val securityManager = SecurityManager(application)
     private val mdbxRepository: MdbxRepository = MdbxRepositoryFactory.create(
@@ -160,7 +162,7 @@ class TrashViewModel(application: Application) : AndroidViewModel(application) {
             }
             categories.add(TrashCategory(
                 type = ItemType.PASSWORD,
-                displayName = "密码",
+                displayName = strings.get(R.string.item_type_password),
                 count = passwordItems.size,
                 items = passwordItems
             ))
@@ -168,12 +170,12 @@ class TrashViewModel(application: Application) : AndroidViewModel(application) {
         
         // 所有 SecureItem 类型统一进入回收站，避免新增类型遗漏。
         val secureTypeLabels = mapOf(
-            ItemType.TOTP to "验证器",
-            ItemType.BANK_CARD to "银行卡",
-            ItemType.DOCUMENT to "证件",
-            ItemType.NOTE to "笔记",
-            ItemType.BILLING_ADDRESS to "账单地址",
-            ItemType.PAYMENT_ACCOUNT to "支付账户"
+            ItemType.TOTP to strings.get(R.string.item_type_authenticator),
+            ItemType.BANK_CARD to strings.get(R.string.item_type_bank_card),
+            ItemType.DOCUMENT to strings.get(R.string.item_type_document),
+            ItemType.NOTE to strings.get(R.string.nav_notes),
+            ItemType.BILLING_ADDRESS to strings.get(R.string.billing_address),
+            ItemType.PAYMENT_ACCOUNT to strings.get(R.string.payment_account)
         )
         secureItems
             .groupBy { it.itemType }

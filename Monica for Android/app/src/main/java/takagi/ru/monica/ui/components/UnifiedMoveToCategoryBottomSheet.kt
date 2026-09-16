@@ -637,7 +637,7 @@ fun UnifiedMoveToCategoryBottomSheet(
                     verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     Text(
-                        text = "目标：${selectedTargetLabel.value ?: "请选择分类或文件夹"}",
+                        text = stringResource(R.string.legacy_ui_target_label, selectedTargetLabel.value ?: stringResource(R.string.legacy_ui_choose_folder)),
                         style = MaterialTheme.typography.bodyMedium,
                         color = if (selectedTarget.value == null) {
                             MaterialTheme.colorScheme.onSurfaceVariant

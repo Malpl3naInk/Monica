@@ -107,6 +107,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import takagi.ru.monica.R
+import takagi.ru.monica.ui.screens.key
+import takagi.ru.monica.ui.screens.toTrashScopeFilter
 import takagi.ru.monica.ui.cardwallet.WalletStackOverlayHost
 import takagi.ru.monica.data.AddButtonBehaviorMode
 import takagi.ru.monica.data.AppSettings
@@ -675,10 +677,10 @@ private fun TimelineDetailPane(
                     .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Text("类型：${selectedLog.itemType.ifBlank { "-" }}")
-                Text("操作：${selectedLog.operationType.ifBlank { "-" }}")
+                Text(stringResource(R.string.legacy_ui_log_type, selectedLog.itemType.ifBlank { "-" }))
+                Text(stringResource(R.string.legacy_ui_log_operation, selectedLog.operationType.ifBlank { "-" }))
                 Text(
-                    text = "时间戳：${selectedLog.timestamp}",
+                    text = stringResource(R.string.legacy_ui_log_timestamp, selectedLog.timestamp),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -771,6 +773,8 @@ fun SimpleMainScreen(
     var backPressedOnce by remember { mutableStateOf(false) }
     var passwordHistoryPageMode by rememberSaveable { mutableStateOf(PasswordHistoryPageMode.NONE) }
     var passwordHistoryInitialTrashScopeKey by rememberSaveable { mutableStateOf<String?>(null) }
+    val trashSelectionMode = remember { mutableStateOf(false) }
+    val onTrashSelectionModeChange: (Boolean) -> Unit = { trashSelectionMode.value = it }
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val bitwardenRepository = remember { takagi.ru.monica.bitwarden.repository.BitwardenRepository.getInstance(context) }
@@ -1179,7 +1183,8 @@ fun SimpleMainScreen(
     // 检测是否有任何选择模式处于激活状态
     var isNoteSelectionMode by remember { mutableStateOf(false) }
     val isAnySelectionMode =
-        isPasswordSelectionMode ||
+        trashSelectionMode.value ||
+            isPasswordSelectionMode ||
             isTotpSelectionMode ||
             isDocumentSelectionMode ||
             isBankCardSelectionMode ||
@@ -1241,10 +1246,11 @@ fun SimpleMainScreen(
         passwordHistoryPageMode = PasswordHistoryPageMode.TIMELINE
     }
     val openTrashPage: () -> Unit = {
-        passwordHistoryInitialTrashScopeKey = null
+        passwordHistoryInitialTrashScopeKey = newItemFilter.toTrashScopeFilter().key
         passwordHistoryPageMode = PasswordHistoryPageMode.TRASH
     }
     val closeHistoryPage: () -> Unit = {
+        trashSelectionMode.value = false
         passwordHistoryPageMode = PasswordHistoryPageMode.NONE
         passwordHistoryInitialTrashScopeKey = null
     }
@@ -1633,7 +1639,7 @@ fun SimpleMainScreen(
                             if (queueResult.isFailure) {
                                 Toast.makeText(
                                     context,
-                                    "Bitwarden 删除入队失败",
+                                    context.getString(R.string.bitwarden_message_delete_queue_failed),
                                     Toast.LENGTH_SHORT
                                 ).show()
                                 return@launch
@@ -1970,7 +1976,9 @@ fun SimpleMainScreen(
                 initialTrashScopeKey = passwordHistoryInitialTrashScopeKey,
                 enableTabSwitch = false,
                 showBackButton = true,
-                onNavigateBack = closeHistoryPage
+                onNavigateBack = closeHistoryPage,
+                showReturnFab = false,
+                onTrashSelectionModeChange = onTrashSelectionModeChange
             )
             return
         }
@@ -2019,7 +2027,7 @@ fun SimpleMainScreen(
                     appSettings = appSettings,
                     securityManager = securityManager,
                     biometricEnabled = appSettings.biometricEnabled,
-                    useEmbeddedHistoryPages = isCompactWidth,
+                    useEmbeddedHistoryPages = false,
                     isDetailVisible = vaultV2HasWideDetail,
                     modifier = Modifier.fillMaxSize()
                 )
@@ -2280,11 +2288,9 @@ fun SimpleMainScreen(
                     onNavigateToCommonAccountTemplates = onNavigateToCommonAccountTemplates,
                     onNavigateToPageCustomization = onNavigateToPageCustomization,
                     onOpenVaultV2HistoryPage = {
-                        selectedTabKey = BottomNavItem.Passwords.key
                         openHistoryPage()
                     },
                     onOpenVaultV2TrashPage = {
-                        selectedTabKey = BottomNavItem.Passwords.key
                         openTrashPage()
                     },
                     onOpenVaultV2ArchivePage = {
@@ -2294,6 +2300,7 @@ fun SimpleMainScreen(
                     cardWalletSubTab = cardWalletSubTab,
                     passwordHistoryPageMode = passwordHistoryPageMode,
                     passwordHistoryInitialTrashScopeKey = passwordHistoryInitialTrashScopeKey,
+                    onTrashSelectionModeChange = onTrashSelectionModeChange,
                     onOpenHistoryPage = openHistoryPage,
                     onOpenTrashPage = openTrashPage,
                     onCloseHistoryPage = closeHistoryPage,
@@ -2458,6 +2465,7 @@ fun SimpleMainScreen(
                         onCloseHistoryPage = closeHistoryPage,
                         passwordHistoryPageMode = passwordHistoryPageMode,
                         passwordHistoryInitialTrashScopeKey = passwordHistoryInitialTrashScopeKey,
+                        onTrashSelectionModeChange = onTrashSelectionModeChange,
                         onTimelineLogSelected = handleTimelineLogOpen,
                         onSelectionModeChange = { isSelectionMode, count, onExit, onSelectAll, onFavorite, onMoveToCategory, onStack, onDelete ->
                             isPasswordSelectionMode = isSelectionMode
@@ -2851,6 +2859,7 @@ fun SimpleMainScreen(
                             onCloseHistoryPage = closeHistoryPage,
                             passwordHistoryPageMode = passwordHistoryPageMode,
                             passwordHistoryInitialTrashScopeKey = passwordHistoryInitialTrashScopeKey,
+                            onTrashSelectionModeChange = onTrashSelectionModeChange,
                             onTimelineLogSelected = handleTimelineLogOpen,
                             onSelectionModeChange = { isSelectionMode, count, onExit, onSelectAll, onFavorite, onMoveToCategory, onStack, onDelete ->
                                 isPasswordSelectionMode = isSelectionMode
@@ -3226,6 +3235,7 @@ fun SimpleMainScreen(
         vaultV2HasWideDetail = vaultV2SuppressesFab,
         appSettings = appSettings,
         passwordHistoryPageMode = passwordHistoryPageMode,
+        onNavigateBackFromHistory = closeHistoryPage,
         isAnySelectionMode = isAnySelectionMode,
         isAddingPasswordInline = isAddingPasswordInline,
         inlinePasswordEditorId = inlinePasswordEditorId,

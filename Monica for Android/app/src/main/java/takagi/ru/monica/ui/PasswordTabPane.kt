@@ -106,7 +106,8 @@ internal fun PasswordTabPane(
     onClearSelectedPassword: () -> Unit,
     onEditPassword: (Long) -> Unit,
     showStandaloneSettingsEntry: Boolean,
-    onOpenStandaloneSettings: () -> Unit
+    onOpenStandaloneSettings: () -> Unit,
+    onTrashSelectionModeChange: (Boolean) -> Unit = {}
 ) {
     val appSettings by settingsViewModel.settings.collectAsState()
 
@@ -171,7 +172,9 @@ internal fun PasswordTabPane(
             initialTrashScopeKey = passwordHistoryInitialTrashScopeKey,
             enableTabSwitch = false,
             showBackButton = true,
-            onNavigateBack = onCloseHistoryPage
+            onNavigateBack = onCloseHistoryPage,
+            showReturnFab = false,
+            onTrashSelectionModeChange = onTrashSelectionModeChange
         )
         return
     }

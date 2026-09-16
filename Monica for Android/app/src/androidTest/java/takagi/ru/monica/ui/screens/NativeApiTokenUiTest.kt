@@ -2,6 +2,8 @@ package takagi.ru.monica.ui.screens
 
 import android.app.Application
 import android.graphics.Bitmap
+import android.os.SystemClock
+import android.util.Log
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.LocalSaveableStateRegistry
@@ -16,15 +18,24 @@ import androidx.navigation.compose.rememberNavController
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withTimeout
 import org.junit.Assert.*
+import org.junit.Assume.assumeTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import takagi.ru.monica.R
 import takagi.ru.monica.data.*
 import takagi.ru.monica.repository.Mdbx2Repository
+import takagi.ru.monica.repository.Mdbx2NativeReadSessions
+import takagi.ru.monica.repository.Mdbx2VaultSessionExecutor
 import takagi.ru.monica.security.SecurityManager
+import takagi.ru.monica.security.SessionManager
 import takagi.ru.monica.ui.theme.MonicaTheme
 import takagi.ru.monica.ui.vaultv2.VaultV2ItemCard
 import takagi.ru.monica.ui.vaultv2.buildVaultV2NativeTokenItems
@@ -38,6 +49,192 @@ import java.util.concurrent.atomic.AtomicReference
 class NativeApiTokenUiTest {
     @get:Rule val compose = createComposeRule()
     private val context get() = InstrumentationRegistry.getInstrumentation().targetContext
+
+    @Test fun detailShowsExistingMetadataWhileStorageIsBusyAndClearsOnLock() = runBlocking<Unit> {
+        val fixture = Fixture()
+        val visible = mutableStateOf(true)
+        val wasUnlocked = SessionManager.isUnlocked.value
+        val wasForeground = Mdbx2NativeReadSessions.isForeground
+        val releaseStorage = CompletableDeferred<Unit>()
+        var storageJob: Job? = null
+        SessionManager.markUnlocked()
+        Mdbx2NativeReadSessions.updateForeground(true)
+        try {
+            val databaseId = fixture.createDatabase("Metadata first database")
+            val folder = fixture.repository.createFolder(databaseId, "Automation metadata", null)
+            val secret = "synthetic-deferred-disclosure-token"
+            val summary = fixture.repository.saveNativeApiToken(databaseId, null, "CLI immediate detail",
+                """{"schema":"monica.gateway.credential.v1","provider":"gitlab","api_base":"https://example.test/","token":"$secret"}""",
+                folder.folderId)
+            compose.setContent { if (visible.value) MonicaTheme {
+                val nav = rememberNavController()
+                NavHost(navController = nav, startDestination = "list") {
+                    composable("list") {
+                        NativeApiTokensScreen(fixture.model, databaseId, onNavigateBack = {},
+                            onOpen = { _, _ -> nav.navigate("detail") }, onCreate = {}, onManageDatabases = {})
+                    }
+                    composable("detail") {
+                        ApiTokenDetailScreen(fixture.model, databaseId, summary.entryId,
+                            onNavigateBack = { nav.popBackStack() }, onEdit = {})
+                    }
+                }
+            } }
+            awaitText("CLI immediate detail")
+            // Hold the real per-vault executor lock. The detail read cannot finish or disclose a
+            // payload; this verifies actual navigation uses metadata already available to the list.
+            val storageEntered = CompletableDeferred<Unit>()
+            storageJob = launch {
+                fixture.executor.withVault(databaseId) { _, _ ->
+                    storageEntered.complete(Unit)
+                    releaseStorage.await()
+                }
+            }
+            storageEntered.await()
+            compose.onNodeWithText("CLI immediate detail").performClick()
+            awaitTag("api_token_summary")
+            compose.onNodeWithTag("api_token_summary").assertIsDisplayed()
+            compose.onNodeWithText("Metadata first database").assertIsDisplayed()
+            compose.onNodeWithText("Automation metadata").assertIsDisplayed()
+            compose.onNodeWithTag("api_token_loading").assertIsDisplayed()
+            compose.onNodeWithTag("api_token_edit").assertDoesNotExist()
+            compose.onNodeWithText(secret).assertDoesNotExist()
+
+            releaseStorage.complete(Unit)
+            storageJob.join()
+            awaitTag("api_token_edit")
+            compose.onNodeWithTag("api_token_loading").assertDoesNotExist()
+            compose.onNodeWithContentDescription(context.getString(R.string.show)).performClick()
+            compose.onNodeWithText(secret).assertIsDisplayed()
+
+            SessionManager.markLocked()
+            compose.waitUntil(10_000) {
+                compose.onAllNodesWithTag("api_token_summary").fetchSemanticsNodes().isEmpty()
+            }
+            compose.onNodeWithText(secret).assertDoesNotExist()
+            compose.onNodeWithTag("api_token_edit").assertDoesNotExist()
+        } finally {
+            releaseStorage.complete(Unit)
+            storageJob?.join()
+            compose.runOnIdle { visible.value = false }
+            compose.waitForIdle()
+            Mdbx2NativeReadSessions.clear()
+            fixture.close()
+            Mdbx2NativeReadSessions.updateForeground(wasForeground)
+            if (wasUnlocked) SessionManager.markUnlocked() else SessionManager.markLocked()
+        }
+    }
+
+    @Test fun detailNavigationAfterFolderBrowsingPerformance() = runBlocking<Unit> {
+        assumeTrue("Manual UI benchmark; pass -e apiTokenUiPerf true",
+            InstrumentationRegistry.getArguments().getString("apiTokenUiPerf") == "true")
+        val fixture = Fixture()
+        val visible = mutableStateOf(true)
+        val wasUnlocked = SessionManager.isUnlocked.value
+        val wasForeground = Mdbx2NativeReadSessions.isForeground
+        SessionManager.markUnlocked()
+        Mdbx2NativeReadSessions.updateForeground(true)
+        try {
+            val databaseId = fixture.createDatabase("CLI navigation performance", MdbxTigaMode.MULTI)
+            val summary = fixture.repository.saveNativeApiToken(databaseId, null, "CLI navigation token",
+                """{"schema":"monica.gateway.credential.v1","provider":"gitlab","api_base":"https://example.test/","token":"synthetic-ui-performance-token","extension":{"keep":true}}""")
+            compose.setContent { if (visible.value) MonicaTheme {
+                val nav = rememberNavController()
+                NavHost(navController = nav, startDestination = "list") {
+                    composable("list") {
+                        NativeApiTokensScreen(fixture.model, databaseId, onNavigateBack = {},
+                            onOpen = { _, _ -> nav.navigate("detail") }, onCreate = {}, onManageDatabases = {})
+                    }
+                    composable("detail") {
+                        ApiTokenDetailScreen(fixture.model, databaseId, summary.entryId,
+                            onNavigateBack = { nav.popBackStack() }, onEdit = {})
+                    }
+                }
+            } }
+            val samples = mutableListOf<Long>()
+            repeat(3) { index ->
+                awaitText("CLI navigation token")
+                fixture.repository.listFolders(databaseId)
+                val start = SystemClock.elapsedRealtime()
+                compose.onNodeWithText("CLI navigation token").performClick()
+                awaitTag("api_token_edit")
+                samples += SystemClock.elapsedRealtime() - start
+                compose.onNodeWithTag("api_token_edit").assertIsDisplayed()
+                if (index < 2) compose.onNodeWithContentDescription(context.getString(R.string.back)).performClick()
+            }
+            Log.i("ApiTokenPerformance", "CLI_UI_PERF tap_to_detail_ms=$samples")
+        } finally {
+            compose.runOnIdle { visible.value = false }
+            compose.waitForIdle()
+            Mdbx2NativeReadSessions.clear()
+            fixture.close()
+            Mdbx2NativeReadSessions.updateForeground(wasForeground)
+            if (!wasUnlocked) SessionManager.markLocked()
+        }
+    }
+
+    @Test fun mainPagePreloadKeepsTheReaderUsedByTokenDetail() = runBlocking<Unit> {
+        val fixture = Fixture()
+        val visible = mutableStateOf(true)
+        val wasUnlocked = SessionManager.isUnlocked.value
+        val wasForeground = Mdbx2NativeReadSessions.isForeground
+        val activePrefs = context.getSharedPreferences("mdbx_active_vault", 0)
+        val activeKey = "last_active_mdbx_database_id"
+        val previousActive = if (activePrefs.contains(activeKey)) activePrefs.getLong(activeKey, -1L) else null
+        SessionManager.markUnlocked()
+        Mdbx2NativeReadSessions.updateForeground(true)
+        try {
+            val databaseId = fixture.createDatabase("Main page preload regression", MdbxTigaMode.MULTI)
+            val summary = fixture.repository.saveNativeApiToken(databaseId, null, "CLI preloaded token",
+                """{"schema":"monica.gateway.credential.v1","provider":"gitlab","api_base":"https://example.test/","token":"synthetic-preload-token"}""")
+            compose.setContent { if (visible.value) MonicaTheme {
+                val nav = rememberNavController()
+                NavHost(navController = nav, startDestination = "list") {
+                    composable("list") {
+                        NativeApiTokensScreen(fixture.model, databaseId, onNavigateBack = {},
+                            onOpen = { _, _ -> nav.navigate("detail") }, onCreate = {}, onManageDatabases = {})
+                    }
+                    composable("detail") {
+                        ApiTokenDetailScreen(fixture.model, databaseId, summary.entryId,
+                            onNavigateBack = { nav.popBackStack() }, onEdit = {})
+                    }
+                }
+            } }
+            awaitText("CLI preloaded token")
+            withTimeout(30_000) { fixture.model.nativeApiTokenList.state.first { it.loading.isEmpty() } }
+            val sessionBefore = fixture.executor.withNativeReadVault(databaseId) { _, vault ->
+                checkNotNull(vault.activeSessionInfo()).sessionId
+            }
+            // These are the actual background operations started when the main password/vault
+            // page selects an MDBX database, which the standalone token-list benchmark omitted.
+            val preloadStart = SystemClock.elapsedRealtime()
+            compose.runOnIdle { fixture.model.activateMdbxDatabase(databaseId) }
+            withTimeout(30_000) { fixture.model.vaultDiagnostics.first { databaseId in it } }
+            val preloadMillis = SystemClock.elapsedRealtime() - preloadStart
+            val tapStart = SystemClock.elapsedRealtime()
+            compose.onNodeWithText("CLI preloaded token").performClick()
+            awaitTag("api_token_edit")
+            val detailMillis = SystemClock.elapsedRealtime() - tapStart
+            val sessionAfter = fixture.executor.withNativeReadVault(databaseId) { _, vault ->
+                checkNotNull(vault.activeSessionInfo()).sessionId
+            }
+            Log.i("ApiTokenPerformance", "CLI_MAIN_PRELOAD preload_ms=$preloadMillis " +
+                "tap_to_detail_ms=$detailMillis reused=${sessionBefore == sessionAfter}")
+            assertEquals("Read-only main-page preload must not force token detail to derive the vault key again",
+                sessionBefore, sessionAfter)
+            compose.onNodeWithContentDescription(context.getString(R.string.show)).performClick()
+            compose.onNodeWithText("synthetic-preload-token").assertIsDisplayed()
+        } finally {
+            compose.runOnIdle { visible.value = false }
+            compose.waitForIdle()
+            fixture.close()
+            activePrefs.edit().apply {
+                if (previousActive == null) remove(activeKey) else putLong(activeKey, previousActive)
+            }.commit()
+            Mdbx2NativeReadSessions.clear()
+            Mdbx2NativeReadSessions.updateForeground(wasForeground)
+            if (wasUnlocked) SessionManager.markUnlocked() else SessionManager.markLocked()
+        }
+    }
 
     @Test fun quickFilterAndNativeRowOpenTheCorrectObject() {
         val summary = NativeApiTokenSummary(91, "native-id", "folder-id", "CLI category", "gitlab-work")
@@ -263,13 +460,14 @@ class NativeApiTokenUiTest {
         private val dao = room.localMdbxDatabaseDao()
         private val security = SecurityManager(context)
         val repository = Mdbx2Repository(context, dao, security)
+        val executor = Mdbx2VaultSessionExecutor(context, dao, security)
         val model = MdbxViewModel(context.applicationContext as Application, dao, room.mdbxRemoteSourceDao(),
             room.passwordEntryDao(), room.secureItemDao(), room.passkeyDao(), room.attachmentDao(), room.customFieldDao(), security)
         private val owned = mutableListOf<Pair<Long, File>>()
 
-        suspend fun createDatabase(name: String): Long {
+        suspend fun createDatabase(name: String, mode: MdbxTigaMode = MdbxTigaMode.SKY): Long {
             val password = "Synthetic UI test vault password 123"
-            val file = repository.createInitializedVaultFile(MdbxTigaMode.SKY, password)
+            val file = repository.createInitializedVaultFile(mode, password)
             val id = dao.insertDatabase(LocalMdbxDatabase(name = name, filePath = file.absolutePath,
                 engineType = MdbxEngineType.RUST_MDBX2.name, encryptedPassword = security.encryptData(password),
                 unlockMethod = MdbxUnlockMethod.MASTER_PASSWORD.storedValue))

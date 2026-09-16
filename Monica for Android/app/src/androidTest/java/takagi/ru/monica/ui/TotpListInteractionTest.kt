@@ -1,5 +1,7 @@
 package takagi.ru.monica.ui
 
+import takagi.ru.monica.utils.AppLocaleStringResolver
+
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -53,8 +55,8 @@ class TotpListInteractionTest {
         val database = Room.inMemoryDatabaseBuilder(context, PasswordDatabase::class.java).build()
         val passwords = PasswordRepository(database.passwordEntryDao())
         val items = SecureItemRepository(database.secureItemDao())
-        val model = TotpViewModel(items, passwords)
-        val passwordModel = PasswordViewModel(passwords, SecurityManager(context), items)
+        val model = TotpViewModel(items, passwords, strings = AppLocaleStringResolver(androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().targetContext))
+        val passwordModel = PasswordViewModel(passwords, SecurityManager(context), items, strings = AppLocaleStringResolver(androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().targetContext))
         val visible = mutableStateOf(true)
         val selection = AtomicReference(Selection())
         val singleDeletes = mutableListOf<Long>()

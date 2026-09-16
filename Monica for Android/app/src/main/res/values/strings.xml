@@ -701,10 +701,10 @@
     <string name="your_support_message">Your support is my motivation to keep developing!</string>
 
     <!-- SSO -->
-    <string name="sso_login_title">第三方账号登录</string>
-    <string name="sso_login_btn">登录</string>
-    <string name="use_sso">使用</string>
-    <string name="sso_ref_account">关联账号</string>
+    <string name="sso_login_title">Third-party sign-in</string>
+    <string name="sso_login_btn">Sign in</string>
+    <string name="use_sso">Use</string>
+    <string name="sso_ref_account">Linked account</string>
     <string name="thank_you_title">Thank you for using Monica Password Manager!</string>
     <string name="thank_you_message">Hope it brings security and convenience to your digital life.</string>
     <string name="storage_permission_needed">Storage permission is required to save images</string>
@@ -3063,7 +3063,7 @@
     <string name="sync_status_conflict_badge">Conflict</string>
     <string name="sync_status_local_badge">Local</string>
     <string name="bitwarden_synced_item">Bitwarden synced item</string>
-    <string name="sync_status_with_vault"> · %1$s</string>
+    <string name="sync_status_with_vault">\u0020· %1$s</string>
     <string name="sync_last_sync">Last sync: %1$s</string>
     <string name="sync_now">Sync now</string>
     <string name="sync_status_synced_full">Synced to Bitwarden</string>
@@ -4672,6 +4672,6 @@
     <string name="wallet_stack_open_card">Open card details</string>
     <string name="language_french">Français</string>
     <string name="qs_lang_french">Français</string>
-    <string name="language_nya">喵喵语</string>
-    <string name="qs_lang_nya">喵喵语</string>
+    <string name="language_nya" translatable="false">喵喵语</string>
+    <string name="qs_lang_nya" translatable="false">喵喵语</string>
 </resources>

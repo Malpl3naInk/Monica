@@ -15,6 +15,7 @@ import takagi.ru.monica.data.LocalMdbxDatabase
 import takagi.ru.monica.data.LocalMdbxDatabaseDao
 import takagi.ru.monica.data.MdbxEngineType
 import takagi.ru.monica.data.MdbxSourceType
+import takagi.ru.monica.data.MdbxSyncCheckpointState
 import takagi.ru.monica.data.MdbxSyncStatus
 import takagi.ru.monica.data.MdbxTigaMode
 import takagi.ru.monica.data.MdbxUnlockMethod
@@ -22,6 +23,8 @@ import takagi.ru.monica.data.resolvedActiveFilePath
 import takagi.ru.monica.mdbx.MdbxDiagLogger
 import takagi.ru.monica.security.SecurityManager
 import uniffi.mdbx_ffi.MdbxVault
+import uniffi.mdbx_ffi.MdbxTigaScope
+import uniffi.mdbx_ffi.MdbxTigaScopeType
 import uniffi.mdbx_ffi.MdbxWriteCommand
 import uniffi.mdbx_ffi.MdbxDeviceAssurance
 import uniffi.mdbx_ffi.MdbxDeviceContext
@@ -164,9 +167,10 @@ internal class Mdbx2VaultSessionExecutor(
         block: suspend (LocalMdbxDatabase, MdbxVault) -> T
     ): T = withVaultInternal(databaseId, mutating = false, block)
 
-    /** Reuse the list's unlock for individual native token reads during foreground navigation. */
+    /** Pure reads share a Rust unlock while its disclosure policy and app lifecycle permit. */
     suspend fun <T> withNativeReadVault(
         databaseId: Long,
+        scope: MdbxTigaScope = MdbxTigaScope(MdbxTigaScopeType.VAULT, null),
         block: (LocalMdbxDatabase, MdbxVault) -> T
     ): T = withContext(Dispatchers.IO) {
         Mdbx2NativeRuntime.ensureLoaded()
@@ -176,6 +180,7 @@ internal class Mdbx2VaultSessionExecutor(
             if (!file.isFile) throw Mdbx2ErrorMapper.fileMissing()
             Mdbx2NativeReadSessions.read(database, file,
                 open = { openVaultForRead(database, file) },
+                scope = scope,
                 block = { vault -> block(database, vault) })
         }
     }
@@ -184,6 +189,39 @@ internal class Mdbx2VaultSessionExecutor(
         databaseId: Long,
         block: suspend (LocalMdbxDatabase, MdbxVault) -> T
     ): T = withVaultInternal(databaseId, mutating = true, block)
+
+    /** Do not clear edits made during network I/O or while the UI imports the result. */
+    suspend fun completeRemoteSync(databaseId: Long, report: Mdbx2RemoteSyncReport): MdbxSyncStatus =
+        withContext(Dispatchers.IO) {
+            Mdbx2NativeRuntime.ensureLoaded()
+            val published = requireNotNull(report.publishedCheckpoint)
+            val syncedCommitInventory = report.syncedCommitInventory ?: published.commitInventory
+            vaultLocks.getOrPut(databaseId) { Mutex() }.withLock {
+                val database = requireDatabase(databaseId)
+                val file = resolveLocalFile(database)
+                if (!file.isFile) throw Mdbx2ErrorMapper.fileMissing()
+                val current = Mdbx2NativeReadSessions.read(database, file,
+                    open = { openVaultForRead(database, file) }) { vault ->
+                    require(vault.info().vaultId == report.vaultId) {
+                        "MDBX2 vault identity changed before synchronization completed"
+                    }
+                    val checkpoint = vault.incrementalSyncCheckpoint()
+                    MdbxSyncCheckpointState(checkpoint.commitInventory, checkpoint.deltaInventory)
+                }
+                val status = when {
+                    report.conflicts > 0 -> MdbxSyncStatus.CONFLICT
+                    report.blockedStreams > 0 -> MdbxSyncStatus.REMOTE_CHANGED
+                    // Ordinary reads can append security-audit deltas without editing data.
+                    // Keep their transport cursor pending, but base the visible dirty state
+                    // on committed changes, including edits made during remote apply/import.
+                    current.commitInventory != syncedCommitInventory -> MdbxSyncStatus.PENDING_UPLOAD
+                    else -> MdbxSyncStatus.IN_SYNC
+                }
+                // The checkpoint check and status update share the same lock as native edits.
+                databaseDao.updateRemoteSyncSuccess(databaseId, status.name, System.currentTimeMillis())
+                status
+            }
+        }
 
     suspend fun createExternalDocument(
         treeUri: Uri,

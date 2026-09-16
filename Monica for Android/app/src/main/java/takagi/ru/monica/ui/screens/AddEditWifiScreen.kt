@@ -1,5 +1,6 @@
 package takagi.ru.monica.ui.screens
 
+import takagi.ru.monica.ui.components.MonicaExpandableContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -540,7 +541,7 @@ private fun WifiFormBody(
                 )
 
                 // 密码（开放网络不显示）
-                if (security != WifiSecurity.NONE) {
+                MonicaExpandableContent(expanded = security != WifiSecurity.NONE) {
                     var passwordVisible by remember { mutableStateOf(false) }
                     OutlinedTextField(
                         value = password,

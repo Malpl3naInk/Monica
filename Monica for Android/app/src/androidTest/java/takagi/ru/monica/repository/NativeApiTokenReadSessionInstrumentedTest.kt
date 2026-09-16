@@ -17,6 +17,29 @@ import uniffi.mdbx_ffi.MdbxWriteCommand
 
 @RunWith(AndroidJUnit4::class)
 class NativeApiTokenReadSessionInstrumentedTest {
+    @Test fun ordinaryFolderTagAndIndexReadsPreserveTheNativeUnlock() = runBlocking {
+        val fixture = Fixture()
+        try {
+            val id = fixture.create()
+            val folder = fixture.repository.createFolder(id, "Browse folder", null)
+            val token = fixture.repository.saveNativeApiToken(id, null, "Synthetic token", PAYLOAD,
+                collectionId = folder.folderId)
+            fixture.repository.listNativeApiTokens(id)
+            val originalSession = fixture.sessionId(id)
+            val otherRepository = Mdbx2Repository(fixture.context, fixture.dao, fixture.security)
+            assertEquals(1, otherRepository.listFolders(id).size)
+            assertTrue(otherRepository.listProjectTags(id, folder.folderId).isEmpty())
+            assertTrue(otherRepository.listAllProjectTags(id).isEmpty())
+            assertEquals(1, otherRepository.searchProjects(id, "Browse", emptyList()).size)
+            assertNotNull(otherRepository.getCurrentHeadCommitId(id))
+            assertTrue(otherRepository.readStoredEntries(id).any { it.entryId == token.entryId })
+            val detail = fixture.repository.readNativeApiToken(id, token.entryId)
+            assertEquals(ApiTokenPayload.decode(PAYLOAD), ApiTokenPayload.decode(detail.payload))
+            assertEquals("Browse folder", detail.summary.collectionTitle)
+            assertEquals(originalSession, fixture.sessionId(id))
+        } finally { fixture.close() }
+    }
+
     @Test fun listAndDetailReuseTheNativeSessionAndLockForcesANewUnlock() = runBlocking {
         val fixture = Fixture()
         try {

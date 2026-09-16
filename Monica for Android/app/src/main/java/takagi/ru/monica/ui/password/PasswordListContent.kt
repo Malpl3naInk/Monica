@@ -1,5 +1,7 @@
 package takagi.ru.monica.ui
 
+import takagi.ru.monica.utils.AppLocaleStringResolver
+
 import takagi.ru.monica.ui.screens.NativeTokenListUi
 import takagi.ru.monica.ui.screens.NativeTokenFilterChip
 import takagi.ru.monica.ui.screens.rememberNativeTokenList
@@ -1840,6 +1842,7 @@ fun PasswordListContent(
                         categories = categories,
                         sourceCategory = category,
                         newLeafName = newLeafName,
+                        strings = AppLocaleStringResolver(context),
                     )
                 }.onSuccess { plan ->
                     plan.updatedCategories.forEach(onRenameCategory)

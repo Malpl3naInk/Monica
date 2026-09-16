@@ -30,14 +30,12 @@ data class OneDriveAccountSession(
 )
 
 class OneDriveAuthTemporarilyUnavailableException(
-    message: String = "OneDrive 暂时无法刷新登录状态。请关闭系统电池优化，或点亮屏幕并重新打开 Monica 后再试。",
+    message: String,
     cause: Throwable? = null
 ) : IllegalStateException(message, cause)
 
-const val ONEDRIVE_REDIRECT_CONFLICT_USER_MESSAGE: String =
-    "检测到旧版 Monica Steam 占用了 OneDrive 登录回调。请更新 Monica Steam 后重试；数据库文件本身没有损坏。"
-
 class OneDriveAuthManager(context: Context) {
+    private val strings = AppLocaleStringResolver(context)
     private val appContext = context.applicationContext
 
     suspend fun signIn(activity: Activity): OneDriveAccountSession = withContext(Dispatchers.Main) {
@@ -73,7 +71,7 @@ class OneDriveAuthManager(context: Context) {
     suspend fun acquireAccessToken(accountId: String): OneDriveAccountSession {
         val application = getApplication()
         val account = getAccount(accountId)
-            ?: throw IllegalStateException("OneDrive 账户已失效，请重新登录")
+            ?: throw IllegalStateException(strings.get(R.string.onedrive_error_session_expired))
 
         return withContext(Dispatchers.IO) {
             throwIfSilentRefreshBlockedByPowerState()
@@ -85,7 +83,7 @@ class OneDriveAuthManager(context: Context) {
                 )
             } catch (exception: MsalException) {
                 if (exception.isPowerOptimizationRefreshFailure()) {
-                    throw OneDriveAuthTemporarilyUnavailableException(cause = exception)
+                    throw OneDriveAuthTemporarilyUnavailableException(strings.get(R.string.onedrive_error_power), cause = exception)
                 }
                 throw exception
             }
@@ -99,7 +97,7 @@ class OneDriveAuthManager(context: Context) {
         val isIdle = powerManager.isDeviceIdleMode
         val isOptimized = !powerManager.isIgnoringBatteryOptimizations(appContext.packageName)
         if (isIdle && isOptimized) {
-            throw OneDriveAuthTemporarilyUnavailableException()
+            throw OneDriveAuthTemporarilyUnavailableException(strings.get(R.string.onedrive_error_power))
         }
     }
 
@@ -137,7 +135,7 @@ class OneDriveAuthManager(context: Context) {
     private fun IAccount.toSession(accessToken: String? = null): OneDriveAccountSession {
         val resolvedId = id?.takeIf { it.isNotBlank() }
             ?: username?.takeIf { it.isNotBlank() }
-            ?: throw IllegalStateException("OneDrive 账户标识为空")
+            ?: throw IllegalStateException(strings.get(R.string.cloud_message_provider_account_required, "OneDrive"))
         val resolvedUsername = username.orEmpty()
         val resolvedDisplayName = claims?.get("name") as? String
             ?: resolvedUsername.ifBlank { "OneDrive" }
@@ -185,14 +183,14 @@ fun Throwable.isOneDriveRedirectHandlerConflict(): Boolean {
     }
 }
 
-fun Throwable.toOneDriveUserMessage(fallback: String = "OneDrive 操作失败"): String {
+internal fun Throwable.toOneDriveUserMessage(strings: StringResolver, fallback: String? = null): String {
     if (isOneDriveRedirectHandlerConflict()) {
-        return ONEDRIVE_REDIRECT_CONFLICT_USER_MESSAGE
+        return strings.get(R.string.onedrive_error_redirect)
     }
     if (isOneDriveAuthTemporarilyUnavailable()) {
-        return "OneDrive 暂时无法刷新登录状态。请关闭系统电池优化，或点亮屏幕并重新打开 Monica 后再试。"
+        return strings.get(R.string.onedrive_error_power)
     }
-    return message?.takeIf { it.isNotBlank() } ?: fallback
+    return message?.takeIf { it.isNotBlank() } ?: fallback ?: strings.get(R.string.onedrive_error_operation)
 }
 
 private fun Throwable.isPowerOptimizationRefreshFailure(): Boolean {

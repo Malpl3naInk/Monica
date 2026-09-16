@@ -3467,7 +3467,7 @@
     <string name="webdav_image_no_need_compress">所有图片已优化，无需压缩喵</string>
     <string name="webdav_compress_images_one_tap">一键压缩图片喵</string>
     <string name="webdav_compress_dialog_title">压缩图片喵</string>
-    <string name="webdav_compress_dialog_message">要压一压 %1$d 张大图喵，让备份包轻一点喵。\n\n• 压过的图片会稍微糊一点点喵\n• 已经压过的不会再压喵\n• 这一步不能反悔喵\n\n还要继续喵？</string>
+    <string name="webdav_compress_dialog_message">要压一压 %1$d 张大图喵，让备份包轻一点喵。\n\n图片会稍微糊一点点喵，已经压过的会跳过。这一步不能反悔喵，还要继续喵？</string>
     <string name="webdav_compress_status_preparing">正在磨爪喵…</string>
     <string name="webdav_compress_status_processing">正在压缩 %1$d/%2$d...喵</string>
     <string name="webdav_compress_status_done">完成喵</string>

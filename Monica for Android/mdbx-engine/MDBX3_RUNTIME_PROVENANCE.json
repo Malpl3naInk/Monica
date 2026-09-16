@@ -5,7 +5,30 @@
     "repository": "https://github.com/Monica-Pass/Mdbx",
     "commit": "d1d3cc4fdff4e33fcb70099b3e7df36eeae43ba4",
     "tree": "15559f82628560cb4020a2b54aa9aa16651add9e",
-    "build_script_fix": "90005c8c608c952093a4522ffa507a562e2e39a4"
+    "build_script_fix": "90005c8c608c952093a4522ffa507a562e2e39a4",
+    "local_overlay": {
+      "base_commit": "90005c8c608c952093a4522ffa507a562e2e39a4",
+      "patch": "patches/90005c8-read-session-lifetime.patch",
+      "patch_sha256": "1790361321be909a7f176ae705e25511ee6f001a163d2a5c91f918aaccb44882",
+      "files": {
+        "crates/mdbx-storage/src/tiga_policy.rs": "d8be71de5d7d82bda6a2ee1655de78b6bdfaed4931786088ea1c29f1b14abf2a",
+        "crates/mdbx-ffi/src/security_facade.rs": "5862f92dfaa120b9c30805ff5919e684955e2903a5b78d97e63c180a4feb8c01"
+      },
+      "description": "Policy-bounded disclosure read-session reuse; no storage or payload format changes"
+    },
+    "additional_overlays": [
+      {
+        "base_commit": "90005c8c608c952093a4522ffa507a562e2e39a4",
+        "patch": "patches/90005c8-sync-delta-limits.patch",
+        "patch_sha256": "d47d75cf49ed6d19870e8c61984ff642e906c7cc956fd03a1bfa8fb52d02e7bf",
+        "files": {
+          "crates/mdbx-storage/src/sync_delta.rs": "8a57347af5016c990ecafa076f459ac2d1de269df3b292231245564c2d8ade33",
+          "crates/mdbx-storage/src/repo/operation_coordinator.rs": "1e729e00255f030ea201556029ae7d1427faf4c9aa1ea8f259001d94d164fe73",
+          "crates/mdbx-ffi/src/sync_facade.rs": "2c4db43550b8f3b81cc4d16c733fc635013e8b9d070b1bfaf17f6b40695fbfc3"
+        },
+        "description": "Check encoded sync-delta limits before commit using a bounded counting writer; buffer incremental file exports in 64 KiB and flush before fsync/publish; preserve rollback, storage format and FFI contracts"
+      }
+    ]
   },
   "runtime": {
     "name": "MDBX3",
@@ -25,26 +48,53 @@
     "strip": "llvm-strip --strip-all --keep-section=.note.gnu.build-id"
   },
   "abi": {
-    "required_symbols": 535,
-    "verified_checksums": 237,
+    "required_symbols": 539,
+    "verified_checksums": 239,
     "uniffi_contract_version": 30,
-    "release_gate": "passed"
+    "release_gate": "passed-android-sync-limit-validation",
+    "static_android_validation": "passed-all-three-abis",
+    "previous_android_runtime_validation": {
+      "environment": "Monica_Issue136_API_32 shared emulator",
+      "api_level": 32,
+      "avd_abi": "x86_64",
+      "app_abi": "arm64-v8a",
+      "native_session_tests": 4,
+      "api_token_ui_tests": 6,
+      "performance_scenarios": 2,
+      "physical_device_validation": "not-run"
+    },
+    "android_runtime_validation": {
+      "validated_at_utc": "2026-09-16T08:38:32.918857+00:00",
+      "environment": "Monica_Issue136_API_32 shared emulator",
+      "api_level": 32,
+      "avd_abi": "x86_64",
+      "app_abi": "x86_64",
+      "app_version": "1.0.311-26091612-21",
+      "database_transfer_tests": 17,
+      "credential_import_regression_tests": 9,
+      "large_mdbx_rows": 4097,
+      "large_kdbx_rows": 1001,
+      "large_utf8_rows": 20,
+      "authenticated_sync_segments": 10,
+      "physical_device_validation": "not-run",
+      "live_bitwarden_validation": "not-run"
+    }
   },
   "artifacts": {
     "arm64-v8a": {
-      "bytes": 7387976,
-      "sha256": "6938359102c60d06fdd407e4b56de4f8e8a42df14f4c33503cdb0f5b8f0e1df6",
-      "build_id": "00240243472e6cb3563d2bc3ad2a5bc9dcae24c3"
+      "bytes": 7402680,
+      "sha256": "c70dbb048840b1f0009b18f627d258f9a5dc589d27a3db41ad74fd06e2c4f923",
+      "build_id": "0c3e6fba5e85a827188d31c02e898e5d987710e9"
     },
     "armeabi-v7a": {
-      "bytes": 5720752,
-      "sha256": "f637b8ebe74877c31f23a6f8c4b0b96e15548ef6d3d8971fb2ad253b64faa401",
-      "build_id": "e16edbfc9e5bcb6a120908690816c35c48ec8fad"
+      "bytes": 5731664,
+      "sha256": "02c300ee70216a49fdd278f6b31a4390502c01c8b01ac34632aaf0265f001484",
+      "build_id": "47f05e18803c5505e89d991668bc70efb5992669"
     },
     "x86_64": {
-      "bytes": 8778240,
-      "sha256": "d64df80bc90e76641e68ae2916adade0694b07285b5e69e70b75614794ccaaeb",
-      "build_id": "b5f45b1e7a5e3a35be16b45cd2566c5e8c8997fe"
+      "bytes": 8795600,
+      "sha256": "346bfc6d95e054aaf9974824fa7ebcea576976fab0e225966727b1379f573417",
+      "build_id": "48300dca96b8a18a1eb5be71ddb7ae20eba7bdee"
     }
   }
 }

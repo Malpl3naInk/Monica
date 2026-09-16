@@ -10,9 +10,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import takagi.ru.monica.data.LocalMdbxDatabase
 import takagi.ru.monica.security.SessionManager
+import uniffi.mdbx_ffi.MdbxTigaScope
+import uniffi.mdbx_ffi.MdbxTigaScopeType
 import uniffi.mdbx_ffi.MdbxVault
 
-/** Short-lived native handles only; list reads never prefetch or cache token plaintext. */
+/** Policy-bounded Rust handles only; list reads never prefetch or cache token plaintext. */
 internal object Mdbx2NativeReadSessions {
     @Volatile
     var isForeground = false
@@ -36,7 +38,13 @@ internal object Mdbx2NativeReadSessions {
     }
     private val cache by cacheHolder
 
-    fun <T> read(database: LocalMdbxDatabase, file: File, open: () -> MdbxVault, block: (MdbxVault) -> T): T {
+    fun <T> read(
+        database: LocalMdbxDatabase,
+        file: File,
+        open: () -> MdbxVault,
+        scope: MdbxTigaScope = MdbxTigaScope(MdbxTigaScopeType.VAULT, null),
+        block: (MdbxVault) -> T,
+    ): T {
         fun stamp(target: File): FileStamp? = if (!target.isFile) null else {
             val attributes = Files.readAttributes(target.toPath(), BasicFileAttributes::class.java)
             FileStamp(attributes.fileKey()?.toString(), attributes.size(), attributes.lastModifiedTime())
@@ -52,7 +60,13 @@ internal object Mdbx2NativeReadSessions {
                 // but never associate an old connection with a replacement file at the same path.
                 key().takeIf { it.path == initial.path && initial.file.identity != null &&
                     it.file.identity == initial.file.identity }
-            }, read = block)
+            },
+            remainingLifetimeMillis = { vault ->
+                // Recheck the requested resource, including stricter folder/entry policies.
+                // End retention one second early because Rust reports whole seconds.
+                (vault.readSessionRemainingSecs(scope).toLong() - 1L).coerceAtLeast(0L) * 1_000L
+            },
+            read = block)
     }
 
     fun invalidate(databaseId: Long) {

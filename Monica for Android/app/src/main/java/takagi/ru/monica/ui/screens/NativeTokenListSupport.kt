@@ -15,7 +15,6 @@ import takagi.ru.monica.data.*
 import takagi.ru.monica.ui.components.MonicaExpressiveFilterChip
 import takagi.ru.monica.viewmodel.CategoryFilter
 import takagi.ru.monica.viewmodel.MdbxViewModel
-import takagi.ru.monica.viewmodel.NativeApiTokenListState
 import takagi.ru.monica.viewmodel.nativeApiTokenSource
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
@@ -64,10 +63,18 @@ internal fun rememberNativeTokenList(
     onlyTokens: Boolean, onToggle: () -> Unit, onOpen: (Long?, String?) -> Unit,
     includeTokens: Boolean = true, favoritesOnly: Boolean = false
 ): NativeTokenListUi {
+    // The overview passes null to suspend this source. Use an explicit branch so
+    // collector remember slots cannot overlap the remaining state on re-entry.
+    if (viewModel == null) {
+        return NativeTokenListUi(
+            entries = emptyList(), visible = false, onlyTokens = false,
+            loading = false, failed = false, onToggle = onToggle, onOpen = onOpen,
+        )
+    }
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
-    val databases = viewModel?.allDatabases?.collectAsStateWithLifecycle()?.value.orEmpty()
-    val databasesLoaded = viewModel?.allDatabasesLoaded?.collectAsStateWithLifecycle()?.value ?: true
+    val databases by viewModel.allDatabases.collectAsStateWithLifecycle()
+    val databasesLoaded by viewModel.allDatabasesLoaded.collectAsStateWithLifecycle()
     val sources = remember(databases, filter) { databases.filter {
         it.engineTypeEnum == MdbxEngineType.RUST_MDBX2 && when (filter) {
             is CategoryFilter.MdbxDatabase -> it.id == filter.databaseId
@@ -76,20 +83,20 @@ internal fun rememberNativeTokenList(
             else -> false
         }
     }.map { it.nativeApiTokenSource() } }
-    val store = viewModel?.nativeApiTokenList
-    val snapshot = store?.state?.collectAsStateWithLifecycle()?.value ?: NativeApiTokenListState()
+    val store = viewModel.nativeApiTokenList
+    val snapshot by store.state.collectAsStateWithLifecycle()
     val active = includeTokens || onlyTokens
     val latestSources by rememberUpdatedState(if (active) sources else emptyList())
     val owner = LocalLifecycleOwner.current
     DisposableEffect(owner, store) {
         val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME) store?.request(latestSources, refresh = true)
+            if (event == Lifecycle.Event.ON_RESUME) store.request(latestSources, refresh = true)
         }
         owner.lifecycle.addObserver(observer)
         onDispose { owner.lifecycle.removeObserver(observer) }
     }
     LaunchedEffect(store, sources, active) {
-        if (active) store?.request(sources)
+        if (active) store.request(sources)
     }
     val entries = remember(snapshot.entries, sources, filter, query, active, favoritesOnly) {
         if (active) filterNativeApiTokens(sources.flatMap(snapshot::rowsFor), filter, query, favoritesOnly)
@@ -107,9 +114,9 @@ internal fun rememberNativeTokenList(
         loading = loading, failed = failed,
         byDisplayId = remember(entries) { entries.associateBy { it.displayId } },
         onToggle = onToggle, onOpen = onOpen,
-        onRetry = { store?.request(sources, refresh = true) },
+        onRetry = { store.request(sources, refresh = true) },
         onFavorite = { token, favorite -> scope.launch {
-            try { viewModel?.setNativeApiTokenFavorite(token, favorite) }
+            try { viewModel.setNativeApiTokenFavorite(token, favorite) }
             catch (cancelled: CancellationException) { throw cancelled }
             catch (_: Exception) { Toast.makeText(context, R.string.api_token_load_error, Toast.LENGTH_LONG).show() }
         } },

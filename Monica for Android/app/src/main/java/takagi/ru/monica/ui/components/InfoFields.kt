@@ -114,7 +114,7 @@ fun PasswordField(
     onToggleVisibility: () -> Unit,
     context: Context,
     onCreateSend: ((title: String, text: String) -> Unit)? = null,
-    maskedValue: String = "•".repeat(value.length),
+    maskedValue: String = "••••••••",
 ) {
     val actionMenuState = rememberPasswordFieldActionMenuState()
 
@@ -126,8 +126,8 @@ fun PasswordField(
         )
         
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth().animateMonicaContentSize(),
+            verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Box(
@@ -150,6 +150,7 @@ fun PasswordField(
                 )
                 Text(
                     text = if (visible) value else maskedValue,
+                    maxLines = if (visible) Int.MAX_VALUE else 1,
                     style = if (visible) MaterialTheme.typography.bodyLarge else MaterialTheme.typography.bodyLarge.copy(
                         fontFamily = FontFamily.Monospace,
                         letterSpacing = 3.sp

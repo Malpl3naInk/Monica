@@ -1,5 +1,6 @@
 package takagi.ru.monica.ui.screens
 
+import takagi.ru.monica.ui.components.animateMonicaContentSize
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -532,6 +533,7 @@ private fun SshKeyFormBody(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .animateMonicaContentSize()
                     .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {

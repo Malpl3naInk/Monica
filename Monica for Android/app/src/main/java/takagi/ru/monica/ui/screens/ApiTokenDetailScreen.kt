@@ -31,6 +31,8 @@ import takagi.ru.monica.data.ApiTokenPayload
 import takagi.ru.monica.data.ApiTokenMetadata
 import takagi.ru.monica.ui.components.CustomFieldDisplayCard
 import takagi.ru.monica.ui.components.InfoFieldWithCopy
+import takagi.ru.monica.ui.components.MonicaExpandableContent
+import takagi.ru.monica.ui.components.MonicaExpansionChevron
 import takagi.ru.monica.ui.components.PasswordField
 import takagi.ru.monica.ui.icons.MonicaIcons
 import takagi.ru.monica.viewmodel.MdbxViewModel
@@ -67,6 +69,7 @@ fun ApiTokenDetailScreen(
     }
     LaunchedEffect(state.deleted) { if (state.deleted) onNavigateBack() }
     val current = state.token
+    val summary = state.summary
     val fields = remember(current) { current?.payload?.let { runCatching { Json.parseToJsonElement(it) as? JsonObject }.getOrNull() } }
     val supported = remember(current) { current?.payload?.let(ApiTokenPayload::decode) != null &&
         (current?.extras?.payload?.let(ApiTokenMetadata::isValid) ?: true) }
@@ -77,7 +80,7 @@ fun ApiTokenDetailScreen(
     }
     Scaffold(
         topBar = { TopAppBar(
-            title = { Text(current?.summary?.title ?: stringResource(R.string.entry_type_api_token),
+            title = { Text(summary?.title ?: stringResource(R.string.entry_type_api_token),
                 style = MaterialTheme.typography.titleLarge, maxLines = 1, overflow = TextOverflow.Ellipsis) },
             navigationIcon = { IconButton(onClick = onNavigateBack) { Icon(MonicaIcons.Navigation.back, stringResource(R.string.back)) } },
             actions = { if (current != null) IconButton(onClick = { confirmDelete = true }, enabled = !state.deleting && !state.loading) {
@@ -94,21 +97,27 @@ fun ApiTokenDetailScreen(
         Column(Modifier.fillMaxSize().padding(padding).consumeWindowInsets(padding)
             .verticalScroll(rememberScrollState()).padding(horizontal = 16.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            if (current == null && state.loading) LinearProgressIndicator(Modifier.fillMaxWidth())
             if (state.failed) ApiTokenError(model::refresh)
-            if (current != null) {
-                Card(Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp),
+            if (summary != null) {
+                Card(Modifier.fillMaxWidth().testTag("api_token_summary"), shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)) {
                     Row(Modifier.padding(20.dp), verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                         Icon(Icons.Default.Key, null, Modifier.size(36.dp), tint = MaterialTheme.colorScheme.onPrimaryContainer)
                         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                            Text(current.summary.title, style = MaterialTheme.typography.titleLarge)
+                            Text(summary.title, style = MaterialTheme.typography.titleLarge)
                             Text(listOf(provider, stringResource(R.string.entry_type_api_token)).filter(String::isNotBlank).joinToString(" · "),
                                 style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onPrimaryContainer)
                         }
                     }
                 }
+            }
+            if (current == null && state.loading) {
+                ApiTokenSection(stringResource(R.string.api_token_credentials)) {
+                    LinearProgressIndicator(Modifier.fillMaxWidth().testTag("api_token_loading"))
+                }
+            }
+            if (current != null) {
                 if (fields != null) ApiTokenSection(stringResource(R.string.api_token_credentials)) {
                     if (provider.isNotBlank()) InfoFieldWithCopy(stringResource(R.string.api_token_provider), provider, context = context)
                     ApiTokenPayload.text(fields, "api_base").takeIf(String::isNotBlank)?.let {
@@ -131,28 +140,34 @@ fun ApiTokenDetailScreen(
                 key(fieldVisibilityEpoch, current.summary.entryId) {
                     CustomFieldDisplayCard(customFields)
                 }
+            }
+            if (summary != null) {
                 ApiTokenSection(stringResource(R.string.api_token_storage), Icons.Default.Storage) {
                     InfoFieldWithCopy(stringResource(R.string.api_token_database),
                         databases.firstOrNull { it.id == databaseId }?.name.orEmpty(), context = context)
                     InfoFieldWithCopy(stringResource(R.string.api_token_collection),
-                        current.summary.collectionTitle.ifBlank { stringResource(R.string.api_token_root_collection) }, context = context)
+                        summary.collectionTitle.ifBlank { stringResource(R.string.api_token_root_collection) }, context = context)
                 }
+            }
+            if (current != null) {
                 if (!supported) Text(stringResource(R.string.api_token_unknown_schema),
                     style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 TextButton(onClick = { advanced = !advanced }, modifier = Modifier.testTag("api_token_advanced")) {
-                    Icon(if (advanced) Icons.Default.ExpandLess else Icons.Default.ExpandMore, null)
+                    MonicaExpansionChevron(advanced, contentDescription = null)
                     Spacer(Modifier.width(6.dp))
                     Text(stringResource(R.string.api_token_advanced))
                 }
-                if (advanced) ApiTokenSection(stringResource(R.string.api_token_advanced), Icons.Default.DataObject) {
-                    InfoFieldWithCopy(stringResource(R.string.api_token_entry_id), current.summary.entryId, context = context)
-                    InfoFieldWithCopy(stringResource(R.string.api_token_collection_id), current.summary.collectionId, context = context)
-                    fields?.get("schema")?.let { InfoFieldWithCopy(stringResource(R.string.api_token_schema),
-                        (it as? JsonPrimitive)?.content ?: it.toString(), context = context) }
-                    fields?.filterKeys { it !in setOf("schema", "provider", "api_base", "note", "token") }?.forEach { (field, value) ->
-                        key(field) { ApiTokenSecretField(field, (value as? JsonPrimitive)?.content ?: value.toString()) }
+                MonicaExpandableContent(advanced, Modifier.fillMaxWidth()) {
+                    ApiTokenSection(stringResource(R.string.api_token_advanced), Icons.Default.DataObject) {
+                        InfoFieldWithCopy(stringResource(R.string.api_token_entry_id), current.summary.entryId, context = context)
+                        InfoFieldWithCopy(stringResource(R.string.api_token_collection_id), current.summary.collectionId, context = context)
+                        fields?.get("schema")?.let { InfoFieldWithCopy(stringResource(R.string.api_token_schema),
+                            (it as? JsonPrimitive)?.content ?: it.toString(), context = context) }
+                        fields?.filterKeys { it !in setOf("schema", "provider", "api_base", "note", "token") }?.forEach { (field, value) ->
+                            key(field) { ApiTokenSecretField(field, (value as? JsonPrimitive)?.content ?: value.toString(), canReveal = advanced) }
+                        }
+                        ApiTokenSecretField(stringResource(R.string.api_token_complete_payload), current.payload, canReveal = advanced)
                     }
-                    ApiTokenSecretField(stringResource(R.string.api_token_complete_payload), current.payload)
                 }
             }
             Spacer(Modifier.height(96.dp))
@@ -166,13 +181,13 @@ fun ApiTokenDetailScreen(
 }
 
 @Composable
-private fun ApiTokenSecretField(label: String, value: String) {
-    var visible by remember(value) { mutableStateOf(false) }
+private fun ApiTokenSecretField(label: String, value: String, canReveal: Boolean = true) {
+    var visible by remember(value, canReveal) { mutableStateOf(false) }
     val owner = LocalLifecycleOwner.current
     DisposableEffect(owner) {
         val observer = LifecycleEventObserver { _, event -> if (event == Lifecycle.Event.ON_STOP) visible = false }
         owner.lifecycle.addObserver(observer)
         onDispose { owner.lifecycle.removeObserver(observer) }
     }
-    PasswordField(label, value, visible, { visible = !visible }, LocalContext.current, maskedValue = "••••••••")
+    PasswordField(label, value, visible && canReveal, { visible = !visible }, LocalContext.current)
 }

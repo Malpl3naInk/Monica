@@ -10,9 +10,11 @@ import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import takagi.ru.monica.data.NativeApiToken
+import takagi.ru.monica.data.NativeApiTokenSummary
 import takagi.ru.monica.security.SessionManager
 
 internal data class NativeApiTokenDetailState(
+    val summary: NativeApiTokenSummary? = null,
     val token: NativeApiToken? = null,
     val loading: Boolean = true,
     val deleting: Boolean = false,
@@ -25,7 +27,9 @@ internal class NativeApiTokenDetailViewModel(
     private val databaseId: Long,
     private val entryId: String,
 ) : ViewModel() {
-    private val mutableState = MutableStateFlow(NativeApiTokenDetailState())
+    private val mutableState = MutableStateFlow(NativeApiTokenDetailState(
+        summary = databases.cachedNativeApiTokenSummary(databaseId, entryId)
+    ))
     val state = mutableState.asStateFlow()
     private var loadJob: Job? = null
     private var refreshOnResume = false
@@ -56,7 +60,7 @@ internal class NativeApiTokenDetailViewModel(
             mutableState.update { it.copy(loading = true, failed = false) }
             try {
                 val token = databases.readNativeApiToken(databaseId, entryId)
-                mutableState.update { it.copy(token = token) }
+                mutableState.update { it.copy(summary = token.summary, token = token) }
             } catch (cancelled: CancellationException) { throw cancelled
             } catch (_: Exception) { mutableState.update { it.copy(failed = true) }
             } finally { mutableState.update { it.copy(loading = false) } }

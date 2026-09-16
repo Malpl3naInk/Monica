@@ -1,5 +1,7 @@
 package takagi.ru.monica.ui.vaultv2
 
+import takagi.ru.monica.utils.AppLocaleStringResolver
+
 import takagi.ru.monica.ui.screens.NativeTokenListUi
 import takagi.ru.monica.ui.screens.NativeTokenFilterChip
 import takagi.ru.monica.ui.screens.rememberNativeTokenList
@@ -112,6 +114,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import takagi.ru.monica.R
+import takagi.ru.monica.ui.screens.key
+import takagi.ru.monica.ui.screens.toTrashScopeFilter
 import takagi.ru.monica.bitwarden.repository.BitwardenRepository
 import takagi.ru.monica.bitwarden.sync.isUserVisibleSyncInProgress
 import takagi.ru.monica.bitwarden.ui.BitwardenAutoSyncEffect
@@ -1015,6 +1019,7 @@ private fun rememberVaultV2StorageFilterLabel(
 	mdbxFolders: List<MdbxStoredFolderEntry>,
 ): String {
 	val monica = stringResource(R.string.filter_monica)
+	val context = LocalContext.current
 	val bitwarden = stringResource(R.string.filter_bitwarden)
 	val keepass = stringResource(R.string.filter_keepass)
 	val starred = stringResource(R.string.filter_starred)
@@ -1066,7 +1071,7 @@ private fun rememberVaultV2StorageFilterLabel(
 		}
 		is UnifiedCategoryFilterSelection.MdbxFolderFilter -> {
 			val databaseLabel = mdbxDatabases.find { it.id == selected.databaseId }?.name ?: "MDBX"
-			val folderLabel = buildMdbxFolderPathLabel(selected.folderId, mdbxFolders)
+			val folderLabel = buildMdbxFolderPathLabel(context, selected.folderId, mdbxFolders)
 			if (folderLabel.isNullOrBlank()) databaseLabel else "$databaseLabel · $folderLabel"
 		}
 	}
@@ -1603,11 +1608,11 @@ fun VaultV2Pane(
 	}
 	val handleOpenTrashPage: () -> Unit = if (useEmbeddedHistoryPages) {
 		{
-			vaultHistoryTrashScope = state.toUnifiedCategoryFilterSelection().overviewScope().replace(':', '_')
+			vaultHistoryTrashScope = state.toUnifiedCategoryFilterSelection().toTrashScopeFilter().key
 			vaultHistoryPageMode = 2
 		}
 	} else {
-		{ onOpenScopedTrashPage?.invoke(state.toUnifiedCategoryFilterSelection().overviewScope().replace(':', '_')) ?: onOpenTrashPage() }
+		{ onOpenScopedTrashPage?.invoke(state.toUnifiedCategoryFilterSelection().toTrashScopeFilter().key) ?: onOpenTrashPage() }
 	}
 	val handleOpenArchivePage: () -> Unit = { state.openArchiveView() }
 
@@ -3424,7 +3429,8 @@ fun VaultV2Pane(
 											planLocalCategoryMove(
 												categories = categories,
 												sourceCategory = category,
-												targetParentCategory = categories.find { it.id == targetParentCategoryId }
+												targetParentCategory = categories.find { it.id == targetParentCategoryId },
+												strings = AppLocaleStringResolver(context),
 											)
 										}.onSuccess { plan ->
 											plan.updatedCategories.forEach(passwordViewModel::updateCategory)
@@ -3443,7 +3449,8 @@ fun VaultV2Pane(
 													planLocalCategoryMove(
 														categories = categories,
 														sourceCategory = category,
-														targetParentCategory = categories.find { it.id == target.categoryId }
+														targetParentCategory = categories.find { it.id == target.categoryId },
+														strings = AppLocaleStringResolver(context),
 													)
 												}.onSuccess { plan ->
 													plan.updatedCategories.forEach(passwordViewModel::updateCategory)
@@ -3466,14 +3473,14 @@ fun VaultV2Pane(
 											is StorageTarget.KeePass -> {
 												Toast.makeText(
 													context,
-													context.getString(R.string.save_failed_with_error, "当前暂不支持将分类移动到 KeePass 数据库"),
+													context.getString(R.string.save_failed_with_error, context.getString(R.string.legacy_ui_move_category_keepass_unsupported)),
 													Toast.LENGTH_SHORT
 												).show()
 											}
 											is StorageTarget.Mdbx -> {
 												Toast.makeText(
 													context,
-													context.getString(R.string.save_failed_with_error, "当前暂不支持将分类移动到 MDBX 数据库"),
+													context.getString(R.string.save_failed_with_error, context.getString(R.string.legacy_ui_move_category_mdbx_unsupported)),
 													Toast.LENGTH_SHORT
 												).show()
 											}
@@ -3486,6 +3493,7 @@ fun VaultV2Pane(
 												categories = categories,
 												sourceCategory = category,
 												newLeafName = newLeafName,
+												strings = AppLocaleStringResolver(context),
 											)
 										}.onSuccess { plan ->
 											plan.updatedCategories.forEach(passwordViewModel::updateCategory)

@@ -45,6 +45,13 @@
 # Google Play services (Auth / Credentials)
 -dontwarn com.google.android.gms.**
 
+# ProviderFactory reads this class name from Manifest metadata, then reflects
+# its public Context constructor. Provider Events beta01 has no consumer rule
+# for it; without this rule R8 removes the adapter and both transfer APIs fail.
+-keep class androidx.credentials.providerevents.playservices.ProviderEventsApiProviderPlayServices {
+    public <init>(android.content.Context);
+}
+
 # ZXing
 -dontwarn com.google.zxing.**
 

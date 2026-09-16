@@ -105,4 +105,56 @@ class Mdbx2ReadSessionCacheTest {
         cache.clear()
         assertTrue(remaining.all { it.closed })
     }
+
+    @Test fun nativePolicyKeepsAValidReaderPastThirtySecondsWithoutExtendingItsDeadline() = runTest {
+        val session = Session()
+        val cache = Mdbx2ReadSessionCache<String, Session>(backgroundScope,
+            { testScheduler.currentTime }, { it.closed = true })
+        val deadline = 60_000L
+        fun read(open: () -> Session) = cache.use(1, "revision", { true }, open, { "revision" },
+            remainingLifetimeMillis = { deadline - testScheduler.currentTime }) { assertFalse(it.closed) }
+        read { session }
+        runCurrent()
+        advanceTimeBy(31_000)
+        runCurrent()
+        read { error("Thirty seconds of browsing must not discard a valid Rust session") }
+        advanceTimeBy(29_000)
+        runCurrent()
+        assertTrue(session.closed)
+    }
+
+    @Test fun stricterResourcePolicyIsCheckedBeforeReadingACachedSession() = runTest {
+        val first = Session()
+        val second = Session()
+        var stricterScope = false
+        var opens = 0
+        val cache = Mdbx2ReadSessionCache<String, Session>(backgroundScope,
+            { testScheduler.currentTime }, { it.closed = true })
+        fun read() = cache.use(1, "revision", { true }, { if (++opens == 1) first else second },
+            { "revision" }, remainingLifetimeMillis = {
+                if (stricterScope && it === first) 0L else 60_000L
+            }) { assertFalse(it.closed); it }
+        assertSame(first, read())
+        stricterScope = true
+        assertSame(second, read())
+        assertTrue(first.closed)
+        cache.clear()
+        assertTrue(second.closed)
+    }
+
+    @Test fun invalidNativePolicyClosesTheReaderWithoutReturningPayload() = runTest {
+        val session = Session()
+        val cache = Mdbx2ReadSessionCache<String, Session>(backgroundScope,
+            { testScheduler.currentTime }, { it.closed = true })
+        cache.use(1, "revision", { true }, { session }, { "revision" },
+            remainingLifetimeMillis = { 60_000L }) { }
+        val failure = runCatching {
+            cache.use(1, "revision", { true }, { error("Must not reopen after invalid policy") },
+                { "revision" }, remainingLifetimeMillis = { error("Invalid native policy") }) {
+                error("Must not read after invalid policy")
+            }
+        }.exceptionOrNull()
+        assertEquals("Invalid native policy", failure?.message)
+        assertTrue(session.closed)
+    }
 }
