@@ -1086,6 +1086,7 @@ fun MonicaContent(
     // "Placement happened before lookahead" crashes on affected devices/builds.
     @OptIn(androidx.compose.animation.ExperimentalSharedTransitionApi::class)
     androidx.compose.runtime.CompositionLocalProvider(
+        takagi.ru.monica.ui.LocalUiSecurityManager provides securityManager,
         takagi.ru.monica.ui.LocalSharedTransitionScope provides null,
         takagi.ru.monica.ui.LocalReduceAnimations provides true,
         takagi.ru.monica.ui.components.LocalExpansionAnimationsEnabled provides !settings.reduceAnimations,
@@ -3941,7 +3942,8 @@ fun MonicaContent(
                         localMdbxDatabaseDao = database.localMdbxDatabaseDao(),
                         bitwardenVaultDao = database.bitwardenVaultDao(),
                         securityManager = securityManager,
-                        strings = strings
+                        strings = strings,
+                        attachmentSupport = takagi.ru.monica.data.dedup.DedupAttachmentSupport(context.applicationContext, database)
                     ),
                     strings = strings
                 )
@@ -3972,8 +3974,8 @@ fun MonicaContent(
                 onToggleSource = { sourceKey ->
                     dedupViewModel.toggleMergeSource(sourceKey)
                 },
-                onSelectAllSources = {
-                    dedupViewModel.selectAllSources()
+                onSelectAllSources = { visibleKeys ->
+                    dedupViewModel.selectAllSources(visibleKeys)
                 },
                 onClearSources = {
                     dedupViewModel.clearSources()
