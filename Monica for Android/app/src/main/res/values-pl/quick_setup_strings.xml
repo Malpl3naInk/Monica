@@ -33,4 +33,6 @@
     <string name="qs_move_down">W dół</string>
     <string name="qs_settings_kept">Zawsze dostępne</string>
     <string name="qs_vault_overview">Otwieraj sejf od przeglądu</string>
+    <string name="qs_import_from_apps">Import z innej aplikacji</string>
+    <string name="qs_import_from_apps_desc">Przenieś hasła i klucze dostępu, a potem dokończ konfigurację.</string>
 </resources>

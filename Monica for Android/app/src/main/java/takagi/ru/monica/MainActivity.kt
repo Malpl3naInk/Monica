@@ -2747,12 +2747,16 @@ fun MonicaContent(
 
         // 导入数据
         composable(
-            route = Screen.ImportData.route,
+            route = Screen.ImportData.routePattern,
+            arguments = listOf(navArgument("fromApps") {
+                type = NavType.BoolType
+                defaultValue = true
+            }),
             enterTransition = { easyNotesScreenEnter() },
             exitTransition = { easyNotesScreenExit() },
             popEnterTransition = { easyNotesScreenEnter() },
             popExitTransition = { easyNotesScreenExit() }
-        ) {
+        ) { backStackEntry ->
             val dataExportImportViewModel: takagi.ru.monica.viewmodel.DataExportImportViewModel = viewModel {
                 takagi.ru.monica.viewmodel.DataExportImportViewModel(
                     secureItemRepository,
@@ -2767,6 +2771,7 @@ fun MonicaContent(
             val importSummary by dataExportImportViewModel.lastImportSummary.collectAsState()
             val importProgress by dataExportImportViewModel.importProgress.collectAsState()
             takagi.ru.monica.ui.screens.ImportDataScreen(
+                initialApplicationSource = backStackEntry.arguments?.getBoolean("fromApps") ?: true,
                 destination = importDestination,
                 onDestinationChange = { importDestinationKey = it.key; dataExportImportViewModel.clearImportSummary() },
                 importSummary = importSummary,
@@ -3612,8 +3617,10 @@ fun MonicaContent(
                 onOpenLocalKeePass = {
                     navController.navigate(Screen.LocalKeePass.route)
                 },
-                onOpenImportData = {
-                    navController.navigate(Screen.ImportData.route)
+                onOpenImportData = { fromApps ->
+                    navController.navigate(Screen.ImportData.createRoute(fromApps)) {
+                        launchSingleTop = true
+                    }
                 },
                 onOpenMonicaPlus = {
                     navController.navigate(Screen.MonicaPlus.route)

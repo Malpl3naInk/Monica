@@ -33,4 +33,6 @@
     <string name="qs_move_down">Ниже</string>
     <string name="qs_settings_kept">Всегда доступны</string>
     <string name="qs_vault_overview">Открывать хранилище с обзора</string>
+    <string name="qs_import_from_apps">Импорт из другого приложения</string>
+    <string name="qs_import_from_apps_desc">Перенесите пароли и ключи доступа и продолжите настройку.</string>
 </resources>

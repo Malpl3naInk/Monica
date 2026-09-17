@@ -25,6 +25,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -131,7 +132,8 @@ fun ImportDataScreen(
     onImportPasswordKeyboardCsv: suspend (
         Uri,
         DataExportImportManager.PasswordKeyboardTagHandling
-    ) -> Result<Int> = { _, _ -> Result.failure(Exception("Not implemented")) } // 密码键盘软件 CSV导入
+    ) -> Result<Int> = { _, _ -> Result.failure(Exception("Not implemented")) }, // 密码键盘软件 CSV导入
+    initialApplicationSource: Boolean = true,
 ) {
     val context = LocalContext.current
     val activity = context.findImportActivity()
@@ -143,7 +145,7 @@ fun ImportDataScreen(
     var selectedFileUri by remember { mutableStateOf<Uri?>(null) }
     var isImporting by remember { mutableStateOf(false) }
     LaunchedEffect(isImporting) { if (isImporting) scrollState.animateScrollTo(0) }
-    var applicationSource by remember { mutableStateOf(true) }
+    var applicationSource by rememberSaveable(initialApplicationSource) { mutableStateOf(initialApplicationSource) }
     var showFormatChooser by remember { mutableStateOf(false) }
     var choosingCsvFormat by remember { mutableStateOf(false) }
     // Private credentials live only in memory; never save them into a Bundle or log them.

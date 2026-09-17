@@ -33,4 +33,6 @@
     <string name="qs_move_down">下移</string>
     <string name="qs_settings_kept">始終保留</string>
     <string name="qs_vault_overview">由總覽開啟密碼庫</string>
+    <string name="qs_import_from_apps">從其他應用程式匯入</string>
+    <string name="qs_import_from_apps_desc">轉移密碼及通行密鑰，完成後繼續設定。</string>
 </resources>

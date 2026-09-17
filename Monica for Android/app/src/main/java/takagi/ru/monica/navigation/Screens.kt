@@ -207,7 +207,10 @@ sealed class Screen(val route: String) {
     object MdbxOneDriveCreate : Screen("mdbx_onedrive_create")
     object MdbxOneDriveOpen : Screen("mdbx_onedrive_open")
     object ExportData : Screen("export_data")
-    object ImportData : Screen("import_data")
+    object ImportData : Screen("import_data") {
+        val routePattern = "$route?fromApps={fromApps}"
+        fun createRoute(fromApps: Boolean) = "$route?fromApps=$fromApps"
+    }
     object ChangePassword : Screen("change_password")
     object SecurityQuestion : Screen("security_question")
     object AutofillSettings : Screen("autofill_settings")

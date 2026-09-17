@@ -33,4 +33,6 @@
     <string name="qs_move_down">下移</string>
     <string name="qs_settings_kept">始终保留</string>
     <string name="qs_vault_overview">从概览进入密码库</string>
+    <string name="qs_import_from_apps">从其他应用导入</string>
+    <string name="qs_import_from_apps_desc">迁移密码与通行密钥，完成后继续初始化。</string>
 </resources>

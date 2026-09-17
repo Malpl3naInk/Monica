@@ -33,4 +33,6 @@
     <string name="qs_move_down">Nach unten</string>
     <string name="qs_settings_kept">Immer erreichbar</string>
     <string name="qs_vault_overview">Tresor mit der Übersicht öffnen</string>
+    <string name="qs_import_from_apps">Aus anderer App importieren</string>
+    <string name="qs_import_from_apps_desc">Passwörter und Passkeys übernehmen, danach die Einrichtung fortsetzen.</string>
 </resources>

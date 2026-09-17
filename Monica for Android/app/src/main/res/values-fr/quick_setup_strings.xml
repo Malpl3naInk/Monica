@@ -33,4 +33,6 @@
     <string name="qs_move_down">Descendre</string>
     <string name="qs_settings_kept">Toujours accessible</string>
     <string name="qs_vault_overview">Ouvrir le coffre sur la vue d’ensemble</string>
+    <string name="qs_import_from_apps">Importer d’une autre app</string>
+    <string name="qs_import_from_apps_desc">Transférez mots de passe et clés d’accès, puis reprenez la configuration.</string>
 </resources>

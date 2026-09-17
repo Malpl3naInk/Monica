@@ -53,6 +53,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SettingsSuggest
 import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.Storage
+import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.filled.UploadFile
 import androidx.compose.material.icons.filled.Wallet
 import androidx.compose.material.icons.filled.Widgets
@@ -178,7 +179,7 @@ fun QuickSetupScreen(
     onOpenBitwardenSettings: () -> Unit,
     onOpenWebDavBackup: () -> Unit,
     onOpenLocalKeePass: () -> Unit,
-    onOpenImportData: () -> Unit,
+    onOpenImportData: (fromApps: Boolean) -> Unit,
     onOpenMonicaPlus: () -> Unit,
 ) {
     val settings by settingsViewModel.settings.collectAsState()
@@ -806,19 +807,23 @@ private fun SetupExpandableGroup(
 @Composable
 private fun DataImportStep(
     onOpenBitwardenSettings: () -> Unit, onOpenWebDavBackup: () -> Unit,
-    onOpenLocalKeePass: () -> Unit, onOpenImportData: () -> Unit,
+    onOpenLocalKeePass: () -> Unit, onOpenImportData: (fromApps: Boolean) -> Unit,
 ) {
     Text(stringResource(R.string.qs_data_optional), Modifier.padding(horizontal = 4.dp),
         style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
     Column(verticalArrangement = Arrangement.spacedBy(3.dp)) {
+        SetupActionCard(Icons.Default.SwapHoriz, stringResource(R.string.qs_import_from_apps),
+            stringResource(R.string.qs_import_from_apps_desc), stringResource(R.string.qs_go_import),
+            { onOpenImportData(true) }, 0, 5)
         SetupActionCard(Icons.Default.Shield, stringResource(R.string.qs_link_bitwarden),
-            stringResource(R.string.qs_link_bitwarden_desc), stringResource(R.string.qs_go_link), onOpenBitwardenSettings, 0, 4)
+            stringResource(R.string.qs_link_bitwarden_desc), stringResource(R.string.qs_go_link), onOpenBitwardenSettings, 1, 5)
         SetupActionCard(Icons.Default.Key, stringResource(R.string.qs_link_keepass),
-            stringResource(R.string.qs_link_keepass_desc), stringResource(R.string.qs_go_link), onOpenLocalKeePass, 1, 4)
+            stringResource(R.string.qs_link_keepass_desc), stringResource(R.string.qs_go_link), onOpenLocalKeePass, 2, 5)
         SetupActionCard(Icons.Default.Link, stringResource(R.string.qs_link_webdav),
-            stringResource(R.string.qs_link_webdav_desc), stringResource(R.string.qs_go_setup), onOpenWebDavBackup, 2, 4)
+            stringResource(R.string.qs_link_webdav_desc), stringResource(R.string.qs_go_setup), onOpenWebDavBackup, 3, 5)
         SetupActionCard(Icons.Default.UploadFile, stringResource(R.string.qs_manual_import),
-            stringResource(R.string.qs_manual_import_desc), stringResource(R.string.qs_go_import), onOpenImportData, 3, 4)
+            stringResource(R.string.qs_manual_import_desc), stringResource(R.string.qs_go_import),
+            { onOpenImportData(false) }, 4, 5)
     }
 }
 

@@ -33,4 +33,6 @@
     <string name="qs_move_down">Move down</string>
     <string name="qs_settings_kept">Always available</string>
     <string name="qs_vault_overview">Start the vault with the overview</string>
+    <string name="qs_import_from_apps">Import from another app</string>
+    <string name="qs_import_from_apps_desc">Transfer passwords and passkeys, then return to setup.</string>
 </resources>

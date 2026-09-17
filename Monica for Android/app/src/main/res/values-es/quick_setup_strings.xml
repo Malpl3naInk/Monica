@@ -33,4 +33,6 @@
     <string name="qs_move_down">Bajar</string>
     <string name="qs_settings_kept">Siempre disponible</string>
     <string name="qs_vault_overview">Abrir la bóveda en la vista general</string>
+    <string name="qs_import_from_apps">Importar de otra app</string>
+    <string name="qs_import_from_apps_desc">Transfiere contraseñas y passkeys y continúa la configuración.</string>
 </resources>

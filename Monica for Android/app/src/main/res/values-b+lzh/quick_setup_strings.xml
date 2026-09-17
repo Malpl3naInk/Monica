@@ -33,4 +33,6 @@
     <string name="qs_move_down">下移</string>
     <string name="qs_settings_kept">常留于此</string>
     <string name="qs_vault_overview">入密府先见总览</string>
+    <string name="qs_import_from_apps">自他器纳入</string>
+    <string name="qs_import_from_apps_desc">迁密钥与通行之钥，毕则续设。</string>
 </resources>

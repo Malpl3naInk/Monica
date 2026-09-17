@@ -33,4 +33,6 @@
     <string name="qs_move_down">Xuống dưới</string>
     <string name="qs_settings_kept">Luôn hiển thị</string>
     <string name="qs_vault_overview">Mở kho từ trang tổng quan</string>
+    <string name="qs_import_from_apps">Nhập từ ứng dụng khác</string>
+    <string name="qs_import_from_apps_desc">Chuyển mật khẩu và passkey, rồi tiếp tục thiết lập.</string>
 </resources>

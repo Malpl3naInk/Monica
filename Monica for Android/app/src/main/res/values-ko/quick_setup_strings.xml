@@ -33,4 +33,6 @@
     <string name="qs_move_down">아래로</string>
     <string name="qs_settings_kept">항상 표시</string>
     <string name="qs_vault_overview">보관함을 개요 화면으로 열기</string>
+    <string name="qs_import_from_apps">다른 앱에서 가져오기</string>
+    <string name="qs_import_from_apps_desc">비밀번호와 패스키를 옮긴 뒤 초기 설정을 계속하세요.</string>
 </resources>
