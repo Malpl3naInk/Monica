@@ -8,6 +8,7 @@
 - 新增繁體中文，采用香港常用书面用语。
 - 中文语言选项收纳为可展开的长卡片，简体、繁体、猫语和文言文集中选择。
 - 修复标记“非自动填充”后仍出现解锁提示的问题。
+- 改进工号、学号、分步登录及网页表单的填充，减少漏填和误填。
 
 ### 详细
 
@@ -16,6 +17,8 @@
 - **语言选择**：中文与其他语言保持一致的长卡片样式，最右侧箭头独立展开四种中文选项；选择后同步更新卡片名称和设置页摘要。「跟随系统」保留为独立选项。
 - **切换与显示**：明确区分简体与繁体语言，兼容系统上报的特殊中文语言组合；缺失的繁体文案优先回退简体中文。弹窗适配深色模式和大字体，展开使用共用平滑动效。
 - **自动填充标记**：标记“非自动填充”后立即撤下当前输入框的系统提示；旧解锁入口与密码建议在启动时重新检查标记，避免开启自动填充验证时反复显示解锁卡片。
+- **填充兼容性**：系统与无障碍填充补充工号、学号及非标准中文字段识别，支持账号、密码分步登录；排除搜索框和验证码，避免混入其他窗口或网页的字段。网页优先按指定字段写入，减少异步粘贴错位；取消旧请求后停止回调，保留 Android Q 的免验证填充。
+- **键盘填充**：连续填写前确认焦点已切换；App 消费“下一项”但未移动焦点、重建同一输入框连接或切换到其他 App 时停止，避免密码追加到账号中。
 
 ## English
 
@@ -25,6 +28,7 @@
 - Add Traditional Chinese with Hong Kong terminology.
 - Group Simplified Chinese, Traditional Chinese, Nya, and Classical Chinese in an expandable language card.
 - Fix unlock prompts remaining after a field is marked as unsuitable for autofill.
+- Improve filling for employee/student IDs, two-step sign-in, and web forms, reducing missed or incorrect fields.
 
 ### Details
 
@@ -33,3 +37,5 @@
 - **Language selection:** Chinese uses the same full-width card style as other languages. A separate arrow expands its four variants; selecting one updates the card label and the language summary in Settings. Follow system remains a separate option.
 - **Switching and display:** Distinguish Simplified and Traditional Chinese, including unusual locale combinations reported by some devices. Missing Traditional Chinese text falls back to Simplified Chinese first. The dialog supports dark mode, large text, and shared smooth expansion animations.
 - **Autofill exclusions:** Marking a field as unsuitable for autofill dismisses its current system suggestions. Cached unlock entries and password suggestions recheck the exclusion before opening, preventing repeated unlock cards when autofill verification is enabled.
+- **Filling compatibility:** System and accessibility filling recognize employee/student IDs and nonstandard Chinese fields, support separate username/password steps, exclude search and verification-code fields, and keep fields scoped to the active window or web origin. Web fields are addressed directly to avoid asynchronous paste targeting errors; cancelled requests stop delivering callbacks. Android Q filling without verification remains available.
+- **Keyboard filling:** Verify that focus has moved before filling the next value. Stop when an app consumes Next without moving focus, restarts the same editor, or switches to another app, preventing passwords from being appended to usernames.
