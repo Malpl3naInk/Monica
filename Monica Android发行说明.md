@@ -3,6 +3,8 @@
 ## 中文
 
 ### 简要
+- 收紧验证码卡片和密码分组／组内条目的留白，提高列表信息密度；保留收藏与封面按钮原尺寸（#139）。
+- 修复 KeePass WebDAV 浏览器及云备份操作按钮在长文案换行时未居中的问题（#140）。
 - 优化开启预览页面时的密码库首屏加载：密码条目就绪后立即显示概览，其他类型在后台完成解析并自动补全。
 - 预览概览达到中等规模时使用 Rust 批量聚合，保留校验失败后的兼容回退。
 
@@ -14,6 +16,8 @@
 ## English
 
 ### Summary
+- Reduce padding and spacing in TOTP cards and grouped password cards while preserving favorite/cover button sizes (#139).
+- Center wrapped action labels in the KeePass WebDAV browser and cloud backup screens (#140).
 - Improve vault startup with the overview enabled by rendering an initial snapshot as soon as password entries are ready, then filling in other item types in the background.
 - Use Rust batch aggregation for medium and large overview snapshots, with validated Kotlin fallback.
 
