@@ -141,6 +141,8 @@ cd Monica-for-Android
 
 ## 🤝 Support the Development
 
+You can also support Monica in euros (EUR) through [Liberapay](https://liberapay.com/JoyinJoester).
+
 Monica is an open-source labor of love. If this app helps you secure your digital life, please consider supporting its development!
 
 <div align="center">

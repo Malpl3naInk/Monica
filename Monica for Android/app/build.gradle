@@ -15,7 +15,7 @@ android {
     // Intentionally frozen: same-signature sideloaded builds must remain mutually replaceable
     // for emergency rollback. Do not increment this value for routine releases.
     def appVersionCode = 12
-    def baseVersionName = previewVersionSuffix ? "1.0.313-${previewVersionSuffix}" : "1.0.313"
+    def baseVersionName = previewVersionSuffix ? "1.0.314-${previewVersionSuffix}" : "1.0.314"
     def normalizeTwoDigits = { raw ->
         def value = raw?.toString()?.trim()?.replaceAll('\\D', '')
         if (!value) {
@@ -356,6 +356,7 @@ dependencies {
     
     // BouncyCastle for Argon2 (Bitwarden KDF support)
     implementation 'org.bouncycastle:bcprov-jdk18on:1.78.1'
+    implementation 'org.bouncycastle:bcpg-jdk18on:1.78.1'
     // Native Argon2 backend for Bitwarden Argon2id KDF. This keeps high-memory
     // KDF work off the Android JVM heap.
     implementation('com.lambdapioneer.argon2kt:argon2kt:1.6.0') {

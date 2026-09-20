@@ -55,6 +55,13 @@
 # ZXing
 -dontwarn com.google.zxing.**
 
+# Bouncy Castle discovers algorithm Mappings and JCA service implementations by
+# class name. R8 otherwise removes/renames them, so release GPG generation fails
+# with NoSuchAlgorithmException (RSA for provider BC), although debug works.
+# Preserve the provider adapters; the remaining crypto/OpenPGP code can shrink.
+-keep class org.bouncycastle.jcajce.provider.** { *; }
+-keep class org.bouncycastle.jce.provider.** { *; }
+
 # WebDAV (Sardine)
 -dontwarn com.thegrizzlylabs.sardineandroid.**
 -dontwarn okhttp3.**
