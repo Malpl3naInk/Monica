@@ -1,0 +1,49 @@
+{
+  "checkedAt": "2026-09-20T14:03:58.912Z",
+  "tool": "M3E Canvas in headless Microsoft Edge",
+  "scope": "Static design rendering only; no Android build or data migration",
+  "results": [
+    {
+      "board": "01-password-flow",
+      "frames": 4,
+      "missing": [],
+      "errors": []
+    },
+    {
+      "board": "02-credentials",
+      "frames": 4,
+      "missing": [],
+      "errors": []
+    },
+    {
+      "board": "03-wallet",
+      "frames": 4,
+      "missing": [],
+      "errors": []
+    },
+    {
+      "board": "04-other-editors",
+      "frames": 4,
+      "missing": [],
+      "errors": []
+    },
+    {
+      "board": "05-settings-and-safety",
+      "frames": 4,
+      "missing": [],
+      "errors": []
+    },
+    {
+      "board": "06-url-actions",
+      "frames": 4,
+      "missing": [],
+      "errors": []
+    },
+    {
+      "board": "07-type-switch",
+      "frames": 4,
+      "missing": [],
+      "errors": []
+    }
+  ]
+}

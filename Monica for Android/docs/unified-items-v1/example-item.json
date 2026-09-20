@@ -1,0 +1,74 @@
+{
+  "designOnly": true,
+  "description": "虚构逻辑模型，不是可导入的生产文件；没有有效密码、私钥或验证码密钥。",
+  "project": {
+    "schema": "monica.unified-item.v1",
+    "itemId": "5f1bf580-c932-4df9-9a1c-9f11b57500a1",
+    "storageScope": { "databaseIdentity": "demo:mdbx:work", "folderIdentity": "demo:development" },
+    "title": "工作账号",
+    "favorite": false,
+    "primaryComponentId": "5f1bf580-c932-4df9-9a1c-9f11b57500b1",
+    "revision": "demo-revision-1",
+    "components": [
+      {
+        "id": "5f1bf580-c932-4df9-9a1c-9f11b57500b1",
+        "kind": "login",
+        "label": "登录账号",
+        "order": 0,
+        "data": { "username": "dev@example.org", "passwordRef": "demo:protected-password", "urls": ["https://example.org"] }
+      },
+      {
+        "id": "5f1bf580-c932-4df9-9a1c-9f11b57500b2",
+        "kind": "otp",
+        "label": "验证码",
+        "order": 1,
+        "data": { "mode": "TOTP", "period": 30, "digits": 6, "secretRef": "demo:protected-otp" },
+        "relations": { "loginComponentId": "5f1bf580-c932-4df9-9a1c-9f11b57500b1" }
+      },
+      {
+        "id": "5f1bf580-c932-4df9-9a1c-9f11b57500b3",
+        "kind": "note",
+        "label": "部署说明",
+        "order": 2,
+        "data": { "format": "markdown", "bodyRef": "demo:note-body-a" }
+      },
+      {
+        "id": "5f1bf580-c932-4df9-9a1c-9f11b57500b4",
+        "kind": "note",
+        "label": "恢复步骤",
+        "order": 3,
+        "data": { "format": "markdown", "bodyRef": "demo:note-body-b" }
+      },
+      {
+        "id": "5f1bf580-c932-4df9-9a1c-9f11b57500b5",
+        "kind": "ssh",
+        "label": "构建服务器",
+        "order": 4,
+        "data": { "algorithm": "Ed25519", "keyRef": "demo:protected-ssh" }
+      },
+      {
+        "id": "5f1bf580-c932-4df9-9a1c-9f11b57500b6",
+        "kind": "apiToken",
+        "label": "GitHub API",
+        "order": 5,
+        "data": { "provider": "github", "endpoint": "https://api.github.com/", "tokenRef": "demo:protected-api" }
+      }
+    ],
+    "extensions": {}
+  },
+  "expectedViews": {
+    "rootProjectCount": 1,
+    "loginEntrances": ["5f1bf580-c932-4df9-9a1c-9f11b57500b1"],
+    "authenticatorEntrances": ["5f1bf580-c932-4df9-9a1c-9f11b57500b2"],
+    "noteEntrances": ["5f1bf580-c932-4df9-9a1c-9f11b57500b3", "5f1bf580-c932-4df9-9a1c-9f11b57500b4"],
+    "keyEntrances": ["5f1bf580-c932-4df9-9a1c-9f11b57500b5"],
+    "apiTokenEntrances": ["5f1bf580-c932-4df9-9a1c-9f11b57500b6"]
+  },
+  "editExample": {
+    "operationId": "demo-edit-note-b",
+    "itemId": "5f1bf580-c932-4df9-9a1c-9f11b57500a1",
+    "componentId": "5f1bf580-c932-4df9-9a1c-9f11b57500b4",
+    "baseRevision": "demo-revision-1",
+    "patch": { "data.bodyRef": "demo:note-body-b-revised" }
+  }
+}

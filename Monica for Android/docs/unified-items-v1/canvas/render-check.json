@@ -1,0 +1,37 @@
+{
+  "checkedAt": "2026-09-20T14:03:46.590Z",
+  "tool": "M3E Canvas in headless Microsoft Edge",
+  "scope": "Static design rendering only; no Android build or data migration",
+  "results": [
+    {
+      "board": "01-create",
+      "frames": 4,
+      "missing": [],
+      "errors": []
+    },
+    {
+      "board": "02-linked-details",
+      "frames": 4,
+      "missing": [],
+      "errors": []
+    },
+    {
+      "board": "03-content-focus",
+      "frames": 4,
+      "missing": [],
+      "errors": []
+    },
+    {
+      "board": "04-batch",
+      "frames": 4,
+      "missing": [],
+      "errors": []
+    },
+    {
+      "board": "05-storage-lifecycle",
+      "frames": 4,
+      "missing": [],
+      "errors": []
+    }
+  ]
+}
